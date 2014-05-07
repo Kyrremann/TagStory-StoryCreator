@@ -10,7 +10,10 @@ get '/' do
 end
 
 get '/story/create' do
-	# haml :createStory
+  haml :createStory
 end
 
-go
+post '/story/create' do
+  p params
+  haml :createStory, :local => {:params => params}
+end
