@@ -14,11 +14,11 @@
     %div{:id => "content-main", :class => "container"}
       %div{:class => "panel panel-default"}        
         %div{:class => "panel-content"}
-          %form{:action => "/story/create", :method => "post", :role => "form", :class => "form-horizontal"}
+          %form{:action => "/create/story", :method => "post", :role => "form", :class => "form-horizontal"}
             %fieldset
               %div{:class => "form-group"}
                 %label{:for => "title", :class => "col-md-2"} Title:
-                %input{:type => "text", :name => "title", :value => "#{params[:title]}", :class => "col-md-2"}
+                %input{:type => "text", :name => "title", :value => "#{params['title']}", :class => "col-md-2"}
   
               %div{:class => "form-group"}
                 %label{:for => "author", :class => "col-md-2"} Author:

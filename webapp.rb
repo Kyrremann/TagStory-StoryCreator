@@ -11,32 +11,44 @@ get '/' do
   haml :index
 end
 
-get '/story/create' do
-  haml :createStory
+get '/create/story' do
+  p $story
+  # load params from session
+  haml :createStory, :locals => {:params => $story}
 end
 
-post '/story/create' do
-	# save params to session
-	if params[:addTag] then
-		$story = params
-		redirect '/story/create/tag'
-	else
-		haml :createStory, :local => {:params => params}
-	end
+post '/create/story' do
+  # save params to session
+  # $story = $story.merge(params)
+  # $story = params
+  p "Posts"
+  p params
+  p $story
+  $story.merge!(params)
+  p $story
+  if params[:addTag] then
+    redirect '/create/tag'
+  else
+    haml :createStory, :locals => {:params => $story}
+  end
 end
 
-get '/story/create/tag' do
-	# load params from session
-	haml :createTag, :local => {:params => params}
+get '/create/tag' do
+  # load params from session
+  haml :createTag, :locals => {:params => params}
 end
 
-post '/story/create/tag' do
-	# save params to session
-	if params[:story] then
-		# $story = params
-		redirect '/story/create'
-	else
-		haml :createStory, :local => {:params => params}
-	end
+post '/create/tag' do
+  # save params to session
+  # save tag
+  if params[:story] then
+    # $story = params
+    redirect '/create/story'
+  elsif params[:previous_tag] then
+    # go to previous
+  elsif params[:previous_tag] then
+    # new tag
+  else
+    haml :createTag, :locals => {:params => params}
+  end
 end
-

@@ -14,7 +14,7 @@
     %div{:id => "content-main", :class => "container"}
       %div{:class => "panel panel-default"}        
         %div{:class => "panel-content"}
-          %form{:action => "/story/create", :method => "post", :role => "form", :class => "form-horizontal"}
+          %form{:action => "/create/tag", :method => "post", :role => "form", :class => "form-horizontal"}
             %fieldset
               %div{:class => "form-group"}
                 %label{:for => "title", :class => "col-md-2"} Title:
@@ -49,7 +49,7 @@
 
               %div{:class => "form-group"}
                 %label{:for => "endpoint", :class => "col-md-2"} Last tag:
-                %checkbox{:name => "endpoint"}
+                %input{:type => "checkbox" :name => "endpoint", :value = "f"}
 
               %h3 Quiz parts will be inserted her
 
@@ -90,9 +90,10 @@
                 %input{:type => "arrow_distance", :name => "text", :class => "col-md-2", :value => "#{params[:arrow_distance]}"}
 
               %div{:class => "form-group buttons", :class => "col-md-4"}
-                %input{:type => "submit", :name => "story", :value => "To Story", :class => "btn btn-default"}
-                %input{:type => "submit", :name => "previousTag", :value => "Previous tag", :class => "btn btn-default"}
-                %input{:type => "submit", :name => "addTag", :value => "Add tag", :class => "btn btn-default"}
+                %input{:type => "submit", :name => "story", :value => "Save & to Story", :class => "btn btn-default"}
+                %input{:type => "submit", :name => "previous_tag", :value => "Save & previous tag", :class => "btn btn-default"}
+                %input{:type => "submit", :name => "save", :value => "Save", :class => "btn btn-default"}
+                %input{:type => "submit", :name => "add_tag", :value => "Save & add tag", :class => "btn btn-default"}
 
     %footer
       %p
