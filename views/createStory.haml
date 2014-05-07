@@ -7,63 +7,63 @@
     %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css")
     %script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
   %body
-    #wrapper
-      #header
-        %h1 Create your Story
-        %h2 This is a simple tool for helping you generate the JSON-file that is used in TagStory
-        
-      #content
-        %p
-          These fields are information
-          
-        %form{:action => "/story/create", :method => "post", :role => "form"}
-          %fieldset
-            %div{:class => "form-group"}
-              %label{:for => "title"} Title:
-              %input{:type => "text", :name => "title", :value => "#{params[:title]}"}
-
-            %div{:class => "form-group"}
-              %label{:for => "author"} Author:
-              %input{:type => "text", :name => "author"}
-
-            %div{:class => "form-group"}
-              %label{:for => "area"} Area:
-              %input{:type => "text", :name => "area"}
-              
-            %div{:class => "form-group"}
-              %label{:for => "agegroup"} Agegroup:
-              %input{:type => "text", :name => "agegroup"}
-              
-            %div{:class => "form-group"}
-              %label{:for => "genre"} Genre:
-              %input{:type => "text", :name => "genre"}
-              
-            %div{:class => "form-group"}
-              %label{:for => "keywords"} Keywords (comma seperated):
-              %input{:type => "text", :name => "keywords"}
-              
-            %div{:class => "form-group"}
-              %label{:for => "date"} Date:
-              %input{:type => "datetime", :name => "date"}
-              
-            %div{:class => "form-group"}
-              %label{:for => "short-description"} Short description:
-              %textarea{:name => "short-description"}
+    %div{:class => "page-header"}
+      %h1 Create your Story
+      %h2 This is a simple tool for helping you generate the JSON-file that is used in TagStory
+      
+    %div{:id => "content-main", :class => "container"}
+      %div{:class => "panel panel-default"}        
+        %div{:class => "panel-content"}
+          %form{:action => "/story/create", :method => "post", :role => "form", :class => "form-horizontal"}
+            %fieldset
+              %div{:class => "form-group"}
+                %label{:for => "title", :class => "col-md-2"} Title:
+                %input{:type => "text", :name => "title", :value => "#{params[:title]}", :class => "col-md-2"}
+  
+              %div{:class => "form-group"}
+                %label{:for => "author", :class => "col-md-2"} Author:
+                %input{:type => "text", :name => "author", :class => "col-md-2", :value => "#{params[:author]}"}
+              %div{:class => "form-group"}
+                %label{:for => "area", :class => "col-md-2"} Area:
+                %input{:type => "text", :name => "area", :class => "col-md-2", :value => "#{params[:area]}"}
                 
-            %div{:class => "form-group"}
-              %label{:for => "description"} Description:
-              %textarea{:name => "description"}
+              %div{:class => "form-group"}
+                %label{:for => "agegroup", :class => "col-md-2"} Agegroup:
+                %input{:type => "text", :name => "agegroup", :class => "col-md-2", :value => "#{params[:agegroup]}"}
+                
+              %div{:class => "form-group"}
+                %label{:for => "genre", :class => "col-md-2"} Genre:
+                %input{:type => "text", :name => "genre", :class => "col-md-2", :value => "#{params[:genre]}"}
+                
+              %div{:class => "form-group"}
+                %label{:for => "keywords", :class => "col-md-2"} Keywords:
+                %input{:type => "text", :name => "keywords", :class => "col-md-2", :hint => "Comma seperated", :value => "#{params[:keywords]}"}
+                
+              %div{:class => "form-group"}
+                %label{:for => "date", :class => "col-md-2"} Date:
+                %input{:type => "datetime", :name => "date", :class => "col-md-2", :value => "#{params[:date]}"}
+                
+              %div{:class => "form-group"}
+                %label{:for => "short_description", :class => "col-md-2"} Short description:
+                %textarea{:name => "short_description", :class => "col-md-2"}
+                  #{params[:short_description]}
                   
-            %div{:class => "form-group"}
-              %label{:for => "language"} Language:
-              %select
-                %option{:value => "nb_NO", :name => "language"} Bokmål
-                %option{:value => "ny_NO", :name => "language"} Nynorsk
-                %option{:value => "en", :name => "language"} English
-                
-            %div{:class => "form-group"}
-              %input{:type => "submit", :value => "Save", :class => "btn btn-default"}
-              %input{:type => "submit", :value => "Add tag", :class => "btn btn-default"}
-      #footer
-        %p
-          This is the footer.
+              %div{:class => "form-group"}
+                %label{:for => "description", :class => "col-md-2"} Description:
+                %textarea{:name => "description", :class => "col-md-2"}
+                  #{params[:description]}
+                    
+              %div{:class => "form-group"}
+                %label{:for => "language", :class => "col-md-2"} Language:
+                %select{:class => "col-md-2", :name => "language"}
+                  %option{:value => "nb_NO"} Bokmål
+                  %option{:value => "ny_NO"} Nynorsk
+                  %option{:value => "en"} English
+                  
+              %div{:class => "form-group buttons", :class => "col-md-2"}
+                %input{:type => "submit", :name => "save", :value => "Save", :class => "btn btn-default"}
+                %input{:type => "submit", :name => "addTag", :value => "Add tag", :class => "btn btn-default"}
+
+    %footer
+      %p
+        This is the footer.
