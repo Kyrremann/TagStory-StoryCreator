@@ -1,100 +1,166 @@
 !!!
 %html
   %head
-    %title Create your own Story
-    %link(rel="stylesheet" href="css/styles.css")
+    %title Tag ##{get_tag_id}
+    %link(rel="stylesheet" href="css/style.css")
     %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
     %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css")
     %script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
   %body
-    %div{:class => "page-header"}
-      %h1 Create your Story
-      %h2 This is a simple tool for helping you generate the JSON-file that is used in TagStory
+    %nav{:class => "navbar navbar-default navbar-static-top", :role => "navigation"}
+      %div{:class => "container"}
+        %span{:class => "navbar-brand"}
+          TagStory
+        %ul{:class => "nav navbar-nav"}
+          %li
+            %a{:href => "/"}
+              Home
+          %li{:class => "active"}
+            %a{:href => "/create/story"}
+              Creat Story
+          %li
+            %a{:href => "/stories"}
+              Stories
+          %li
+            %a{:href => "/help"}
+              Help
       
-    %div{:id => "content-main", :class => "container"}
-      %div{:class => "panel panel-default"}        
-        %div{:class => "panel-content"}
+    %div{:id => "content-main", :class => "container"}              
+      %div{:class => "panel panel-default"}
+        %div{:class => "panel-heading"}
+          %h3{:class =>"panel-title"}
+            Information about tag ##{get_tag_id}
+        
+        %div{:class => "panel-body"}
           %form{:action => "/create/tag", :method => "post", :role => "form", :class => "form-horizontal"}
             %fieldset
-              %div{:class => "form-group"}
-                %label{:for => "title", :class => "col-md-2"} Title:
-                %input{:type => "text", :name => "title", :value => "#{params[:title]}", :class => "col-md-2"}
+              %div{:class => "row form-group"}
+                %div{:class => "col-md-2"}
+                  %label{:for => "title"} Title:
+                %input{:type => "text", :name => "title", :value => "#{params['title']}"}
                   
-              %div{:class => "form-group"}
-                %label{:for => "description", :class => "col-md-2"} Description:
-                %textarea{:name => "description", :class => "col-md-2"}
-                  #{params[:description]}
+              %div{:class => "row form-group"}
+                %div{:class => "col-md-2"}
+                  %label{:for => "description"} Description:
+                %textarea{:name => "description"}
+                  #{params['description']}
                 
-              %div{:class => "form-group"}
-                %label{:for => "choice_description", :class => "col-md-2"} Choice description:
-                %textarea{:name => "choice_description", :class => "col-md-2"}
-                  #{params[:choice_description]}
+              %div{:class => "row form-group"}
+                %div{:class => "col-md-2"}
+                  %label{:for => "choice_description"} Choice description:
+                %textarea{:name => "choice_description"}
+                  #{params['choice_description']}
 
-              %div{:class => "form-group"}
-                %label{:for => "game_mode", :class => "col-md-2"} Game mode:
-                %select{:class => "col-md-2", :name => "game_mode"}
+              %div{:class => "row form-group"}
+                %div{:class => "col-md-2"}
+                  %label{:for => "game_mode"} Game mode:
+                %select{:name => "game_mode"}
                   %option{:value => "none"} None
                   %option{:value => "quiz"} Quiz
 
-              %div{:class => "form-group"}
-                %label{:for => "game_button", :class => "col-md-2"} Game button:
-                %input{:type => "game_button", :name => "text", :class => "col-md-2", :value => "#{params[:text]}"}
+              %div{:class => "row form-group"}
+                %div{:class => "col-md-2"}
+                  %label{:for => "game_button"} Game button:
+                %input{:type => "text", :name => "game_button", :value => "#{params['text']}"}
                     
-              %div{:class => "form-group"}
-                %label{:for => "tag_mode", :class => "col-md-2"} Tag type:
-                %select{:class => "col-md-2", :name => "tag_mode"}
+              %div{:class => "row form-group"}
+                %div{:class => "col-md-2"}
+                  %label{:for => "tag_mode"} Tag type:
+                %select{:name => "tag_mode"}
                   %option{:value => "gps"} GPS
                   %option{:value => "qr"} QR
                   %option{:value => "nfc"} NFC
 
-              %div{:class => "form-group"}
-                %label{:for => "endpoint", :class => "col-md-2"} Last tag:
-                %input{:type => "checkbox" :name => "endpoint", :value = "f"}
+              %div{:class => "row form-group"}
+                %div{:class => "col-md-2"}
+                  %label{:for => "endpoint"} Last tag:
+                %input{:type=>"checkbox", :name=>"endpoint"}
 
-              %h3 Quiz parts will be inserted her
+              %div{:class => "panel panel-default"}
+                %div{:class => "panel-heading"}
+                  %h3{:class =>"panel-title"}
+                    Quiz part
+                
+                %div{:class => "panel-body"}
+                  %div{:class => "row form-group"}
+                    %div{:class => "col-md-2"}
+                      %label{:for => "question"} Question:
+                    %input{:type => "text", :name => "question", :value => "#{params['question']}"}    
+    
+                  %div{:class => "row form-group"}
+                    %div{:class => "col-md-2"}
+                      %label{:for => "answer"} Correct answer:
+                    %input{:type => "text", :name => "answer", :value => ""}
 
-              %h2 Options
+              %div{:class => "panel panel-default"}
+                %div{:class => "panel-heading"}
+                  %h3{:class =>"panel-title"}
+                    Options
+                
+                %div{:class => "panel-body"}
+                  %div{:class => "row form-group"}
+                    %div{:class => "col-md-2"}
+                      %label{:for => "hint_method"} Hint method:
+                    %select{:name => "hint_method"}
+                      %option{:value => "hint_text"} Text
+                      %option{:value => "hint_image"} Image
+                      %option{:value => "hint_sound"} Sound
+                      %option{:value => "hint_map"} Map
+                      %option{:value => "hint_arrow"} Arrow
+                      %option{:value => "hint_video"} Video
+    
+                  %div{:class => "row form-group"}
+                    %div{:class => "col-md-2"}
+                      %label{:for => "hint_text"} Hint text:
+                    %input{:type => "text", :name => "hint_text", :value => "#{params['hint_text']}"}    
+    
+                  %div{:class => "row form-group"}
+                    %div{:class => "col-md-2"}
+                      %label{:for => "image_source"} Image source:
+                    %input{:type => "text", :name => "image_source", :value => "#{params['image_source']}"}    
+    
+                  %div{:class => "row form-group"}
+                    %div{:class => "col-md-2"}
+                      %label{:for => "sound_source"} Sound source:
+                    %input{:type => "text", :name => "sound_source", :value => "#{params['sound_source']}"}
+    
+                  %div{:class => "row form-group"}
+                    %div{:class => "col-md-2"}
+                      %label{:for => "long"} GPS Longitude:
+                    %input{:type => "text", :name => "long", :value => "#{params['long']}"}
+    
+                  %div{:class => "row form-group"}
+                    %div{:class => "col-md-2"}
+                      %label{:for => "lat"} GPS Latitude:
+                    %input{:type => "text", :name => "lat", :value => "#{params['lat']}"}
+    
+                  %div{:class => "row form-group"}
+                    %div{:class => "col-md-2"}
+                      %label{:for => "arrow_distance"} Arrow distance:
+                    %input{:type => "text", :name => "arrow_distance", :value => "#{params['arrow_distance']}"}
 
-              %div{:class => "form-group"}
-                %label{:for => "hint_method", :class => "col-md-2"} Hint method:
-                %select{:class => "col-md-2", :name => "hint_method"}
-                  %option{:value => "hint_text"} Text
-                  %option{:value => "hint_image"} Image
-                  %option{:value => "hint_sound"} Sound
-                  %option{:value => "hint_map"} Map
-                  %option{:value => "hint_arrow"} Arrow
-                  %option{:value => "hint_video"} Video
-
-              %div{:class => "form-group"}
-                %label{:for => "hint_text", :class => "col-md-2"} Hint text:
-                %input{:type => "hint_text", :name => "text", :class => "col-md-2", :value => "#{params[:hint_text]}"}    
-
-              %div{:class => "form-group"}
-                %label{:for => "image_source", :class => "col-md-2"} Image source:
-                %input{:type => "image_source", :name => "text", :class => "col-md-2", :value => "#{params[:image_source]}"}    
-
-              %div{:class => "form-group"}
-                %label{:for => "sound_source", :class => "col-md-2"} Sound source:
-                %input{:type => "sound_source", :name => "text", :class => "col-md-2", :value => "#{params[:sound_source]}"}
-
-              %div{:class => "form-group"}
-                %label{:for => "long", :class => "col-md-2"} GPS Longitude:
-                %input{:type => "long", :name => "text", :class => "col-md-2", :value => "#{params[:long]}"}
-
-              %div{:class => "form-group"}
-                %label{:for => "lat", :class => "col-md-2"} GPS Latitude:
-                %input{:type => "lat", :name => "text", :class => "col-md-2", :value => "#{params[:lat]}"}
-
-              %div{:class => "form-group"}
-                %label{:for => "arrow_distance", :class => "col-md-2"} Arrow distance:
-                %input{:type => "arrow_distance", :name => "text", :class => "col-md-2", :value => "#{params[:arrow_distance]}"}
-
-              %div{:class => "form-group buttons", :class => "col-md-4"}
-                %input{:type => "submit", :name => "story", :value => "Save & to Story", :class => "btn btn-default"}
-                %input{:type => "submit", :name => "previous_tag", :value => "Save & previous tag", :class => "btn btn-default"}
+              %div{:class => "row form-group buttons", :class => "col-md-5"}
                 %input{:type => "submit", :name => "save", :value => "Save", :class => "btn btn-default"}
-                %input{:type => "submit", :name => "add_tag", :value => "Save & add tag", :class => "btn btn-default"}
+                %input{:type => "submit", :name => "add_tag", :value => "Add tag", :class => "btn btn-default"}
 
+        %div{:class => "panel-footer"}    
+          %ul{:class => "pagination"}
+            %li
+              %a{:href => "/create/story", :title => "Does not save"}
+                Story
+              %li{:class => "#{has_previous_tag_class}"}
+                %a{:href => "#{url_for_previous_tag}"}
+                  &laquo;
+            - (1..get_tag_count).each do | id |
+              %li{:class => "#{is_current_tag_active(id)}"}
+                %a{:href => "/create/tag/#{id}"}
+                  #{id}
+                  - if is_current_tag_id(id) then
+                    %span{:class => "sr-only"}
+                      (current)
+            %li{:class => "#{has_next_tag_class}"}
+              %a{:href => "#{url_for_next_tag}"}
+                &raquo;
     %footer
       %p
-        This is the footer.
+        #{get_story}
