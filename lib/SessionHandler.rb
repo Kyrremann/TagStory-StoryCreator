@@ -24,6 +24,14 @@ def merge_current_tag!(data)
   get_current_tag.merge!(data)
 end
 
+def is_a_tag_id(id)
+  if id < 0\
+    or get_tag_count < id then
+    return false
+  end
+  return true
+end
+
 def switch_to_tag!(id)
 	$current_tag = id
 end

@@ -35,9 +35,13 @@ post '/create/story' do
 end
 
 get '/create/tag/:id' do | id |
-  p id
-  switch_to_tag!(id.to_i)
-  redirect '/create/tag'
+  unless is_a_tag_id(id.to_i) then
+    status 404
+    body "Can't find tag with id #{id}"
+  else
+    switch_to_tag!(id.to_i)
+    redirect '/create/tag'
+  end
 end
 
 get '/create/tag' do
