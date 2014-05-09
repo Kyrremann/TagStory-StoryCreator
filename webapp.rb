@@ -11,7 +11,7 @@ enable :sessions
 # Scopes are space separated strings
 SCOPES = [
           'https://www.googleapis.com/auth/userinfo.email'
-         ].join(' ')
+         ].join(' https://www.googleapis.com/auth/userinfo.profile')
 
 unless G_API_CLIENT = ENV['G_API_CLIENT']
   raise "You must specify the G_API_CLIENT env variable"
@@ -33,6 +33,14 @@ end
 $story = {:parts => {}}
 $current_tag = 0
 
+before do
+  unless ['/', '/auth', '/oauth2callback'].include?(request.path_info)
+    unless session[:access_token]
+      redirect "/auth"
+    end
+  end
+end
+
 get '/' do
   haml :index
 end
@@ -42,6 +50,7 @@ get "/auth" do
 end
 
 get '/oauth2callback' do
+  p "inside callback"
   access_token = client.auth_code.get_token(params[:code], :redirect_uri => redirect_uri)
   session[:access_token] = access_token.token
   @message = "Successfully authenticated with the server"
@@ -49,8 +58,10 @@ get '/oauth2callback' do
   
   # parsed is a handy method on an OAuth2::Response object that will 
   # intelligently try and parse the response.body
-  @email = access_token.get('https://www.googleapis.com/userinfo/email?alt=json').parsed
-  haml :success
+  # @email = access_token.get('https://www.googleapis.com/userinfo/email?alt=json').parsed
+  @userinfo = access_token.get('https://www.googleapis.com/oauth2/v1/userinfo?alt=json').parsed
+  # haml :success
+  redirect '/'
 end
 
 get '/stories' do
