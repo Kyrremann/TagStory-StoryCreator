@@ -1,0 +1,17 @@
+%ul{:class => "pagination"}
+  %li
+    %a{:href => "/story", :title => "Does not save"}
+      Story
+  %li{:class => "#{has_previous_tag_class}"}
+    %a{:href => "#{url_for_previous_tag}"}
+      &laquo;
+  - (1..get_tag_count).each do | id |
+    %li{:class => "#{is_current_tag_active(id)}"}
+      %a{:href => "/tag/#{id}"}
+        #{id}
+        - if is_current_tag_id(id) then
+          %span{:class => "sr-only"}
+            (current)
+  %li{:class => "#{has_next_tag_class}"}
+    %a{:href => "#{url_for_next_tag}"}
+      &raquo;

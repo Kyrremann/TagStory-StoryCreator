@@ -1,0 +1,21 @@
+%nav{:class => "navbar navbar-default navbar-static-top", :role => "navigation"}
+  %div{:class => "container"}
+    %span{:class => "navbar-brand"}
+      TagStory
+    %ul{:class => "nav navbar-nav"}
+      %li{:class => "#{is_active_url('/')}"}
+        %a{:href => "/"}
+          Home
+      - if not session[:access_token].nil?
+        %li{:class => "#{is_active_url(['/create/story', '/story', '/tag'])}"}
+          %a{:href => "/create/story"}
+            Create Story
+      %li{:class => "#{is_active_url('/stories')}"}
+        %a{:href => "/stories"}
+          Stories
+      %li{:class => "#{is_active_url('/help')}"}
+        %a{:href => "/help"}
+          Help
+      %li{:class => "#{is_active_url('/auth')}"}
+        %a{:href => "/auth"}
+          Log in

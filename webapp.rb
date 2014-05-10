@@ -30,7 +30,7 @@ def client
 end
 
 before do
-  unless ['/', '/auth', '/oauth2callback'].include?(request.path_info)
+  unless ['/', '/stories', '/help', '/auth', '/oauth2callback'].include?(request.path_info)
     unless session[:access_token]
       redirect "/auth"
     end
@@ -46,17 +46,13 @@ get "/auth" do
 end
 
 get '/oauth2callback' do
-  p "inside callback"
   access_token = client.auth_code.get_token(params[:code], :redirect_uri => redirect_uri)
   session[:access_token] = access_token.token
-  @message = "Successfully authenticated with the server"
-  @access_token = session[:access_token]
+  p "Successfully authenticated with the server"
   
   # parsed is a handy method on an OAuth2::Response object that will 
   # intelligently try and parse the response.body
-  # @email = access_token.get('https://www.googleapis.com/userinfo/email?alt=json').parsed
-  @userinfo = access_token.get('https://www.googleapis.com/oauth2/v1/userinfo?alt=json').parsed
-  # haml :success
+  session[:user_info] = access_token.get('https://www.googleapis.com/oauth2/v1/userinfo?alt=json').parsed
   redirect '/'
 end
 
@@ -68,8 +64,12 @@ get '/help' do
   haml :help
 end
 
-get '/create/story' do
+get '/story' do
   haml :createStory, :locals => {:params => get_story}
+end
+
+get '/create/story' do
+  haml :createStory, :locals => {:params => init_story}
 end
 
 post '/create/story' do
@@ -81,13 +81,33 @@ post '/create/story' do
   end
 end
 
-get '/create/tag/:id' do | id |
+get '/tag/:id' do | id |
   unless is_a_tag_id(id.to_i) then
     status 404
     body "Can't find tag with id #{id}"
   else
     switch_to_tag!(id.to_i)
     redirect '/create/tag'
+  end
+end
+
+get '/tag/:id/quiz' do | id |
+  unless is_a_tag_id(id.to_i) then
+    status 404
+    body "Can't find tag with id #{id}"
+  else
+    switch_to_tag!(id.to_i)
+    haml :quiz
+  end
+end
+
+get '/tag/:id/options' do | id |
+  unless is_a_tag_id(id.to_i) then
+    status 404
+    body "Can't find tag with id #{id}"
+  else
+    switch_to_tag!(id.to_i)
+    haml :options
   end
 end
 
@@ -111,4 +131,9 @@ def redirect_uri
   uri.path = '/oauth2callback'
   uri.query = nil
   uri.to_s
+end
+
+def is_active_url(url)
+  "active" if url.kind_of?(String) and request.path_info.eql? url\
+  or url.kind_of?(Array) and url.include? request.path_info
 end

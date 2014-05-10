@@ -1,6 +1,6 @@
 # StoryCreator
 
-A story creator interface written in Ruby and Haml
+A story creator interface written in Ruby and Haml, using Sinatra and Heroku
 
 The intention of this software is to help authors in the making of stories for TagStory
 
@@ -9,13 +9,14 @@ The intention of this software is to help authors in the making of stories for T
   * Security - Need to avoid other users deleting your story
     * Implement some sort of version control (CLI diff?)
   * /create/ url's should just be used for creating a new of something, not for showing or editing tags or stories
-  * Stories url should not require URL, only editing/adding new stories
   * Auth callback should not redirect to '/', but from where the call was made
 * Views
   * Add functionality for preselecting of select-html-tag
-  * Add a list of stories
+  * Add a "My stories" section (instead of Create Story)
+    * Showes stories you have made, and stories you are working on
+    * Let you create or delete stories
+  * Add a table of stories
   * Implement logic for checkboxes
-  * Implement templates to avoid copy header and footer code
 
 # Links
 * Gems

@@ -1,0 +1,67 @@
+!!!
+%html
+  %head
+    %title Tag ##{get_tag_id}
+    %link(rel="stylesheet" href="css/style.css")
+    %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
+    %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css")
+    %script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
+  %body
+    = haml :"templates/nav"
+      
+    %div{:id => "content-main", :class => "container"}              
+      %div{:class => "panel panel-default"}
+        %div{:class => "panel-heading"}
+          %ul{:class => "nav nav-tabs"}
+            %li{:class => ""}
+              %a{:href => "/tag/#{get_tag_id}"}
+                Tag
+            %li{:class => ""}
+              %a{:href => "/tag/#{get_tag_id}/quiz"}
+                Quiz
+            %li{:class => "active"}
+              %a{:href => "/tag/#{get_tag_id}/options"}
+                Options
+                
+        %div{:class => "panel-body"}
+          %div{:class => "row form-group"}
+            %div{:class => "col-md-2"}
+              %label{:for => "hint_method"} Hint method:
+              %select{:name => "hint_method"}
+                %option{:value => "hint_text"} Text
+                %option{:value => "hint_image"} Image
+                %option{:value => "hint_sound"} Sound
+                %option{:value => "hint_map"} Map
+                %option{:value => "hint_arrow"} Arrow
+                %option{:value => "hint_video"} Video
+        
+          %div{:class => "row form-group"}
+            %div{:class => "col-md-2"}
+              %label{:for => "hint_text"} Hint text:
+            %input{:type => "text", :name => "hint_text", :value => "#{params['hint_text']}"}    
+        
+          %div{:class => "row form-group"}
+            %div{:class => "col-md-2"}
+              %label{:for => "image_source"} Image source:
+            %input{:type => "text", :name => "image_source", :value => "#{params['image_source']}"}    
+        
+          %div{:class => "row form-group"}
+            %div{:class => "col-md-2"}
+              %label{:for => "sound_source"} Sound source:
+            %input{:type => "text", :name => "sound_source", :value => "#{params['sound_source']}"}
+        
+          %div{:class => "row form-group"}
+            %div{:class => "col-md-2"}
+              %label{:for => "long"} GPS Longitude:
+            %input{:type => "text", :name => "long", :value => "#{params['long']}"}
+        
+          %div{:class => "row form-group"}
+            %div{:class => "col-md-2"}
+              %label{:for => "lat"} GPS Latitude:
+            %input{:type => "text", :name => "lat", :value => "#{params['lat']}"}
+
+          %div{:class => "row form-group buttons", :class => "col-md-5"}
+            %input{:type => "submit", :name => "save", :value => "Save", :class => "btn btn-default"}
+
+        %div{:class => "panel-footer"}
+          = haml :"templates/tag_footer"

@@ -3,6 +3,10 @@ def get_story()
   session[:story] || session[:story] = {}
 end
 
+def init_story()
+  session[:story] = {}
+end
+
 def merge_story!(data)
   # save params to session
   get_story.merge!(data)

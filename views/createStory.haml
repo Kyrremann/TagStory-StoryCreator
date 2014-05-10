@@ -8,23 +8,7 @@
     %script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
   %body
     %div{:class => ""}
-      %nav{:class => "navbar navbar-default navbar-static-top", :role => "navigation"}
-        %div{:class => "container"}
-          %span{:class => "navbar-brand"}
-            TagStory
-          %ul{:class => "nav navbar-nav"}
-            %li
-              %a{:href => "/"}
-                Home
-            %li{:class => "active"}
-              %a{:href => "/create/story"}
-                Creat Story
-            %li
-              %a{:href => "/stories"}
-                Stories
-            %li
-              %a{:href => "/help"}
-                Help
+      = haml :"templates/nav"
 
     %div{:id => "content-main", :class => "container"}              
       %div{:class => "panel panel-default"}
@@ -102,12 +86,12 @@
                 Story
                 %span{:class => "sr-only"}
                   (current)
-              %li{:class => "disabled"}
-                %a{:href => "#"}
-                  &laquo;
+            %li{:class => "disabled"}
+              %a{:href => "#"}
+                &laquo;
             - (1..get_tag_count).each do | id |
               %li
-                %a{:href => "/create/tag/#{id}"}
+                %a{:href => "/tag/#{id}"}
                   #{id}
             %li{:class => "disabled"}
               %a{:href => "#"}
