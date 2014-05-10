@@ -29,10 +29,6 @@ def client
                                 })
 end
 
-
-$story = {:parts => {}}
-$current_tag = 0
-
 before do
   unless ['/', '/auth', '/oauth2callback'].include?(request.path_info)
     unless session[:access_token]

@@ -1,8 +1,6 @@
 # stories
 def get_story()
-  # load params from session
-  # use session[:session_id][:story] or make a Story object...
-  return $story
+  session[:story] || session[:story] = {}
 end
 
 def merge_story!(data)
@@ -10,14 +8,21 @@ def merge_story!(data)
   get_story.merge!(data)
 end
 
+# parts
+
+def get_parts()
+  get_story[:parts] || get_story[:parts] = {}
+end
+
 # tags
 def get_tag_id()
-  return $current_tag
+  session[:current_tag]
 end
 
 def get_current_tag()
   # load params from session
-  return $story[:parts][get_tag_id]
+  # $story[:parts][get_tag_id]
+  get_parts[get_tag_id]
 end
 
 def merge_current_tag!(data)
@@ -26,28 +31,24 @@ def merge_current_tag!(data)
 end
 
 def is_a_tag_id(id)
-  if id < 0\
-    or get_tag_count < id then
-    return false
-  end
-  return true
+  id > 0 or get_tag_count < id
 end
 
 def switch_to_tag!(id)
-  $current_tag = id
+  session[:current_tag] = id
 end
 
 def add_and_show_new_tag()
-  if get_story[:parts][$current_tag].nil?
+  if get_current_tag.nil?
     if get_tag_count == 0 then
-      $current_tag = 1
+      session[:current_tag] = 1
     end
-    $story[:parts][$current_tag] = {}
+    get_parts[get_tag_id] = {}
   else
-    $current_tag += 1
+    session[:current_tag] += 1
     return add_and_show_new_tag
   end
-
+  # The SessionHandler should not redirect
   redirect '/create/tag'
 end
 
@@ -64,7 +65,7 @@ def url_for_previous_tag()
     return '/create/tag/' + (get_tag_id - 1).to_s
   end
 
-  return "#"
+  "#"
 end
 
 def url_for_next_tag()
@@ -96,9 +97,9 @@ def is_current_tag_active(id)
 end
 
 def get_tag_count()
-  return get_story[:parts].length
+  get_parts.length
 end
 
 def is_current_tag_id(id)
-  return id == get_tag_id
+  id == get_tag_id
 end

@@ -7,8 +7,10 @@ The intention of this software is to help authors in the making of stories for T
 # TODO
 * Ruby
   * Security - Need to avoid other users deleting your story
-    * Implement some sort of version control
-  * Need to add session handling, for multiple users
+    * Implement some sort of version control (CLI diff?)
+  * /create/ url's should just be used for creating a new of something, not for showing or editing tags or stories
+  * Stories url should not require URL, only editing/adding new stories
+  * Auth callback should not redirect to '/', but from where the call was made
 * Views
   * Add functionality for preselecting of select-html-tag
   * Add a list of stories
