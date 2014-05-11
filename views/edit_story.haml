@@ -17,7 +17,7 @@
             Information about the story
         
         %div{:class => "panel-body"}
-          %form{:action => "/create/story", :method => "post", :role => "form", :class => "form-horizontal"}
+          %form{:action => "/mystories/edit/story", :method => "post", :role => "form", :class => "form-horizontal"}
             %fieldset
               %div{:class => "row form-group"}
                 %div{:class => "col-md-2"}
@@ -77,12 +77,12 @@
               %div{:class => "row form-group buttons"}
                 %div{:class => "col-md-2"}
                   %input{:type => "submit", :name => "save", :value => "Save", :class => "btn btn-default"}
-                  %input{:type => "submit", :name => "addTag", :value => "Add tag", :class => "btn btn-default"}
+                  %input{:type => "submit", :name => "add_tag", :value => "Add tag", :class => "btn btn-default"}
 
         %div{:class => "panel-footer"}    
           %ul{:class => "pagination"}
             %li{:class => "active"}
-              %a{:href => "/create/story", :title => "Does not save"}
+              %a{:href => "/mystories/edit/story", :title => "Does not save"}
                 Story
                 %span{:class => "sr-only"}
                   (current)
@@ -91,7 +91,7 @@
                 &laquo;
             - (1..get_tag_count).each do | id |
               %li
-                %a{:href => "/tag/#{id}"}
+                %a{:href => "/mystories/edit/tag/#{id}"}
                   #{id}
             %li{:class => "disabled"}
               %a{:href => "#"}

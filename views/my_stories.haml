@@ -1,0 +1,77 @@
+!!!
+%html
+  %head
+    %title TagStory: Create your own story
+    %link(rel="stylesheet" href="css/style.css")
+    %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
+    %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css")
+    %script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
+  %body
+    %div{:class => ""}
+      = haml :"templates/nav"
+
+    %div{:id => "content-main", :class => "container"}
+      %p
+        Welcome #{session[:user_info]["given_name"]}!
+      %p
+        In this area you can create a new story, see what stories you have made, and which one you are working on. And of course edit your stories.
+      %p
+        %a{:href => "/mystories/create/story", :class => "btn btn-default"}
+          Create new story
+      %div{:class => "panel panel-default"}
+        %div{:class => "panel-heading"}
+          %h3{:class =>"panel-title"}
+            Released stories
+        %table{:class => "table table-striped"}
+          %thead
+            %tr{:class => "success"}
+              %th
+                Title
+              %th
+                Author
+              %th
+                Date
+              %th
+                .sr-only
+                  Action
+          %tbody
+            - (1..3).each do | i |
+              %tr
+                %td
+                  Story ##{i}
+                %td
+                  Kyrre
+                %td
+                  01.01.2014
+                %td
+                  %a{:href => "/story/#{i}"}
+                    view
+      
+      %div{:class => "panel panel-default"}
+        %div{:class => "panel-heading"}
+          %h3{:class =>"panel-title"}
+            Stories in progress
+        %table{:class => "table table-striped"}
+          %thead
+            %tr{:class => "success"}
+              %th
+                Title
+              %th
+                Author
+              %th
+                Date
+              %th
+                .sr-only
+                  Action
+          %tbody
+            - (4..6).each do | i |
+              %tr
+                %td
+                  Story ##{i}
+                %td
+                  Kyrre
+                %td
+                  01.01.2014
+                %td
+                  %a{:href => "/mystories/edit/story/#{i}"}
+                    edit

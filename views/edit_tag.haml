@@ -14,29 +14,28 @@
         %div{:class => "panel-heading"}
           %ul{:class => "nav nav-tabs"}
             %li{:class => "active"}
-              %a{:href => "/tag/#{get_tag_id}"}
+              %a{:href => "/mystories/edit/tag"}
                 Tag
             %li{:class => ""}
-              %a{:href => "/tag/#{get_tag_id}/quiz"}
+              %a{:href => "/mystories/edit/tag/quiz"}
                 Quiz
             %li{:class => ""}
-              %a{:href => "/tag/#{get_tag_id}/options"}
+              %a{:href => "/mystories/edit/tag/options"}
                 Options
-        
         %div{:class => "panel-body"}
-          %form{:action => "/create/tag", :method => "post", :role => "form", :class => "form-horizontal"}
+          %form{:action => "/mystories/edit/tag", :method => "post", :role => "form", :class => "form-horizontal"}
             %fieldset
               %div{:class => "row form-group"}
                 %div{:class => "col-md-2"}
                   %label{:for => "title"} Title:
                 %input{:type => "text", :name => "title", :value => "#{params['title']}"}
-                  
+
               %div{:class => "row form-group"}
                 %div{:class => "col-md-2"}
                   %label{:for => "description"} Description:
                 %textarea{:name => "description"}
                   #{params['description']}
-                
+
               %div{:class => "row form-group"}
                 %div{:class => "col-md-2"}
                   %label{:for => "choice_description"} Choice description:
@@ -54,7 +53,7 @@
                 %div{:class => "col-md-2"}
                   %label{:for => "game_button"} Game button:
                 %input{:type => "text", :name => "game_button", :value => "#{params['text']}"}
-                    
+
               %div{:class => "row form-group"}
                 %div{:class => "col-md-2"}
                   %label{:for => "tag_mode"} Tag type:
@@ -74,7 +73,7 @@
 
         %div{:class => "panel-footer"}
           = haml :"templates/tag_footer"
-          
-    %footer
-      %p
+
+      %footer
+        %p
         #{get_story}

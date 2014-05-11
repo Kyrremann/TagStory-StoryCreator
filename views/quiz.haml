@@ -9,33 +9,32 @@
   %body
     = haml :"templates/nav"
       
-    %div{:id => "content-main", :class => "container"}              
+    %div{:id => "content-main", :class => "container"}
       %div{:class => "panel panel-default"}
         %div{:class => "panel-heading"}
           %ul{:class => "nav nav-tabs"}
-            %li{:class => ""}
-              %a{:href => "/tag/#{get_tag_id}"}
+            %li
+              %a{:href => "/mystories/edit/tag"}
                 Tag
             %li{:class => "active"}
-              %a{:href => "/tag/#{get_tag_id}/quiz"}
+              %a{:href => "/mystories/edit/tag/quiz"}
                 Quiz
-            %li{:class => ""}
-              %a{:href => "/tag/#{get_tag_id}/options"}
+            %li
+              %a{:href => "/mystories/edit/tag/options"}
                 Options
-        
         %div{:class => "panel-body"}
-          %form{:action => "/create/tag", :method => "post", :role => "form", :class => "form-horizontal"}
+          %form{:action => "/mystories/edit/tag/quiz", :method => "post", :role => "form", :class => "form-horizontal"}
             %fieldset
               %div{:class => "row form-group"}
                 %div{:class => "col-md-2"}
                   %label{:for => "question"} Question:
                 %input{:type => "text", :name => "question", :value => "#{params['question']}"}    
-    
+
               %div{:class => "row form-group"}
                 %div{:class => "col-md-2"}
                   %label{:for => "answer"} Correct answer:
                 %input{:type => "text", :name => "answer", :value => ""}
-    
+
               %div{:class => "row form-group"}
                 %div{:class => "col-md-2"}
                   %label{:for => "correction"} Correction:
@@ -43,7 +42,7 @@
 
               %div{:class => "row form-group buttons", :class => "col-md-5"}
                 %input{:type => "submit", :name => "save", :value => "Save", :class => "btn btn-default"}
-                %input{:type => "submit", :name => "add_tag", :value => "Add question", :class => "btn btn-default"}
+                %input{:type => "submit", :name => "add_quiz", :value => "Add question", :class => "btn btn-default"}
 
         %div{:class => "panel-footer"}
           = haml :"templates/tag_footer"

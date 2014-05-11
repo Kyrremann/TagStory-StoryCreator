@@ -12,10 +12,23 @@ def merge_story!(data)
   get_story.merge!(data)
 end
 
-# parts
+def is_a_story_id(id)
+  # check if valid UUID
+  # check if it belongs to the current user
+  true
+end
 
-def get_parts()
-  get_story[:parts] || get_story[:parts] = {}
+def switch_to_story()
+  # does not do anything, yet
+  # need database or story storage
+  # switch by loading the story fitting
+  # the id into seesion[:story]
+end
+
+# tags
+
+def get_tags()
+  get_story[:tags] || get_story[:tags] = {}
 end
 
 # tags
@@ -25,8 +38,7 @@ end
 
 def get_current_tag()
   # load params from session
-  # $story[:parts][get_tag_id]
-  get_parts[get_tag_id]
+  get_tags[get_tag_id]
 end
 
 def merge_current_tag!(data)
@@ -42,18 +54,16 @@ def switch_to_tag!(id)
   session[:current_tag] = id
 end
 
-def add_and_show_new_tag()
+def init_tag()
   if get_current_tag.nil?
     if get_tag_count == 0 then
       session[:current_tag] = 1
     end
-    get_parts[get_tag_id] = {}
+    get_tags[get_tag_id] = {}
   else
     session[:current_tag] += 1
-    return add_and_show_new_tag
+    init_tag
   end
-  # The SessionHandler should not redirect
-  redirect '/create/tag'
 end
 
 def has_previous_tag()
@@ -66,7 +76,7 @@ end
 
 def url_for_previous_tag()
   if has_previous_tag then
-    return '/create/tag/' + (get_tag_id - 1).to_s
+    return '/mystories/edit/tag/' + (get_tag_id - 1).to_s
   end
 
   "#"
@@ -74,7 +84,7 @@ end
 
 def url_for_next_tag()
   if has_next_tag then
-    return '/create/tag/' + (get_tag_id + 1).to_s
+    return '/mystories/edit/tag/' + (get_tag_id + 1).to_s
   end
 
   return "#"
@@ -101,7 +111,7 @@ def is_current_tag_active(id)
 end
 
 def get_tag_count()
-  get_parts.length
+  get_tags.length
 end
 
 def is_current_tag_id(id)

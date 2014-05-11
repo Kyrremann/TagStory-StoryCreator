@@ -7,9 +7,9 @@
         %a{:href => "/"}
           Home
       - if not session[:access_token].nil?
-        %li{:class => "#{is_active_url(['/create/story', '/story', '/tag'])}"}
-          %a{:href => "/create/story"}
-            Create Story
+        %li{:class => "#{is_active_url(['/mystories', '/mystories/edit/story', '/mystories/edit/tag', '/mystories/edit/tag/quiz', '/mystories/edit/tag/options'])}"}
+          %a{:href => "/mystories"}
+            My Stories
       %li{:class => "#{is_active_url('/stories')}"}
         %a{:href => "/stories"}
           Stories

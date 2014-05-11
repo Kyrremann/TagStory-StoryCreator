@@ -6,7 +6,8 @@ require 'json'
 require_relative 'lib/Story.rb'
 require_relative 'lib/SessionHandler.rb'
 
-enable :sessions
+# enable :sessions
+use Rack::Session::Cookie, :secret => 'super_secret_key_that_should_be_an_env_variable'
 
 # Scopes are space separated strings
 SCOPES = [
@@ -53,76 +54,107 @@ get '/oauth2callback' do
   # parsed is a handy method on an OAuth2::Response object that will 
   # intelligently try and parse the response.body
   session[:user_info] = access_token.get('https://www.googleapis.com/oauth2/v1/userinfo?alt=json').parsed
-  redirect '/'
-end
-
-get '/stories' do
-  haml :stories
+  redirect '/mystories'
 end
 
 get '/help' do
   haml :help
 end
 
-get '/story' do
-  haml :createStory, :locals => {:params => get_story}
+get '/community' do
+  status 404
+  body "Not implemented yet"
 end
 
-get '/create/story' do
-  haml :createStory, :locals => {:params => init_story}
+get '/stories' do
+  haml :stories
 end
 
-post '/create/story' do
-  merge_story!(params)
-  if params[:addTag] then
-  	add_and_show_new_tag
-  else
-    haml :createStory, :locals => {:params => get_story}
+get '/story/:id' do
+  # haml :createStory, :locals => {:params => get_story}
+  redirect '/community'
+end
+
+get '/mystories' do
+  haml :my_stories
+end
+
+get '/mystories/create/story' do
+  init_story
+  redirect 'mystories/edit/story'
+end
+
+get '/mystories/create/tag' do
+  init_tag
+  redirect '/mystories/edit/tag'
+end
+
+get '/mystories/edit/tag/quiz' do
+  haml :quiz
+end
+
+post '/mystories/edit/tag/quiz' do
+  # save question
+  if params[:add_quiz] then
+    # a question
   end
+  haml :quiz
 end
 
-get '/tag/:id' do | id |
+get '/mystories/edit/tag/options' do
+  haml :options
+end
+
+post '/mystories/edit/tag/options' do
+  # save option
+  haml :options
+end
+
+get '/mystories/edit/tag/:id' do | id |
   unless is_a_tag_id(id.to_i) then
     status 404
     body "Can't find tag with id #{id}"
   else
     switch_to_tag!(id.to_i)
-    redirect '/create/tag'
+    redirect '/mystories/edit/tag'
   end
 end
 
-get '/tag/:id/quiz' do | id |
-  unless is_a_tag_id(id.to_i) then
-    status 404
-    body "Can't find tag with id #{id}"
-  else
-    switch_to_tag!(id.to_i)
-    haml :quiz
-  end
+get '/mystories/edit/tag' do
+  haml :edit_tag, :locals => {:params => get_current_tag}
 end
 
-get '/tag/:id/options' do | id |
-  unless is_a_tag_id(id.to_i) then
-    status 404
-    body "Can't find tag with id #{id}"
-  else
-    switch_to_tag!(id.to_i)
-    haml :options
-  end
-end
-
-get '/create/tag' do
-  haml :createTag, :locals => {:params => get_current_tag}
-end
-
-post '/create/tag' do
+post '/mystories/edit/tag' do
   merge_current_tag!(params)
   if params[:story] then
-    redirect '/create/story'
+    redirect '/mystories/edit/story'
   elsif params[:add_tag] then
-    add_and_show_new_tag
+    redirect '/mystories/create/tag'
   else
-    haml :createTag, :locals => {:params => get_current_tag}
+    haml :edit_tag, :locals => {:params => get_current_tag}
+  end
+end
+
+get 'mystories/edit/story/:id' do
+  unless is_a_story_id(id.to_i) then
+    status 404
+    body "Can't find story with id #{id}"
+  else
+    switch_to_story(id.to_i)
+    redirect '/mystories/edit/story'
+  end
+end
+
+get '/mystories/edit/story' do
+  haml :edit_story, :locals => {:params => get_story}
+end
+
+post '/mystories/edit/story' do
+  merge_story!(params)
+  if params[:add_tag] then
+    redirect '/mystories/create/tag'
+  else
+    haml :edit_story, :locals => {:params => get_story}
   end
 end
 
