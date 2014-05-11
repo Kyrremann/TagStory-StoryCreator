@@ -23,18 +23,18 @@
               %a{:href => "/mystories/edit/tag/options"}
                 Options
         %div{:class => "panel-body"}
-          %form{:action => "/mystories/edit/tag/quiz", :method => "post", :role => "form", :class => "form-horizontal"}
+          %form{:action => "/mystories/edit/tag/options", :method => "post", :role => "form", :class => "form-horizontal"}
             %fieldset
               %div{:class => "row form-group"}
                 %div{:class => "col-md-2"}
                   %label{:for => "hint_method"} Hint method:
-                  %select{:name => "hint_method"}
-                    %option{:value => "hint_text"} Text
-                    %option{:value => "hint_image"} Image
-                    %option{:value => "hint_sound"} Sound
-                    %option{:value => "hint_map"} Map
-                    %option{:value => "hint_arrow"} Arrow
-                    %option{:value => "hint_video"} Video
+                %select{:name => "hint_method"}
+                  %option{:value => "hint_text"} Text
+                  %option{:value => "hint_image"} Image
+                  %option{:value => "hint_sound"} Sound
+                  %option{:value => "hint_map"} Map
+                  %option{:value => "hint_arrow"} Arrow
+                  %option{:value => "hint_video"} Video
 
               %div{:class => "row form-group"}
                 %div{:class => "col-md-2"}

@@ -90,24 +90,24 @@ get '/mystories/create/tag' do
 end
 
 get '/mystories/edit/tag/quiz' do
-  haml :quiz
+  haml :quiz, :locals => {:params => get_quiz}
 end
 
 post '/mystories/edit/tag/quiz' do
-  # save question
+  save_quiz(params[:quiz])
   if params[:add_quiz] then
-    # a question
+    add_question
   end
-  haml :quiz
+  redirect '/mystories/edit/tag/quiz'
 end
 
 get '/mystories/edit/tag/options' do
-  haml :options
+  haml :options, :locals => {:params => get_options}
 end
 
 post '/mystories/edit/tag/options' do
-  # save option
-  haml :options
+  merge_options(params)
+  redirect '/mystories/edit/tag/options'
 end
 
 get '/mystories/edit/tag/:id' do | id |

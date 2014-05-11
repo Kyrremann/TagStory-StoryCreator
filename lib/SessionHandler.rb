@@ -117,3 +117,31 @@ end
 def is_current_tag_id(id)
   id == get_tag_id
 end
+
+# quiz
+
+def get_quiz()
+  return get_current_tag[:quiz] unless get_current_tag[:quiz].nil?
+  get_current_tag[:quiz] = [{}]
+end
+
+def save_quiz(quiz)
+  quiz.each_with_index do | elem, i |
+    get_quiz[i].merge!(quiz[i])
+  end
+end
+
+def add_question()
+  get_quiz.concat([{}])
+end
+
+# options
+
+def get_options()
+  return get_current_tag[:options] unless get_current_tag[:options].nil?
+  get_current_tag[:options] = {}
+end
+
+def merge_options(options)
+  get_options.merge!(options)
+end
