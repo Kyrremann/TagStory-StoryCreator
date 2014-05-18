@@ -12,4 +12,9 @@
 
     %div{:class => "container"}
       A list of stories will populate a table here, but there are no stories yet...
+      #br
+      - @result.each do |k,v|
+        %b=k
+        %em=v
+        %br
 

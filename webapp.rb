@@ -19,7 +19,11 @@ unless G_API_CLIENT = ENV['G_API_CLIENT']
 end
 
 unless G_API_SECRET = ENV['G_API_SECRET']
-  raise "You must specify the G_API_SECRET env veriable"
+  raise "You must specify the G_API_SECRET env variable"
+end
+
+unless CLOUDANT_URL = ENV['CLOUDANT_URL']
+  raise "You must specify the CLOUDANT_URL env variable"
 end
 
 def client
@@ -66,7 +70,11 @@ get '/community' do
   body "Not implemented yet"
 end
 
+DB = "#{ENV['CLOUDANT_URL']}"
 get '/stories' do
+  @doc = RestClient.get("#{DB}/stories/_all_docs")
+  @result = JSON.parse(@doc)
+  @result
   haml :stories
 end
 
