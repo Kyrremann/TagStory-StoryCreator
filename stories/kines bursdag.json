@@ -1,0 +1,233 @@
+{
+  "story": {
+  	"UUID": "",
+    "title": "Kiness bursdagsløp",
+    "author": "Kine Gjerstad Eide",
+    "genre": "Rebusløp",
+    "agegroup": "0-99",
+    "area": "Oslo",
+    "country": "Norway",
+    "date": "25.05.2014",
+    "description": "Kines bursdags rebusløp",
+    "image": "",
+    "keywords": "rebus, bursdag",
+    "language": "nb_NO",
+    "url": "",
+    "start_tag": "",
+    "tag_count": "",
+    "language": "no_bm",
+    "tag_types": "gps",
+    "game_modes": "none",
+    "tags": {
+      "1": {
+      	"belongs_to_tag": "",
+        "tag_mode": "gps",
+        "title": "",
+        "description": "Velkommen til Kines bursdagsrebusløp! No kjem ein del spørsmål som eg likar og bryr meg om. Så ja, det hadde vore lurt å lese seg opp på klima og sånt på førehand. Lukke til!",
+        "choice_description": "Bestemm gruppenavn, ta snapchat av namnet og send det til XXX",
+        "options_title": "",
+        "game_mode": "none",
+        "game_button": "",
+        "options": {
+          "hint_method": "hint_text",
+          "hint_text": "Bra jobba! Dersom dykk på eit senare tidspunkt greiar å ta ein flottare snapchat av namnet, så er det opent for å sende inn på nytt.",
+          "image_source": "",
+          "sound_source": "",
+          "long": "10.714985",
+          "lat": "59.944029"
+        },
+        "isEndPoint": "false"
+      },
+      "2": {
+      	"belongs_to_tag": "",
+        "tag_mode": "",
+        "title": "",
+        "description": "Puh, då har dykk kome til til andre post I rebusløpet, så då er det på tide å sjå kor gode venner me er.",
+        "choice_description": "Kva dag har eg eigentleg bursdag?",
+        "options_title": "",
+        "game_mode": "",
+        "game_button": "",
+        "options": {
+          "hint_method": "",
+          "hint_text": "",
+          "image_source": "",
+          "sound_source": "",
+          "long": "",
+          "lat": ""
+        },
+        "isEndPoint": "false"
+      },
+      "3": {
+      	"belongs_to_tag": "",
+        "tag_mode": "",
+        "title": "",
+        "description": "",
+        "choice_description": "",
+        "options_title": "Kor gamal blir eg? ",
+        "game_mode": "",
+        "game_button": "",
+        "options": {
+          "hint_method": "",
+          "hint_text": "",
+          "image_source": "",
+          "sound_source": "",
+          "long": "",
+          "lat": ""
+        },
+        "isEndPoint": "false"
+      },
+      "4": {
+      	"belongs_to_tag": "",
+        "tag_mode": "",
+        "title": "",
+        "description": "Så flott at dykk har kome til post tre. Her kjem litt om klima. ",
+        "choice_description": "Kven av desse er ledaren for den norske delegasjonen i FNs klimaforhandlinger? ",
+        "options_title": "",
+        "game_mode": "",
+        "game_button": "",
+        "options": {
+          "hint_method": "",
+          "hint_text": "",
+          "image_source": "",
+          "sound_source": "",
+          "long": "",
+          "lat": ""
+        },
+        "isEndPoint": "false"
+      },
+      "5": {
+      	"belongs_to_tag": "",
+        "tag_mode": "",
+        "title": "",
+        "description": "Vi brukar beina til så mangt og mange av oss skulle kanskje nytta dei endå meir enn kva vi gjer. Her skal dykk få ei oppgåve for føtene. ",
+        "choice_description": "Ta ein snapchat av alle føtene dykkar, samt eit kummelokk og send det til XXX. Hint: Fine kummelokk skal ikkje undervurderast! ",
+        "options_title": "",
+        "game_mode": "",
+        "game_button": "",
+        "options": {
+          "hint_method": "",
+          "hint_text": "",
+          "image_source": "",
+          "sound_source": "",
+          "long": "",
+          "lat": ""
+        },
+        "isEndPoint": "false"
+      },
+      "6": {
+      	"belongs_to_tag": "",
+        "tag_mode": "",
+        "title": "",
+        "description": "Eg bryr meg sjølvsagt om den norske naturen og elskar skogar i tur og mark. ",
+        "choice_description": "Kva fantastisk skapning er dette? ",
+        "options_title": "",
+        "game_mode": "",
+        "game_button": "",
+        "options": {
+          "hint_method": "",
+          "hint_text": "",
+          "image_source": "",
+          "sound_source": "",
+          "long": "",
+          "lat": ""
+        },
+        "isEndPoint": "false"
+      },
+      "7": {
+      	"belongs_to_tag": "",
+        "tag_mode": "",
+        "title": "",
+        "description": "Finans innen klimaforhandlingene, og da spesielt med fokus på innovative finansieringskilder er noko eg har jobba med I Spire. Sjukt spannande og dersom du er litt interessert I det eg bryr meg om, så kan du dette. ",
+        "choice_description": "Kva av desse er ikkje ei innovativ finansieringskilde? ",
+        "options_title": "",
+        "game_mode": "",
+        "game_button": "",
+        "options": {
+          "hint_method": "",
+          "hint_text": "",
+          "image_source": "",
+          "sound_source": "",
+          "long": "",
+          "lat": ""
+        },
+        "isEndPoint": "false"
+      },
+      "8": {
+      	"belongs_to_tag": "",
+        "tag_mode": "",
+        "title": "",
+        "description": "Gruppenamnet ",
+        "choice_description": "Kva kategori passar best gruppenamnet inn under? ",
+        "options_title": "",
+        "game_mode": "",
+        "game_button": "",
+        "options": {
+          "hint_method": "",
+          "hint_text": "",
+          "image_source": "",
+          "sound_source": "",
+          "long": "",
+          "lat": ""
+        },
+        "isEndPoint": "false"
+      },
+      "9": {
+      	"belongs_to_tag": "",
+        "tag_mode": "",
+        "title": "",
+        "description": "Sør Sudan står ovenfor en hungersnød, det er veldig varierende tall på kor mange som kankome til å døy dersom det ikkje blir samla inn nok pengar til å setje I gang tiltak. ",
+        "choice_description": "Sør Sudan er ein relativ ung nasjon, kva år og månad blei Sør Sudan eigentleg ein sjølvstendig stat? ",
+        "options_title": "",
+        "game_mode": "",
+        "game_button": "",
+        "options": {
+          "hint_method": "",
+          "hint_text": "",
+          "image_source": "",
+          "sound_source": "",
+          "long": "",
+          "lat": ""
+        },
+        "isEndPoint": "false"
+      },
+      "10": {
+      	"belongs_to_tag": "",
+        "tag_mode": "",
+        "title": "",
+        "description": "Dette er nest siste post før dykk er ferdig, no må det konsast! Soya er temaet i Spires neste kampanje. Norske husdyr spiser som dere vet kraft for. En etterhvert viktigere ingrediens I kraftforet er soyamel. ",
+        "choice_description": "Kor mykje soyamel importerte Norge frå Brazil I 2012 til bruk I nettopp kraftfor? ",
+        "options_title": "",
+        "game_mode": "",
+        "game_button": "",
+        "options": {
+          "hint_method": "",
+          "hint_text": "",
+          "image_source": "",
+          "sound_source": "",
+          "long": "",
+          "lat": ""
+        },
+        "isEndPoint": "false"
+      },
+      "10": {
+        "belongs_to_tag": "",
+        "tag_mode": "",
+        "title": "",
+        "description": "Kreativitet er fantastisk, no skal dykk få teste eigne egenskapar.",
+        "choice_description": "Lag eit bursdasgskort til meg, og hugs på dei tipsa som er gitt tidlegare I rebusløpet. Ta ein snapchat av baksida av kortet når det er ferdig og send det til",
+        "options_title": "",
+        "game_mode": "",
+        "game_button": "",
+        "options": {
+          "hint_method": "",
+          "hint_text": "",
+          "image_source": "",
+          "sound_source": "",
+          "long": "",
+          "lat": ""
+        },
+        "isEndPoint": "true"
+      }
+    }
+  }
+}

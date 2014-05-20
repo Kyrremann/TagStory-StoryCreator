@@ -3,6 +3,10 @@ def get_story()
   session[:story] || session[:story] = {}
 end
 
+def get_story_as_json()
+  get_story.to_json
+end
+
 def init_story()
   session[:story] = {}
 end
