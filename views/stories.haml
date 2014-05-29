@@ -12,9 +12,22 @@
 
     %div{:class => "container"}
       A list of stories will populate a table here, but there are no stories yet...
-      #br
-      - @result.each do |k,v|
-        %b=k
-        %em=v
-        %br
+      %table{:class => "table table-striped"}
+        %thead
+          %tr
+            %th
+              Author
+            %th
+              Title
+            %th
+        - @result["rows"].each do | k |
+          %tbody
+            %tr
+              %th
+                =k["value"]["author"]
+              %th
+                =k["value"]["title"]
+              %th
+                %a{:href => k["id"]}
+                  edit
 

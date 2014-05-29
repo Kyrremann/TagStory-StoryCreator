@@ -72,9 +72,10 @@ end
 
 DB = "#{ENV['CLOUDANT_URL']}"
 get '/stories' do
-  @doc = RestClient.get("#{DB}/stories/_all_docs")
+  # https://tagstory.cloudant.com/dashboard.html#database/stories/_design/lists/_view/story_header
+  @doc = RestClient.get("#{DB}/stories/_design/lists/_view/story_header")
   @result = JSON.parse(@doc)
-  @result
+  # p @result["rows"][0]["value"]
   haml :stories
 end
 
