@@ -34,6 +34,7 @@ def client
                                 })
 end
 
+=begin
 before do
   unless ['/', '/stories', '/help', '/auth', '/oauth2callback'].include?(request.path_info)
     unless session[:access_token]
@@ -41,6 +42,7 @@ before do
     end
   end
 end
+=end
 
 get '/' do
   haml :index
