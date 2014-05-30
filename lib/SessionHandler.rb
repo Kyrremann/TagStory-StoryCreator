@@ -143,9 +143,22 @@ end
 
 def get_options()
   return get_current_tag[:options] unless get_current_tag[:options].nil?
-  get_current_tag[:options] = {}
+  get_current_tag[:options] = [{}]
 end
 
-def merge_options(options)
-  get_options.merge!(options)
+def save_options(options)
+  options.each_with_index do | elem, i |
+    get_options[i].merge!(options[i])
+  end
+end
+
+def add_option()
+  get_options.concat([{}])
+end
+
+def delete_option(index)
+  get_options.delete_at(index.to_i)
+  if  get_options.length == 0 then
+    add_option
+  end
 end

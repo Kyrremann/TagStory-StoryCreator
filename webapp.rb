@@ -34,7 +34,6 @@ def client
                                 })
 end
 
-=begin
 before do
   unless ['/', '/stories', '/help', '/auth', '/oauth2callback'].include?(request.path_info)
     unless session[:access_token]
@@ -42,7 +41,6 @@ before do
     end
   end
 end
-=end
 
 get '/' do
   haml :index
@@ -77,16 +75,21 @@ get '/stories' do
   # https://tagstory.cloudant.com/dashboard.html#database/stories/_design/lists/_view/story_header
   @doc = RestClient.get("#{DB}/stories/_design/lists/_view/story_header")
   @result = JSON.parse(@doc)
-  # p @result["rows"][0]["value"]
   haml :stories
 end
 
-get '/story/:id' do
+get '/story/:id' do | id |
+  @doc = RestClient.get("#{DB}/stories/#{id}")
+  # https://tagstory.cloudant.com/stories/<uri> ex. => c1f1de345efe6e01c037feb3251b5e13
   # haml :createStory, :locals => {:params => get_story}
-  redirect '/community'
+  @story = JSON.parse(@doc)["story"]
+  haml :story
 end
 
 get '/mystories' do
+  # https://[username].cloudant.com/animaldb/_design/views101/_search/animals?q=kookaburra
+  @doc = RestClient.get("#{DB}/stories/_design/lists/_search/authors?q=K*")
+  @result = JSON.parse(@doc)
   haml :my_stories
 end
 
@@ -98,6 +101,11 @@ end
 get '/mystories/create/tag' do
   init_tag
   redirect '/mystories/edit/tag'
+end
+
+get '/mystories/edit/story/:id' do
+  # load id into story object or something...
+  params[:id]
 end
 
 get '/mystories/edit/tag/quiz' do
@@ -117,8 +125,18 @@ get '/mystories/edit/tag/options' do
 end
 
 post '/mystories/edit/tag/options' do
-  merge_options(params)
+  p params
+  save_options(params[:options])
+  if params[:add_option] then
+    add_option
+  end
+    
   redirect '/mystories/edit/tag/options'
+end
+
+get '/mystories/edit/tag/options/delete/:id' do
+    delete_option(params[:id])
+    redirect '/mystories/edit/tag/options'
 end
 
 get '/mystories/edit/tag/:id' do | id |

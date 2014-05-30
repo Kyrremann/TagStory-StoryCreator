@@ -35,16 +35,16 @@
                 .sr-only
                   Action
           %tbody
-            - (1..3).each do | i |
+            - @result["rows"].each do | elem |
               %tr
                 %td
-                  Story ##{i}
+                  =elem["fields"]["title"]
                 %td
-                  Kyrre
+                  =elem["fields"]["author"]
                 %td
                   01.01.2014
                 %td
-                  %a{:href => "/story/#{i}"}
+                  %a{:href => "/story/" + elem["id"]}
                     view
       
       %div{:class => "panel panel-default"}
@@ -64,14 +64,14 @@
                 .sr-only
                   Action
           %tbody
-            - (4..6).each do | i |
+            - @result["rows"].each do | elem |
               %tr
                 %td
-                  Story ##{i}
+                  =elem["fields"]["title"]
                 %td
-                  Kyrre
+                  =elem["fields"]["author"]
                 %td
                   01.01.2014
                 %td
-                  %a{:href => "/mystories/edit/story/#{i}"}
+                  %a{:href => "/mystories/edit/story/" + elem["id"]}
                     edit
