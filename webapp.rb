@@ -103,11 +103,6 @@ get '/mystories/create/tag' do
   redirect '/mystories/edit/tag'
 end
 
-get '/mystories/edit/story/:id' do
-  # load id into story object or something...
-  params[:id]
-end
-
 get '/mystories/edit/tag/quiz' do
   haml :quiz, :locals => {:params => get_quiz}
 end
@@ -144,7 +139,10 @@ get '/mystories/edit/tag/:id' do | id |
     status 404
     body "Can't find tag with id #{id}"
   else
-    switch_to_tag!(id.to_i)
+    p id
+    p get_current_tag
+    switch_to_tag!(id.to_s)
+    p get_current_tag
     redirect '/mystories/edit/tag'
   end
 end
@@ -164,12 +162,17 @@ post '/mystories/edit/tag' do
   end
 end
 
-get 'mystories/edit/story/:id' do
-  unless is_a_story_id(id.to_i) then
+get '/mystories/edit/story/:id' do | id |
+  if not is_a_story_id(id.to_i) then
     status 404
     body "Can't find story with id #{id}"
   else
-    switch_to_story(id.to_i)
+    # switch_to_story(id.to_i)
+    @doc = RestClient.get("#{DB}/stories/#{id}")
+    @story = JSON.parse(@doc)["story"]
+    init_story
+    merge_story!(@story)
+    switch_to_tag!(1)
     redirect '/mystories/edit/story'
   end
 end

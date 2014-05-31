@@ -22,7 +22,7 @@ def is_a_story_id(id)
   true
 end
 
-def switch_to_story()
+def switch_to_story(id)
   # does not do anything, yet
   # need database or story storage
   # switch by loading the story fitting
@@ -32,10 +32,9 @@ end
 # tags
 
 def get_tags()
-  get_story[:tags] || get_story[:tags] = {}
+  get_story["tags"] || get_story["tags"] = {}
 end
 
-# tags
 def get_tag_id()
   session[:current_tag]
 end
@@ -61,7 +60,7 @@ end
 def init_tag()
   if get_current_tag.nil?
     if get_tag_count == 0 then
-      session[:current_tag] = 1
+      switch_to_tag!(1)
     end
     get_tags[get_tag_id] = {}
   else
@@ -125,8 +124,8 @@ end
 # quiz
 
 def get_quiz()
-  return get_current_tag[:quiz] unless get_current_tag[:quiz].nil?
-  get_current_tag[:quiz] = [{}]
+  return get_current_tag["quiz"] unless get_current_tag["quiz"].nil?
+  get_current_tag["quiz"] = [{}]
 end
 
 def save_quiz(quiz)
@@ -142,8 +141,8 @@ end
 # options
 
 def get_options()
-  return get_current_tag[:options] unless get_current_tag[:options].nil?
-  get_current_tag[:options] = [{}]
+  return get_current_tag["options"] unless get_current_tag["options"].nil?
+  get_current_tag["options"] = [{}]
 end
 
 def save_options(options)

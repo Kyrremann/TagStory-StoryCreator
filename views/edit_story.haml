@@ -10,7 +10,8 @@
     %div{:class => ""}
       = haml :"templates/nav"
 
-    %div{:id => "content-main", :class => "container"}              
+    %div{:id => "content-main", :class => "container"}
+      = get_tags
       %div{:class => "panel panel-default"}
         %div{:class => "panel-heading"}
           %h3{:class =>"panel-title"}
