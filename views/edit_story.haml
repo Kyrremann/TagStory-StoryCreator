@@ -90,10 +90,10 @@
             %li{:class => "disabled"}
               %a{:href => "#"}
                 &laquo;
-            - (1..get_tag_count).each do | id |
+            - get_tags.each_with_index do | elem, index |
               %li
-                %a{:href => "/mystories/edit/tag/#{id}"}
-                  #{id}
+                %a{:href => "/mystories/edit/tag/#{elem[0]}"}
+                  #{index + 1}
             %li{:class => "disabled"}
               %a{:href => "#"}
                 &raquo;

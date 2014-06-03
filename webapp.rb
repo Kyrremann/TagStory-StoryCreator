@@ -2,6 +2,8 @@ require 'rubygems'
 require 'sinatra'
 require 'haml'
 require 'json'
+require 'uuid'
+require 'securerandom'
 
 require_relative 'lib/Story.rb'
 require_relative 'lib/SessionHandler.rb'
@@ -120,7 +122,6 @@ get '/mystories/edit/tag/options' do
 end
 
 post '/mystories/edit/tag/options' do
-  p params
   save_options(params[:options])
   if params[:add_option] then
     add_option
@@ -170,9 +171,11 @@ get '/mystories/edit/story/:id' do | id |
     # switch_to_story(id.to_i)
     @doc = RestClient.get("#{DB}/stories/#{id}")
     @story = JSON.parse(@doc)["story"]
-    init_story
-    merge_story!(@story)
-    switch_to_tag!(1)
+    # init_story
+    # merge_story!(@story)
+    # switch_to_tag!(1)
+    load_story(id, @story)
+    p get_story
     redirect '/mystories/edit/story'
   end
 end
