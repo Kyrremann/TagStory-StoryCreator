@@ -7,6 +7,7 @@ require 'securerandom'
 
 require_relative 'lib/Story.rb'
 require_relative 'lib/SessionHandler.rb'
+require_relative 'lib/Utils.rb'
 
 # enable :sessions
 use Rack::Session::Cookie, :secret => 'super_secret_key_that_should_be_an_env_variable'
@@ -74,7 +75,6 @@ end
 
 DB = "#{ENV['CLOUDANT_URL']}"
 get '/stories' do
-  # https://tagstory.cloudant.com/dashboard.html#database/stories/_design/lists/_view/story_header
   @doc = RestClient.get("#{DB}/stories/_design/lists/_view/story_header")
   @result = JSON.parse(@doc)
   haml :stories
@@ -82,15 +82,12 @@ end
 
 get '/story/:id' do | id |
   @doc = RestClient.get("#{DB}/stories/#{id}")
-  # https://tagstory.cloudant.com/stories/<uri> ex. => c1f1de345efe6e01c037feb3251b5e13
-  # haml :createStory, :locals => {:params => get_story}
   @story = JSON.parse(@doc)["story"]
   haml :story
 end
 
 get '/mystories' do
-  # https://[username].cloudant.com/animaldb/_design/views101/_search/animals?q=kookaburra
-  @doc = RestClient.get("#{DB}/stories/_design/lists/_search/authors?q=K*")
+  @doc = RestClient.get("#{DB}/stories/_design/lists/_search/authors?q=" + get_name.replace_whitespace("%20"))
   @result = JSON.parse(@doc)
   haml :my_stories
 end
@@ -126,13 +123,13 @@ post '/mystories/edit/tag/options' do
   if params[:add_option] then
     add_option
   end
-    
+  
   redirect '/mystories/edit/tag/options'
 end
 
 get '/mystories/edit/tag/options/delete/:id' do
-    delete_option(params[:id])
-    redirect '/mystories/edit/tag/options'
+  delete_option(params[:id])
+  redirect '/mystories/edit/tag/options'
 end
 
 get '/mystories/edit/tag/:id' do | id |
@@ -168,14 +165,11 @@ get '/mystories/edit/story/:id' do | id |
     status 404
     body "Can't find story with id #{id}"
   else
-    # switch_to_story(id.to_i)
     @doc = RestClient.get("#{DB}/stories/#{id}")
-    @story = JSON.parse(@doc)["story"]
-    # init_story
-    # merge_story!(@story)
-    # switch_to_tag!(1)
+    @jdoc = JSON.parse(@doc)
+    @story = @jdoc["story"]
     load_story(id, @story)
-    p get_story
+    set_rev(@jdoc["_rev"])
     redirect '/mystories/edit/story'
   end
 end
@@ -185,8 +179,32 @@ get '/mystories/edit/story' do
 end
 
 post '/mystories/edit/story' do
-  merge_story!(params)
+  params.strip_empty!
+  params.delete("save")
+  merge_story!(params) # "author": "", "title": "",
+  
+  jdata = {}
+  jdata["_id"] = get_story_id
+  jdata["_rev"] = get_rev
+  jdata["author"] = get_from_story("author")
+  jdata["title"] = get_from_story("title")
+  jdata["story"] = get_story
+  begin
+    @respons =  RestClient.post("#{DB}/stories/", jdata.to_json, {:content_type => :json, :accept => :json})
+    p @respons
+    if @response["ok"] then
+      set_rev(@respons["rev"])
+    else
+      # something bad :\
+    end
+  rescue => e
+    p e.response
+    # inform someone
+  end
+  
+  params.delete("add_tag")
   if params[:add_tag] then
+    params.delete("add_tag")
     redirect '/mystories/create/tag'
   else
     haml :edit_story, :locals => {:params => get_story}

@@ -13,7 +13,7 @@
 
     %div{:id => "content-main", :class => "container"}
       %p
-        Welcome #{session[:user_info]["given_name"]}!
+        Welcome #{get_given_name}!
       %p
         In this area you can create a new story, see what stories you have made, and which one you are working on. And of course edit your stories.
       %p

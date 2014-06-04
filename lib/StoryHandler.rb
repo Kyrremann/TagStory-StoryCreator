@@ -19,12 +19,20 @@ def set_story_id(id)
   session[:story_id] = id
 end
 
+def get_story_id()
+  session[:story_id]
+end
+
 def get_story()
   get_story_map[session[:story_id]]
 end
 
 def get_story_as_json()
   get_story.to_json
+end
+
+def get_from_story(key)
+  get_story[key]
 end
 
 def merge_story!(data)
