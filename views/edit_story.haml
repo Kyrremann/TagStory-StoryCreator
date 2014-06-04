@@ -2,16 +2,17 @@
 %html
   %head
     %title Create your own Story
-    %link(rel="stylesheet" href="css/style.css")
+    %link(rel="stylesheet" href="/css/style.css")
     %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
     %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css")
+    %script(src="//code.jquery.com/jquery-1.11.0.min.js")
     %script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
   %body
     %div{:class => ""}
       = haml :"templates/nav"
 
     %div{:id => "content-main", :class => "container"}
-      = get_tags
+      = get_story
       %div{:class => "panel panel-default"}
         %div{:class => "panel-heading"}
           %h3{:class =>"panel-title"}
@@ -71,9 +72,9 @@
                 %div{:class => "col-md-2"}
                   %label{:for => "language"} Language:
                 %select{:name => "language"}
-                  %option{:value => "nb_NO"} Bokmål
-                  %option{:value => "ny_NO"} Nynorsk
-                  %option{:value => "en"} English
+                  %option{:value => "nb_NO", :selected => params['language'] == 'nb_NO'} Bokmål
+                  %option{:value => "ny_NO", :selected => params['language'] == 'ny_NO'} Nynorsk
+                  %option{:value => "en", :selected => params['language'] == 'en'} English
                   
               %div{:class => "row form-group buttons"}
                 %div{:class => "col-md-2"}

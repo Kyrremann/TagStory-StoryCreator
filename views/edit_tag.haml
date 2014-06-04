@@ -5,6 +5,7 @@
     %link(rel="stylesheet" href="css/style.css")
     %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
     %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css")
+    %script(src="//code.jquery.com/jquery-1.11.0.min.js")
     %script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
   %body
     = haml :"templates/nav"
@@ -46,9 +47,9 @@
                 %div{:class => "col-md-2"}
                   %label{:for => "game_mode"} Game mode:
                 %select{:name => "game_mode"}
-                  %option{:value => "none"} None
-                  %option{:value => "quiz"} Quiz
-                  %option{:value => "camera"} Camera
+                  %option{:value => "none", :selected => params['game_mode'] == "none"} None
+                  %option{:value => "quiz", :selected => params['game_mode'] == "quiz"} Quiz
+                  %option{:value => "camera", :selected => params['game_mode'] == "camera"} Camera
 
               %div{:class => "row form-group"}
                 %div{:class => "col-md-2"}
@@ -59,9 +60,9 @@
                 %div{:class => "col-md-2"}
                   %label{:for => "tag_mode"} Tag type:
                 %select{:name => "tag_mode"}
-                  %option{:value => "gps"} GPS
-                  %option{:value => "qr"} QR
-                  %option{:value => "nfc"} NFC
+                  %option{:value => "gps", :selected => params['tag_mode'] == "gps"} GPS
+                  %option{:value => "qr", :selected => params['tag_mode'] == "qr"} QR
+                  %option{:value => "nfc", :selected => params['tag_mode'] == "nfc"} NFC
 
               %div{:class => "row form-group"}
                 %div{:class => "col-md-2"}

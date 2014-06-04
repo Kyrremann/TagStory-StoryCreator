@@ -5,6 +5,7 @@
     %link(rel="stylesheet" href="css/style.css")
     %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
     %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css")
+    %script(src="//code.jquery.com/jquery-1.11.0.min.js")
     %script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
   %body
     = haml :"templates/nav"
@@ -42,12 +43,12 @@
                       %div{:class => "col-md-2"}
                         %label{:for => "hint_method"} Hint method:
                       %select{:name => "options[][hint_method]"}
-                        %option{:value => "hint_text"} Text
-                        %option{:value => "hint_image"} Image
-                        %option{:value => "hint_sound"} Sound
-                        %option{:value => "hint_map"} Map
-                        %option{:value => "hint_arrow"} Arrow
-                        %option{:value => "hint_video"} Video
+                        %option{:value => "hint_text", :selected => params['hint_method'] == "hint_text"} Text
+                        %option{:value => "hint_image", :selected => params['hint_method'] == "hint_image"} Image
+                        %option{:value => "hint_sound", :selected => params['hint_method'] == "hint_sound"} Sound
+                        %option{:value => "hint_map", :selected => params['hint_method'] == "hint_map"} Map
+                        %option{:value => "hint_arrow", :selected => params['hint_method'] == "hint_arrow"} Arrow
+                        %option{:value => "hint_video", :selected => params['hint_method'] == "hint_video"} Video
       
                     %div{:class => "row form-group"}
                       %div{:class => "col-md-2"}
