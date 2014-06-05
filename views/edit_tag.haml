@@ -67,7 +67,7 @@
               %div{:class => "row form-group"}
                 %div{:class => "col-md-2"}
                   %label{:for => "endpoint"} Last tag:
-                %input{:type=>"checkbox", :name=>"endpoint"}
+                %input{:type=>"checkbox", :name=>"isEndpoint", :checked => params['isEndPoint'] == "true"}
 
               %div{:class => "row form-group buttons", :class => "col-md-5"}
                 %input{:type => "submit", :name => "save", :value => "Save", :class => "btn btn-default"}
@@ -78,4 +78,4 @@
 
       %footer
         %p
-        #{get_story_as_json}
+        #{get_current_tag}
