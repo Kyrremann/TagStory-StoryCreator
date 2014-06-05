@@ -3,16 +3,17 @@
   %head
     %title Create your own Story
     %link(rel="stylesheet" href="/css/style.css")
+    %link(rel="stylesheet" href="/css/jquery-ui-1.10.4.custom.min.css")
     %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
     %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css")
     %script(src="//code.jquery.com/jquery-1.11.0.min.js")
+    %script(src="//code.jquery.com/ui/1.10.4/jquery-ui.js")
     %script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
   %body
     %div{:class => ""}
       = haml :"templates/nav"
 
     %div{:id => "content-main", :class => "container"}
-      = get_story
       %div{:class => "panel panel-default"}
         %div{:class => "panel-heading"}
           %h3{:class =>"panel-title"}
@@ -54,7 +55,7 @@
               %div{:class => "row form-group"}
                 %div{:class => "col-md-2"}
                   %label{:for => "date"} Date:
-                %input{:type => "datetime", :name => "date", :value => "#{params['date']}"}
+                %input{:type => "datetime", :id => "datepicker", :name => "date", :value => "#{params['date']}"}
                 
               %div{:class => "row form-group"}
                 %div{:class => "col-md-2"}
@@ -98,3 +99,10 @@
             %li{:class => "disabled"}
               %a{:href => "#"}
                 &raquo;
+    
+    :javascript
+      $(function() {
+      $("#datepicker").datepicker({
+      dateFormat: "dd.mm.yy"
+      });
+      });
