@@ -87,7 +87,8 @@ get '/story/:id' do | id |
 end
 
 get '/mystories' do
-  @doc = RestClient.get("#{DB}/stories/_design/lists/_search/authors?q=" + get_name.replace_whitespace("%20"))
+  # @doc = RestClient.get("#{DB}/stories/_design/lists/_search/authors?q=" + get_name.replace_whitespace("%20"))
+  @doc = RestClient.get("#{DB}/stories/_design/lists/_search/authors?q=K*")
   @result = JSON.parse(@doc)
   haml :my_stories
 end
