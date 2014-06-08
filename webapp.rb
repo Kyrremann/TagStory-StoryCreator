@@ -94,7 +94,11 @@ get '/mystories' do
 end
 
 get '/mystories/wizard/story' do
-  haml :story_wizard
+  haml :wizard_story
+end
+
+get '/mystories/wizard/tag' do
+  haml :wizard_tag
 end
 
 get '/mystories/create/story' do

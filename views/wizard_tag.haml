@@ -1,0 +1,36 @@
+!!!
+%html
+  %head
+    %title Stories
+    %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
+    %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css")
+    %link(rel="stylesheet" href="/css/style.css")
+    %script(src="//code.jquery.com/jquery-1.11.0.min.js")
+    %script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
+  %body
+    %div{:class => ""}
+      = haml :"templates/nav"
+
+    %div{:class => "container"}
+      %div{:class => "panel panel-default"}
+        %div{:class => "panel-heading"}
+          %h3{:class =>"panel-title"}
+            Story wizard - Part II
+
+        %div{:class => "panel-body"}
+          As mention a story consist of several tags. Each tag is unique and can point to any number of other tags using directions (options).
+          A tag can also contain a 'game mode', either as a quiz with a set numbers of "yes and no"-questions, or letting the user take a picture
+          and share it either over e-mail or social medias.
+          
+      %div{:class => "panel panel-default"}
+        %div{:class => "panel-heading"}
+          %h3{:class =>"panel-title"}
+            The first tag
+        %div{:class => "panel-body"}
+          %form{:action => "/mystories/edit/story", :method => "post", :role => "form", :class => "form-horizontal"}
+            %fieldset
+              %div{:class => "row form-group"}
+                %div{:class => "col-md-3"}
+                  %label{:for => "title", :class => "no-bold"} 
+                    Every tag needs a title:
+                %input{:type => "text", :name => "title", :value => "#{params['title']}"}
