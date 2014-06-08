@@ -93,6 +93,10 @@ get '/mystories' do
   haml :my_stories
 end
 
+get '/mystories/wizard/story' do
+  haml :story_wizard
+end
+
 get '/mystories/create/story' do
   init_story
   redirect 'mystories/edit/story'
