@@ -24,7 +24,7 @@ def get_story_id()
 end
 
 def get_story()
-  get_story_map[session[:story_id]]
+  get_story_map[session[:story_id]] || get_story_map[session[:story_id]] = {}
 end
 
 def get_story_as_json()

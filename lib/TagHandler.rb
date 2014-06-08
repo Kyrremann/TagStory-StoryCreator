@@ -1,5 +1,5 @@
 def get_tags()
-  get_story["tags"]
+  get_story["tags"] || get_story["tags"] = {}
 end
 
 def get_tag_id()
@@ -7,17 +7,11 @@ def get_tag_id()
 end
 
 def get_current_tag()
-  # load params from session
   get_tags[get_tag_id]
 end
 
 def merge_current_tag!(data)
-  # save params to session
   get_current_tag.merge!(data)
-end
-
-def is_a_tag_id(id)
-  true # id > 0 or get_tag_count < id
 end
 
 def switch_to_tag!(id)
@@ -26,8 +20,12 @@ end
 
 def init_tag()
   key = SecureRandom.uuid
-  switch_to_tag(key)
+  switch_to_tag!(key)
   get_tags[key] = {}
+end
+
+def is_a_tag_id(id)
+  true # id > 0 or get_tag_count < id
 end
 
 def has_previous_tag()
@@ -102,21 +100,27 @@ end
 
 def get_options()
   return get_current_tag["options"] unless get_current_tag["options"].nil?
-  get_current_tag["options"] = [{}]
+  set_options({"" => {}})
+end
+
+def set_options(options)
+  get_current_tag["options"] = options
 end
 
 def save_options(options)
+  tmp = {}
   options.each_with_index do | elem, i |
-    get_options[i].merge!(options[i])
+    tmp[elem["hint_title"]] = elem
   end
+  set_options(tmp)
 end
 
 def add_option()
-  get_options.concat([{}])
+  get_options.merge!({"" => {}})
 end
 
 def delete_option(index)
-  get_options.delete_at(index.to_i)
+  get_options.delete(index.to_s)
   if  get_options.length == 0 then
     add_option
   end

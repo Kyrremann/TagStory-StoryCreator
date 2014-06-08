@@ -120,6 +120,7 @@ get '/mystories/edit/tag/options' do
 end
 
 post '/mystories/edit/tag/options' do
+  # params.strip_empty! # TODO
   save_options(params[:options])
   if params[:add_option] then
     add_option
@@ -138,10 +139,7 @@ get '/mystories/edit/tag/:id' do | id |
     status 404
     body "Can't find tag with id #{id}"
   else
-    p id
-    p get_current_tag
     switch_to_tag!(id.to_s)
-    p get_current_tag
     redirect '/mystories/edit/tag'
   end
 end
@@ -183,7 +181,7 @@ post '/mystories/edit/story' do
   params.strip_empty!
   params.delete("save")
   merge_story!(params) # "author": "", "title": "",
-  
+=begin
   jdata = {}
   jdata["_id"] = get_story_id
   jdata["_rev"] = get_rev
@@ -192,7 +190,6 @@ post '/mystories/edit/story' do
   jdata["story"] = get_story
   begin
     @respons =  RestClient.post("#{DB}/stories/", jdata.to_json, {:content_type => :json, :accept => :json})
-    p @respons
     if @response["ok"] then
       set_rev(@respons["rev"])
     else
@@ -202,8 +199,7 @@ post '/mystories/edit/story' do
     p e.response
     # inform someone
   end
-  
-  params.delete("add_tag")
+=end
   if params[:add_tag] then
     params.delete("add_tag")
     redirect '/mystories/create/tag'

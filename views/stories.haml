@@ -12,23 +12,28 @@
       = haml :"templates/nav"
 
     %div{:class => "container"}
-      A list of stories will populate a table here, but there are no stories yet...
-      %table{:class => "table table-striped"}
-        %thead
-          %tr
-            %th
-              Author
-            %th
-              Title
-            %th
-        - @result["rows"].each do | k |
-          %tbody
-            %tr
+      %div{:class => "panel panel-default"}
+        %div{:class => "panel-heading"}
+          %h3{:class =>"panel-title"}
+            Stories you've made
+        %table{:class => "table table-striped"}
+          %thead
+            %tr{:class => "success"}
               %th
-                =k["value"]["author"]
+                Author
               %th
-                =k["value"]["title"]
+                Title
               %th
-                %a{:href => "story/" + k["id"]}
-                  view
+                .sr_only
+                  Action
+          - @result["rows"].each do | k |
+            %tbody
+              %tr
+                %th
+                  =k["value"]["author"]
+                %th
+                  =k["value"]["title"]
+                %th
+                  %a{:href => "story/" + k["id"]}
+                    view
 

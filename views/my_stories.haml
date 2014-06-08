@@ -22,7 +22,7 @@
       %div{:class => "panel panel-default"}
         %div{:class => "panel-heading"}
           %h3{:class =>"panel-title"}
-            Released stories
+            Stories you've made
         %table{:class => "table table-striped"}
           %thead
             %tr{:class => "success"}
@@ -32,6 +32,8 @@
                 Author
               %th
                 Date
+              %th
+                Released
               %th
                 .sr-only
                   Action
@@ -44,35 +46,11 @@
                   =elem["fields"]["author"]
                 %td
                   01.01.2014
+                %td
+                  Released
                 %td
                   %a{:href => "/story/" + elem["id"]}
                     view
-      
-      %div{:class => "panel panel-default"}
-        %div{:class => "panel-heading"}
-          %h3{:class =>"panel-title"}
-            Stories in progress
-        %table{:class => "table table-striped"}
-          %thead
-            %tr{:class => "success"}
-              %th
-                Title
-              %th
-                Author
-              %th
-                Date
-              %th
-                .sr-only
-                  Action
-          %tbody
-            - @result["rows"].each do | elem |
-              %tr
-                %td
-                  =elem["fields"]["title"]
-                %td
-                  =elem["fields"]["author"]
-                %td
-                  01.01.2014
-                %td
+                  or
                   %a{:href => "/mystories/edit/story/" + elem["id"]}
                     edit
