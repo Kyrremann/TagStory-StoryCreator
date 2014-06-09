@@ -34,3 +34,22 @@
                   %label{:for => "title", :class => "no-bold"} 
                     Every tag needs a title:
                 %input{:type => "text", :name => "title", :value => "#{params['title']}"}
+                
+              %div{:class => "row form-group"}
+                %div{:class => "col-md-3"}
+                  %label{:for => "title", :class => "no-bold"} 
+                    description:
+                %input{:type => "text", :name => "title", :value => "#{params['title']}"}
+
+              %p
+                Choice time!
+                %br
+                Do you want the user to take a photo on this tag, make a quiz with several question, or just tell part of a story or ask a question?
+                
+            %br
+            %a{:href => "/mystories/wizard/tag", :class => "btn btn-default"}
+              Camera
+            %a{:href => "/mystories/wizard/tag", :class => "btn btn-default"}
+              Quiz
+            %a{:href => "/mystories/wizard/tag", :class => "btn btn-default"}
+              Story or single question
