@@ -38,6 +38,7 @@ def client
 end
 
 before do
+  # Add /story/<id> to list
   unless ['/', '/stories', '/help', '/auth', '/oauth2callback'].include?(request.path_info)
     unless session[:access_token]
       redirect "/auth"

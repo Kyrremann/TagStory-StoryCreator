@@ -2,11 +2,31 @@
 %html
   %head
     %title Tag ##{get_tag_id}
-    %link(rel="stylesheet" href="css/style.css")
+    %link(rel="stylesheet" href="/css/style.css")
     %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
     %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css")
     %script(src="//code.jquery.com/jquery-1.11.0.min.js")
     %script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
+    %script(src="https://maps.googleapis.com/maps/api/js")
+
+    :javascript
+      function initialize() {
+        #{simple_js_helper2}
+
+        var map_options = {
+          center: myLatlng1,
+          zoom: 17,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+
+        var map_canvas = document.getElementById('map_canvas');
+        var map = new google.maps.Map(map_canvas, map_options)
+
+        #{simple_js_helper}
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+
   %body
     = haml :"templates/nav"
     
@@ -31,7 +51,7 @@
                 %div{:class => "panel panel-default"}
                   .panel-heading
                     %h3{:class => "panel-title"}
-                      Option ##{key}
+                      Option: #{key}
                       %a{:href => "/mystories/edit/tag/options/delete/#{key}", :class => "pull-right"}
                         Delete
                   .panel-body
@@ -69,12 +89,12 @@
                     %div{:class => "row form-group"}
                       %div{:class => "col-md-2"}
                         %label{:for => "lat"} GPS Latitude:
-                      %input{:type => "text", :name => "options[][lat]", :value => "#{value['lat']}"}
+                      %input{:type => "text", :id => "lat-#{key}", :name => "options[][lat]", :value => "#{value['lat']}"}
       
                     %div{:class => "row form-group"}
                       %div{:class => "col-md-2"}
                         %label{:for => "long"} GPS Longitude:
-                      %input{:type => "text", :name => "options[][long]", :value => "#{value['long']}"}
+                      %input{:type => "text", :id => "long-#{key}", :name => "options[][long]", :value => "#{value['long']}"}
 
                     %div{:class => "row form-group"}
                       %div{:class => "col-md-2"}
@@ -84,6 +104,8 @@
                     %div{:class => "row form-group buttons", :class => "col-md-5"}
                       %input{:type => "submit", :name => "save", :value => "Save", :class => "btn btn-default"}
                       %input{:type => "submit", :name => "add_option", :value => "Add option", :class => "btn btn-default"}
+
+          %div{:id => "map_canvas"}
 
         %div{:class => "panel-footer"}
           = haml :"templates/tag_footer"
