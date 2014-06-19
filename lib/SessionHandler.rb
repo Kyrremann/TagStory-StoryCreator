@@ -27,11 +27,18 @@ def get_picture()
 end
 
 def simple_js_helper2()
-	p "var myLatlng1 = new google.maps.LatLng(59.944029,10.714985);
-		var myLatlng2 = new google.maps.LatLng(59.943078, 10.713976);"
+  locations = ""
+  counter = 1
+  get_options.each do | key, value |
+    locations += "var myLatlng#{counter} = new google.maps.LatLng(#{value['lat']},#{value['long']})\n"
+    counter += 1
+  end
+  p locations
 end
 
 def simple_js_helper()
+  get_options.each do | key, value |
+  end
 	p "var marker1 = new google.maps.Marker({
           position: myLatlng1,
           map: map,
