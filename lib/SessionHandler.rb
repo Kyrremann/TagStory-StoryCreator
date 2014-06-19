@@ -26,7 +26,7 @@ def get_picture()
   get_user["picture"]
 end
 
-def simple_js_helper2()
+def generate_latlng()
   locations = ""
   counter = 1
   get_options.each do | key, value |
@@ -36,26 +36,39 @@ def simple_js_helper2()
   p locations
 end
 
-def simple_js_helper()
+def generate_markers()
+  markers = ""
+  counter = 1
   get_options.each do | key, value |
+    markers += "var marker#{counter} = new google.maps.Marker({ position: myLatlng#{counter}, map: map, draggable: true });"
+    counter += 1
   end
-	p "var marker1 = new google.maps.Marker({
-          position: myLatlng1,
-          map: map,
-          draggable: true
-        });
-        var infowindow1 = new google.maps.InfoWindow({
-          content: \"Option: 22\"
-        });
-        google.maps.event.addListener(marker1, 'click', function() {
-          infowindow1.open(map, marker1);
-        });
-        google.maps.event.addListener(marker1, 'drag', function() {
-            document.getElementById('lat-22').value = marker1.position.lat();
-            document.getElementById('long-22').value = marker1.position.lng();
-        });
+  p markers
+end
 
-        var marker2 = new google.maps.Marker({
+def generate_info_windows()
+  infoWindows = ""
+  counter = 1
+  get_options.each do | key, value |
+    infoWindows += "var infowindow#{counter} = new google.maps.InfoWindow({ content: \"Option: #{key}\" });"
+    counter += 1
+  end
+  p infoWindows
+end
+
+def generate_listeners()
+  listeners = ""
+  counter = 1
+  get_options.each do | key, value |
+    listeners += "google.maps.event.addListener(marker#{counter}, 'click', function() { infowindow#{counter}.open(map, marker#{counter}); });"
+    listeners += "google.maps.event.addListener(marker#{counter}, 'drag', function() { document.getElementById('lat-#{key}').value = marker#{counter}.position.lat(); document.getElementById('long-#{key}').value = marker#{counter}.position.lng(); });"
+    counter += 1
+  end
+  p listeners
+end
+
+def simple_js_helper()
+	p "var marker2 = new google.maps.Marker({
           position: myLatlng2,
           map: map,
           draggable: true

@@ -11,7 +11,7 @@
 
     :javascript
       function initialize() {
-        #{simple_js_helper2}
+        #{generate_latlng}
 
         var map_options = {
           center: myLatlng1,
@@ -22,14 +22,16 @@
         var map_canvas = document.getElementById('map_canvas');
         var map = new google.maps.Map(map_canvas, map_options)
 
-        #{simple_js_helper}
+        #{generate_markers}
+        #{generate_info_windows}
+        #{generate_listeners}
       }
 
       google.maps.event.addDomListener(window, 'load', initialize);
 
   %body
     = haml :"templates/nav"
-    
+
     %div{:id => "content-main", :class => "container"}
       %div{:class => "panel panel-default"}
         %div{:class => "panel-heading"}
@@ -45,67 +47,74 @@
                 Options
         %div{:class => "panel-body"}
           %form{:action => "/mystories/edit/tag/options", :method => "post", :role => "form", :class => "form-horizontal"}
-            = params
             %fieldset
               - params.each do | key, value |
+                %div{:class => "col-md-6"}
+                  %div{:class => "panel panel-default"}
+                    .panel-heading
+                      %h3{:class => "panel-title"}
+                        Option: #{key}
+                        %a{:href => "/mystories/edit/tag/options/delete/#{key}", :class => "pull-right"}
+                          Delete
+                    .panel-body
+                      %div{:class => "row form-group"}
+                        %div{:class => "col-md-4"}
+                          %label{:for => "hint_title"} Title:
+                        %input{:type => "text", :name => "options[][hint_title]", :value => "#{value['hint_title']}"}
+
+                      %div{:class => "row form-group"}
+                        %div{:class => "col-md-4"}
+                          %label{:for => "hint_method"} Hint method:
+                        %select{:name => "options[][hint_method]"}
+                          %option{:value => "hint_text", :selected => value['hint_method'] == "hint_text"} Text
+                          %option{:value => "hint_image", :selected => value['hint_method'] == "hint_image"} Image
+                          %option{:value => "hint_sound", :selected => value['hint_method'] == "hint_sound"} Sound
+                          %option{:value => "hint_map", :selected => value['hint_method'] == "hint_map"} Map
+                          %option{:value => "hint_arrow", :selected => value['hint_method'] == "hint_arrow"} Arrow
+                          %option{:value => "hint_video", :selected => value['hint_method'] == "hint_video"} Video
+
+                      %div{:class => "row form-group"}
+                        %div{:class => "col-md-4"}
+                          %label{:for => "hint_text"} Hint text:
+                        %textarea{:name => "options[][hint_text]"}
+                          #{value['hint_text']}
+
+                      %div{:class => "row form-group"}
+                        %div{:class => "col-md-4"}
+                          %label{:for => "image_source"} Image source:
+                        %input{:type => "text", :name => "options[][image_source]", :value => "#{value['image_source']}"}    
+
+                      %div{:class => "row form-group"}
+                        %div{:class => "col-md-4"}
+                          %label{:for => "sound_source"} Sound source:
+                        %input{:type => "text", :name => "options[][sound_source]", :value => "#{value['sound_source']}"}
+
+                      %div{:class => "row form-group"}
+                        %div{:class => "col-md-4"}
+                          %label{:for => "lat"} GPS Latitude:
+                        %input{:type => "text", :id => "lat-#{key}", :name => "options[][lat]", :value => "#{value['lat']}"}
+
+                      %div{:class => "row form-group"}
+                        %div{:class => "col-md-4"}
+                          %label{:for => "long"} GPS Longitude:
+                        %input{:type => "text", :id => "long-#{key}", :name => "options[][long]", :value => "#{value['long']}"}
+
+                      %div{:class => "row form-group"}
+                        %div{:class => "col-md-4"}
+                          %label{:for => "next"} Next:
+                        %input{:type => "text", :name => "options[][next]", :value => "#{value['next']}"}
+
+                      %div{:class => "row form-group buttons", :class => "col-md-6"}
+                        %input{:type => "submit", :name => "save", :value => "Save", :class => "btn btn-default"}
+                        %input{:type => "submit", :name => "add_option", :value => "Add option", :class => "btn btn-default"}
+                        
+              %div{:class => "col-md-6"}
                 %div{:class => "panel panel-default"}
                   .panel-heading
                     %h3{:class => "panel-title"}
-                      Option: #{key}
-                      %a{:href => "/mystories/edit/tag/options/delete/#{key}", :class => "pull-right"}
-                        Delete
+                      Map with tags
                   .panel-body
-                    %div{:class => "row form-group"}
-                      %div{:class => "col-md-2"}
-                        %label{:for => "hint_title"} Title:
-                      %input{:type => "text", :name => "options[][hint_title]", :value => "#{value['hint_title']}"}
-      
-                    %div{:class => "row form-group"}
-                      %div{:class => "col-md-2"}
-                        %label{:for => "hint_method"} Hint method:
-                      %select{:name => "options[][hint_method]"}
-                        %option{:value => "hint_text", :selected => value['hint_method'] == "hint_text"} Text
-                        %option{:value => "hint_image", :selected => value['hint_method'] == "hint_image"} Image
-                        %option{:value => "hint_sound", :selected => value['hint_method'] == "hint_sound"} Sound
-                        %option{:value => "hint_map", :selected => value['hint_method'] == "hint_map"} Map
-                        %option{:value => "hint_arrow", :selected => value['hint_method'] == "hint_arrow"} Arrow
-                        %option{:value => "hint_video", :selected => value['hint_method'] == "hint_video"} Video
-      
-                    %div{:class => "row form-group"}
-                      %div{:class => "col-md-2"}
-                        %label{:for => "hint_text"} Hint text:
-                      %input{:type => "text", :name => "options[][hint_text]", :value => "#{value['hint_text']}"}
-      
-                    %div{:class => "row form-group"}
-                      %div{:class => "col-md-2"}
-                        %label{:for => "image_source"} Image source:
-                      %input{:type => "text", :name => "options[][image_source]", :value => "#{value['image_source']}"}    
-      
-                    %div{:class => "row form-group"}
-                      %div{:class => "col-md-2"}
-                        %label{:for => "sound_source"} Sound source:
-                      %input{:type => "text", :name => "options[][sound_source]", :value => "#{value['sound_source']}"}
-      
-                    %div{:class => "row form-group"}
-                      %div{:class => "col-md-2"}
-                        %label{:for => "lat"} GPS Latitude:
-                      %input{:type => "text", :id => "lat-#{key}", :name => "options[][lat]", :value => "#{value['lat']}"}
-      
-                    %div{:class => "row form-group"}
-                      %div{:class => "col-md-2"}
-                        %label{:for => "long"} GPS Longitude:
-                      %input{:type => "text", :id => "long-#{key}", :name => "options[][long]", :value => "#{value['long']}"}
-
-                    %div{:class => "row form-group"}
-                      %div{:class => "col-md-2"}
-                        %label{:for => "next"} Next:
-                      %input{:type => "text", :name => "options[][next]", :value => "#{value['next']}"}
-      
-                    %div{:class => "row form-group buttons", :class => "col-md-5"}
-                      %input{:type => "submit", :name => "save", :value => "Save", :class => "btn btn-default"}
-                      %input{:type => "submit", :name => "add_option", :value => "Add option", :class => "btn btn-default"}
-
-          %div{:id => "map_canvas"}
+                    %div{:id => "map_canvas"}
 
         %div{:class => "panel-footer"}
           = haml :"templates/tag_footer"
