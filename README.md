@@ -15,11 +15,6 @@ The intention of this software is to help authors in the making of stories for T
     * Use Transloadit.com for the transfer
     * Or use Paperclip https://devcenter.heroku.com/articles/paperclip-s3
 * Views
-  * Add a "My stories" section (instead of Create Story)
-    * Showes stories you have made, and stories you are working on
-    * Let you create or delete stories
-  * Add a table of stories
-  * Implement logic for checkboxes
 
 # Links
 * Gems
