@@ -25,7 +25,7 @@ def generate_info_windows()
     infoWindows += "var infowindow#{counter} = new google.maps.InfoWindow({ content: \"Option: #{key}\" });"
     counter += 1
   end
-  p infoWindows
+  infoWindows
 end
 
 def generate_listeners()
