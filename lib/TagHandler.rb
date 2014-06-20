@@ -97,10 +97,9 @@ def add_question()
 end
 
 # options
-
 def get_options()
   return get_current_tag["options"] unless get_current_tag["options"].nil?
-  set_options({"" => {}})
+  set_options({"" => create_empty_option})
 end
 
 def set_options(options)
@@ -116,7 +115,7 @@ def save_options(options)
 end
 
 def add_option()
-  get_options.merge!({"" => {}})
+  get_options.merge!({"" => create_empty_option})
 end
 
 def delete_option(index)
@@ -124,4 +123,8 @@ def delete_option(index)
   if  get_options.length == 0 then
     add_option
   end
+end
+
+def create_empty_option()
+  {"lat" => "59.922258","long" => "10.754904"}
 end
