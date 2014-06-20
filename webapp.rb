@@ -7,6 +7,7 @@ require 'securerandom'
 
 require_relative 'lib/Story.rb'
 require_relative 'lib/SessionHandler.rb'
+require_relative 'lib/JavascriptGenerator.rb'
 require_relative 'lib/Utils.rb'
 
 # enable :sessions
