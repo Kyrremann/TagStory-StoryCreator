@@ -25,3 +25,7 @@ end
 def get_picture()
   get_user["picture"]
 end
+
+def has_access_token?()
+  session[:access_token]
+end

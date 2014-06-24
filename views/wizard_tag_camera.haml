@@ -1,0 +1,38 @@
+!!!
+%html
+  %head
+    %title Stories
+    = haml :"templates/header_imports"
+  %body
+    %div{:class => ""}
+      = haml :"templates/nav"
+
+    %div{:class => "container"}
+      %div{:class => "panel panel-default"}
+        %div{:class => "panel-heading"}
+          %h3{:class =>"panel-title"}
+            Story wizard - Part II - Camera
+
+        %div{:class => "panel-body"}
+          By choosing the camera action, the app opens the camera on the phone, when the user click the button at the bottom of the tag screen. So usually after the user have read the description. So you should give the button a explanatory name. After the user have taken a picture, he or she is asked to share it, and the app lists up every app on the phone that the user can use to share with. For example e-mail or Instagram.
+          
+      %div{:class => "panel panel-default"}
+        %div{:class => "panel-heading"}
+          %h3{:class =>"panel-title"}
+            Camera action
+        %div{:class => "panel-body"}
+          %form{:action => "/mystories/wizard/tag/camera", :method => "post", :role => "form", :class => "form-horizontal"}
+            %fieldset
+              %div{:class => "row form-group"}
+                %div{:class => "col-md-3"}
+                  %label{:for => "title", :class => "no-bold"} 
+                    Button title:
+                %input{:type => "text", :name => "title", :value => "#{params['title']}"}
+
+              %p
+                When the user have taken and shared an image, you need to inform them where to go next. So let us make a direction to the next app.
+                A direction is actually the same as a single question, but you can only have one direction when using the camera.
+                
+            %br
+            %a{:href => "/mystories/wizard/tag/camera/direction", :class => "btn btn-default"}
+              Direction

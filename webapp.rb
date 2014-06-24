@@ -41,7 +41,7 @@ end
 before do
   # Add /story/<id> to list
   unless ['/', '/stories', '/help', '/auth', '/oauth2callback'].include?(request.path_info)
-    unless session[:access_token]
+    unless has_access_token?
       redirect "/auth"
     end
   end
@@ -101,6 +101,22 @@ end
 
 get '/mystories/wizard/tag' do
   haml :wizard_tag
+end
+
+get '/mystories/wizard/tag/camera' do
+  haml :wizard_tag_camera
+end
+
+get '/mystories/wizard/tag/camera/direction' do
+  haml :wizard_tag_camera_direction
+end
+
+get '/mystories/wizard/tag/quiz' do
+  haml :wizard_tag_quiz
+end
+
+get '/mystories/wizard/tag/direction' do
+  haml :wizard_tag_direction
 end
 
 get '/mystories/create/story' do

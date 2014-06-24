@@ -1,0 +1,60 @@
+!!!
+%html
+  %head
+    %title Stories
+    = haml :"templates/header_imports"
+  %body
+    %div{:class => ""}
+      = haml :"templates/nav"
+
+    %div{:class => "container"}
+      %div{:class => "panel panel-default"}
+        %div{:class => "panel-heading"}
+          %h3{:class =>"panel-title"}
+            Story wizard - Part II - Quiz
+
+        %div{:class => "panel-body"}
+          A quiz in Tag Story is of the yes-or-no type, and contain as many questions that you like. There can even be a little correction, or explenation for users picking the wrong answer.
+          
+      %div{:class => "panel panel-default"}
+        %div{:class => "panel-heading"}
+          %h3{:class =>"panel-title"}
+            Quiz action
+        %div{:class => "panel-body"}
+          
+          %form{:action => "/mystories/wizard/tag/camera", :method => "post", :role => "form", :class => "form-horizontal"}
+            %fieldset
+              - params.each_with_index do | elem, i |
+                %div{:class => "panel panel-default"}
+                  .panel-heading
+                    %h3{:class => "panel-title"}
+                      Question ##{i + 1}
+                  .panel-body
+                    %div{:class => "row form-group"}
+                      %div{:class => "col-md-2"}
+                        %label{:for => "question"} Question:
+                      %input{:type => "text", :name => "quiz[][question]", :value => "#{elem['question']}"}    
+
+                    %div{:class => "row form-group"}
+                      %div{:class => "col-md-2"}
+                        %label{:for => "answer"} Correct answer:
+                      %input{:type => "text", :name => "quiz[][answer]", :value => "#{elem['answer']}"}
+
+                    %div{:class => "row form-group"}
+                      %div{:class => "col-md-2"}
+                        %label{:for => "correction"} Correction:
+                      %input{:type => "text", :name => "quiz[][correction]", :value => "#{elem['correction']}"}
+
+              %div{:class => "row form-group buttons", :class => "col-md-5"}
+                %input{:type => "submit", :name => "save", :value => "Save", :class => "btn btn-default"}
+                %input{:type => "submit", :name => "add_quiz", :value => "Add question", :class => "btn btn-default"}
+                
+            %p
+              When the user have taken and shared an image, you need to inform them where to go next. So let us make a direction to the next app.
+              A direction is actually the same as a single question, but you can only have one direction when using the camera.
+              %br
+              At least for now. It may later be possible to send user to different location based on how they scored on the quiz.
+                
+            %br
+            %a{:href => "/mystories/wizard/tag/quiz/direction", :class => "btn btn-default"}
+              Direction

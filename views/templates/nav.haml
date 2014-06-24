@@ -16,6 +16,7 @@
       %li{:class => "#{is_active_url('/help')}"}
         %a{:href => "/help"}
           Help
-      %li{:class => "#{is_active_url('/auth')}"}
-        %a{:href => "/auth"}
-          Log in
+      - unless has_access_token?
+        %li{:class => "#{is_active_url('/auth')}"}
+          %a{:href => "/auth"}
+            Log in
