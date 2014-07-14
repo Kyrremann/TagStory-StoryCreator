@@ -7,6 +7,7 @@ require 'securerandom'
 
 require_relative 'lib/Story.rb'
 require_relative 'lib/SessionHandler.rb'
+require_relative 'lib/DatabaseHandler.rb'
 require_relative 'lib/JavascriptGenerator.rb'
 require_relative 'lib/Utils.rb'
 
@@ -121,6 +122,7 @@ end
 
 get '/mystories/create/story' do
   init_story
+  set_rev nil
   redirect 'mystories/edit/story'
 end
 
@@ -207,25 +209,13 @@ post '/mystories/edit/story' do
   params.strip_empty!
   params.delete("save")
   merge_story!(params) # "author": "", "title": "",
-=begin
-  jdata = {}
-  jdata["_id"] = get_story_id
-  jdata["_rev"] = get_rev
-  jdata["author"] = get_from_story("author")
-  jdata["title"] = get_from_story("title")
-  jdata["story"] = get_story
-  begin
-    @respons =  RestClient.post("#{DB}/stories/", jdata.to_json, {:content_type => :json, :accept => :json})
-    if @response["ok"] then
-      set_rev(@respons["rev"])
-    else
-      # something bad :\
-    end
-  rescue => e
-    p e.response
-    # inform someone
+
+  if get_rev.nil? then
+    create_story_in_database!
+  else
+    save_story_to_database!
   end
-=end
+
   if params[:add_tag] then
     params.delete("add_tag")
     redirect '/mystories/create/tag'

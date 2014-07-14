@@ -23,8 +23,7 @@
   
               %div{:class => "row form-group"}
                 %div{:class => "col-md-2"}
-                  %label{:for =
-                  > "author"} Author:
+                  %label{:for => "author"} Author:
                 %input{:type => "text", :name => "author", :value => "#{params['author']}"}
 
               %div{:class => "row form-group"}
@@ -94,6 +93,8 @@
             %li{:class => "disabled"}
               %a{:href => "#"}
                 &raquo;
+
+        = JSON.pretty_generate(get_story)
     
     :javascript
       $(function() {

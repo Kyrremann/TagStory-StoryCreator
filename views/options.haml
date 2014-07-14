@@ -98,7 +98,11 @@
                       %div{:class => "row form-group"}
                         %div{:class => "col-md-4"}
                           %label{:for => "next"} Next:
-                        %input{:type => "text", :name => "options[][next]", :value => "#{value['next']}"}
+                        -#%input{:type => "text", :name => "options[][next]", :value => "#{value['next']}"}
+                        %select{:name => "options[][next]"}
+                          - get_tags.each do | key, tag |
+                            %option{:value => key, :selected => value["next"] == key}
+                              = tag["title"]
 
                       %div{:class => "row form-group buttons", :class => "col-md-6"}
                         %input{:type => "submit", :name => "save", :value => "Save", :class => "btn btn-default"}
