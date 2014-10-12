@@ -39,9 +39,11 @@ def client
                                 })
 end
 
+DB = "#{ENV['CLOUDANT_URL']}"
+
 before do
   # Add /story/<id> to list
-  unless ['/', '/stories', '/help', '/auth', '/oauth2callback'].include?(request.path_info)
+  unless ['/', '/stories', '/stories/json', '/help', '/auth', '/oauth2callback'].include?(request.path_info)
     unless has_access_token?
       redirect "/auth"
     end
@@ -76,11 +78,17 @@ get '/community' do
   body "Not implemented yet"
 end
 
-DB = "#{ENV['CLOUDANT_URL']}"
 get '/stories' do
   @doc = RestClient.get("#{DB}/stories/_design/lists/_view/story_header")
   @result = JSON.parse(@doc)
   haml :stories
+end
+
+get '/stories/json' do
+  @doc = RestClient.get("#{DB}/stories/_design/lists/_view/story_header")
+  @result = JSON.parse(@doc)
+  content_type :json
+  @result["rows"].to_json
 end
 
 get '/story/:id' do | id |
