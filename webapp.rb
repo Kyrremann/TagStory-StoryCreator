@@ -42,6 +42,7 @@ end
 DB = "#{ENV['CLOUDANT_URL']}"
 
 before do
+  content_type :html, 'charset' => 'utf-8'
   # Add /story/<id> to list
   unless ['/', '/stories', '/stories/json', '/help', '/auth', '/oauth2callback'].include?(request.path_info)
     unless has_access_token?
@@ -87,7 +88,7 @@ end
 get '/stories/json' do
   @doc = RestClient.get("#{DB}/stories/_design/lists/_view/story_header")
   @result = JSON.parse(@doc)
-  content_type :json
+  content_type :json, 'charset' => 'utf-8'
   @result["rows"].to_json
 end
 
