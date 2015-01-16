@@ -44,7 +44,7 @@ DB = "#{ENV['CLOUDANT_URL']}"
 before do
   content_type :html, 'charset' => 'utf-8'
   # Add /story/<id> to list
-  unless ['/', '/stories', '/stories/json', '/help', '/auth', '/oauth2callback'].include?(request.path_info)
+  unless allow_url()
     unless has_access_token?
       redirect "/auth"
     end

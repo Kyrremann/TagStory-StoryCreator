@@ -1,6 +1,12 @@
 require_relative 'StoryHandler.rb'
 require_relative 'TagHandler.rb'
 
+def allow_url()
+  ['/', '/stories', '/stories/json', '/help', '/auth', '/oauth2callback'].include?(request.path_info)\
+  || ((request.path_info =~ /\/story\/[A-Za-z0-9]+/) == 0)\
+  || ((request.path_info =~ /\/story\/[A-Za-z0-9]+\/json/) == 0)
+end
+
 def get_rev()
   session[:rev]
 end
