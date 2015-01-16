@@ -98,6 +98,13 @@ get '/story/:id' do | id |
   haml :story
 end
 
+get '/story/:id/json' do | id |
+  @doc = RestClient.get("#{DB}/stories/#{id}")
+  @result = JSON.parse(@doc)
+  content_type :json, 'charset' => 'utf-8'
+  @result["rows"].to_json
+end
+
 get '/mystories' do
   # @doc = RestClient.get("#{DB}/stories/_design/lists/_search/authors?q=" + get_name.replace_whitespace("%20"))
   @doc = RestClient.get("#{DB}/stories/_design/lists/_search/authors?q=K*")
