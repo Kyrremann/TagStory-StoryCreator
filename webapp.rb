@@ -92,17 +92,17 @@ get '/stories/json' do
   @result["rows"].to_json
 end
 
-get '/story/:id' do | id |
-  @doc = RestClient.get("#{DB}/stories/#{id}")
-  @story = JSON.parse(@doc)["story"]
-  haml :story
-end
-
 get '/story/:id/json' do | id |
   @doc = RestClient.get("#{DB}/stories/#{id}")
   @result = JSON.parse(@doc)
   content_type :json, 'charset' => 'utf-8'
   @result["rows"].to_json
+end
+
+get '/story/:id' do | id |
+  @doc = RestClient.get("#{DB}/stories/#{id}")
+  @story = JSON.parse(@doc)["story"]
+  haml :story
 end
 
 get '/mystories' do
