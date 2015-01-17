@@ -96,7 +96,7 @@ get '/story/:id/json' do | id |
   @doc = RestClient.get("#{DB}/stories/#{id}")
   @result = JSON.parse(@doc)
   content_type :json, 'charset' => 'utf-8'
-  @result["story"].to_json
+  @result.to_json
 end
 
 get '/story/:id' do | id |
