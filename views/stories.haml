@@ -2,34 +2,48 @@
 %html
   %head
     %title Stories
-    = haml :"templates/header_imports"
+    %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
+    %link{:href => "http://yui.yahooapis.com/pure/0.5.0/pure-min.css", :rel => "stylesheet"}
+    %link{:href => "http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css", :rel => "stylesheet"}
+    %link{:href => "/css/style.css", :rel => "stylesheet"}
   %body
-    %div{:class => ""}
-      = haml :"templates/nav"
-
-    %div{:class => "container"}
-      %div{:class => "panel panel-default"}
-        %div{:class => "panel-heading"}
-          %h3{:class =>"panel-title"}
-            Stories made by users
-        %table{:class => "table table-striped"}
-          %thead
-            %tr{:class => "success"}
-              %th
-                Author
-              %th
-                Title
-              %th
-                .sr_only
-                  Action
-          - @result["rows"].each do | k |
-            %tbody
-              %tr
-                %th
-                  =k["value"]["author"]
-                %th
-                  =k["value"]["title"]
-                %th
-                  %a{:href => "story/" + k["id"]}
-                    view
-
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        %img.pure-img{:src => "/images/tagstory-logo.png"}
+      .pure-u-1-4
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        .pure-menu.pure-menu-open.pure-menu-horizontal
+          %ul
+            %li
+              %a{:href => "/"} Home
+            %li
+              %a{:href => "/login"} Log in
+            %li
+              %a{:href => "/mystories/wizard/story"} New story
+            %li.pure-menu-selected
+              %a{:href => "/stories"} Stories
+            %li
+              %a{:href => "https://github.com/Kyrremann/TagStory"} Github
+      .pure-u-1-4
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        .posts
+          - @result.each do | value |
+            - story = value["value"]
+            %section.post
+              %header.post-header
+                %img.post-avatar{:alt => "#{story["author"]}'s avatar", :height => "48", :src => "/images/ericf-avatar.png", :width => "48"}
+                  %h2.post-title #{story["title"]}
+                  %p.post-meta
+                    By
+                    %a.post-author{:href => "#"} #{story["author"]}
+                    under
+                    %a.post-category.post-category-js{:href => "#"} #{story["genre"]}
+                    %a.post-category.post-category-design{:href => "/mystories/edit/story/#{value["id"]}"} edit
+              .post-description
+                %p #{story["description"]}
+      .pure-u-1-4

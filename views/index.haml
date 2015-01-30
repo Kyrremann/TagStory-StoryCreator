@@ -2,23 +2,34 @@
 %html
   %head
     %title TagStory: Create your own story
-    = haml :"templates/header_imports"
+    %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
+    %link{:href => "http://yui.yahooapis.com/pure/0.5.0/pure-min.css", :rel => "stylesheet"}
+    %link{:href => "http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css", :rel => "stylesheet"}
   %body
-    %div{:class => ""}
-      = haml :"templates/nav"
-
-    %div{:class => "container"}
-      %div{:class => "jumbotron"}
-        %h1
-          Welcome!
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        %img.pure-img{:src => "/images/tagstory-logo.png"}
+      .pure-u-1-4
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        .pure-menu.pure-menu-open.pure-menu-horizontal
+          %ul
+            %li.pure-menu-selected
+              %a{:href => "/"} Home
+            %li
+              %a{:href => "/login"} Log in
+            %li
+              %a{:href => "/mystories/wizard/story"} New story
+            %li
+              %a{:href => "/stories"} Stories
+            %li
+              %a{:href => "https://github.com/Kyrremann/TagStory"} Github
+      .pure-u-1-4
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
         %p
           Welcome to the TagStory story creator website. Tag Story is a project focusing on getting people in all ages out into the world. This is done by making narrative stories that the user can help to develop by visiting different tags outside. This site aims to make it easier for you to make your own stories!
-        %p
-          %a{:class => "btn btn-primary btn-lg", :role => "button", :href => "mystories/create/story"}
-            Create new story
-          %a{:class => "btn btn-primary btn-lg", :role => "button", :href => "help"}
-            How to
-          %a{:class => "btn btn-primary btn-lg", :role => "button", :href => "mystories"}
-            My stories
-          %a{:class => "btn btn-primary btn-lg", :role => "button", :href => "http://www.TagStory.no/"}
-            Tag Story.no
+      .pure-u-1-4

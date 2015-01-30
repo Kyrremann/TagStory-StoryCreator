@@ -1,52 +1,101 @@
 !!!
 %html
   %head
-    %title Stories
-    = haml :"templates/header_imports"
+    %title Story Wizard
+    %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
+    %link{:href => "http://yui.yahooapis.com/pure/0.5.0/pure-min.css", :rel => "stylesheet"}
+    %link{:href => "http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css", :rel => "stylesheet"}
+    %link{:href => "/css/style.css", :rel => "stylesheet"}
   %body
-    %div{:class => ""}
-      = haml :"templates/nav"
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        %img.pure-img{:src => "/images/tagstory-logo.png"}
+      .pure-u-1-4
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        .pure-menu.pure-menu-open.pure-menu-horizontal
+          %ul
+            %li
+              %a{:href => "/"} Home
+            %li
+              %a{:href => "/login"} Log in
+            %li.pure-menu-selected
+              %a{:href => "/mystories/wizard/story"} New story
+            %li
+              %a{:href => "/stories"} Stories
+            %li
+              %a{:href => "https://github.com/Kyrremann/TagStory"} Github
+      .pure-u-1-4
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        %form.pure-form.pure-form-aligned
+          %fieldset
+            %legend Tag wizard
 
-    %div{:class => "container"}
-      %div{:class => "panel panel-default"}
-        %div{:class => "panel-heading"}
-          %h3{:class =>"panel-title"}
-            Story wizard - Part II
-
-        %div{:class => "panel-body"}
-          As mention a story consist of several tags. Each tag is unique and can point to any number of other tags using directions (options).
-          A tag can also contain a 'game mode', either as a quiz with a set numbers of "yes and no"-questions, or letting the user take a picture
-          and share it either over e-mail or social medias.
-          
-      %div{:class => "panel panel-default"}
-        %div{:class => "panel-heading"}
-          %h3{:class =>"panel-title"}
-            The first tag
-        %div{:class => "panel-body"}
-          %form{:action => "/mystories/edit/story", :method => "post", :role => "form", :class => "form-horizontal"}
-            %fieldset
-              %div{:class => "row form-group"}
-                %div{:class => "col-md-3"}
-                  %label{:for => "title", :class => "no-bold"} 
-                    Every tag needs a title:
-                %input{:type => "text", :name => "title", :value => "#{params['title']}"}
+          .pure-control-group
+            %label{:for => "title"} Title:
+            %input{:type => "text", :name => "title", :value => "#{params['title']}"}
                 
-              %div{:class => "row form-group"}
-                %div{:class => "col-md-3"}
-                  %label{:for => "title", :class => "no-bold"} 
-                    description:
-                %textarea{:name => "description"}
-                  #{params['description']}
+          .pure-control-group
+            %label{:for => "description"} Description:
+            %textarea{:name => "description", :rows => "6", :cols => "23"}
+              #{params['description']}
+              
+          .pure-control-group
+            %label{:for => "question"} Question:
+            %input{:type => "text", :name => "question", :value => "#{params['question']}"}
+            
+          .pure-control-group
+            %label{:for => "tag_type"} Tag type:
+            %select{:name => "tag_types"}
+              %option{:value => "gps", :selected => params['tag_types'] == 'gps'} GPS
+              %option{:value => "qr", :selected => params['tag_type'] == 'qr'} QR
+              %option{:value => "nfc", :selected => params['tag_type'] == 'nfc'} NFC
+              %option{:value => "qr_and_nfc", :selected => params['tap_type'] == 'qr_and_nfc'} QR and NFC
+            
+          .pure-control-group
+            %label{:for => "travel_button"} Travel button:
+            %input{:type => "text", :name => "travel_button", :value => "#{params['travel_button']}"}
+            
+          .pure-control-group
+            %label{:for => "tag_image"} Tag image:
+            %input{:type => "text", :name => "tag_image", :value => "#{params['tag_image']}"}
+            
+          .pure-control-group
+            %label{:for => "game_mode"} Game mode:
+            %select{:name => "game_mode"}
+              %option{:value => "none", :selected => params['game_mode'] == 'none'} None
+              %option{:value => "camera", :selected => params['game_mode'] == 'camera'} Camera
+              %option{:value => "quiz", :selected => params['game_mode'] == 'quiz'} Quiz
 
-              %p
-                Choose time!
-                %br
-                Do you want the user to take a photo on this tag, make a quiz with several question, or just tell part of a story or ask a question?
-                
-            %br
-            %a{:href => "/mystories/wizard/tag/camera", :class => "btn btn-default"}
-              Camera
-            %a{:href => "/mystories/wizard/tag/quiz", :class => "btn btn-default"}
-              Quiz
-            %a{:href => "/mystories/wizard/tag/direction", :class => "btn btn-default"}
-              Story or single question
+          .pure-control-group
+            %label{:for => "endpoint"} Last tag:
+            %input{:type=>"checkbox", :name=>"isEndpoint", :checked => params['isEndPoint'] == "true"}
+
+          .pure-control-group
+            %ul.pure-paginator
+              %li
+                %p Options
+              - params["options"].each_with_index do | array, index |
+                %li
+                  - @url = "/mystories/edit/story/#{storyId}/#{tagId}/#{array[0]}"
+                  %a.pure-button{:href => @url} #{index + 1}
+                    
+          .pure-control-group
+            %ul.pure-paginator
+              %li
+                %a.pure-button{:href => "/mystories/edit/story/#{storyId}"} Story
+              - tags.each_with_index do | array, index |
+                %li
+                  - @url = "/mystories/edit/story/#{storyId}/#{array[0]}"
+                  - @class = "#{"pure-button-active" if array[0] == tagId}"
+                  %a.pure-button{:href => @url, :class => @class} #{index + 1}
+
+          .pure-control-group
+            %button.pure-button{:type => "submit", :name => "save"} Save
+            %button.pure-button{:type => "submit", :name => "add_tag"} Add tag
+            %button.pure-button{:type => "submit", :name => "add_option"} Add option
+      .pure-u-1-4

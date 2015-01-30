@@ -1,0 +1,136 @@
+!!!
+%html
+  %head
+    %title Story Wizard
+    %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
+    %link{:href => "http://yui.yahooapis.com/pure/0.5.0/pure-min.css", :rel => "stylesheet"}
+    %link{:href => "http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css", :rel => "stylesheet"}
+    %link{:href => "/css/style.css", :rel => "stylesheet"}
+    %script(src="https://maps.googleapis.com/maps/api/js")
+
+    :javascript
+      function initialize() {
+        var myLatLng = new google.maps.LatLng(#{params["lat"]},#{params["long"]});
+        var map_options = {
+          center: myLatLng,
+          zoom: 17,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        
+        var map_canvas = document.getElementById('map_canvas');
+        var map = new google.maps.Map(map_canvas, map_options)
+
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          draggable: true
+        });
+        var infowindow = new google.maps.InfoWindow({
+          content: "Option: "
+        });
+        
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.open(map, marker);
+        });
+        google.maps.event.addListener(marker, 'drag', function() {
+          document.getElementById('lat').value = marker.position.lat();
+          document.getElementById('long').value = marker.position.lng();
+        });
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+      
+  %body
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        %img.pure-img{:src => "/images/tagstory-logo.png"}
+      .pure-u-1-4
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        .pure-menu.pure-menu-open.pure-menu-horizontal
+          %ul
+            %li
+              %a{:href => "/"} Home
+            %li
+              %a{:href => "/login"} Log in
+            %li.pure-menu-selected
+              %a{:href => "/mystories/wizard/story"} New story
+            %li
+              %a{:href => "/stories"} Stories
+            %li
+              %a{:href => "https://github.com/Kyrremann/TagStory"} Github
+      .pure-u-1-4
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        %form.pure-form.pure-form-aligned
+          %fieldset
+            %legend Option wizard
+
+          .pure-control-group
+            %label{:for => "answer"} Answer:
+            %input{:type => "text", :name => "answer", :value => "#{optionId}"}
+            
+          .pure-control-group
+            %label{:for => "title"} Title:
+            %input{:type => "text", :name => "title", :value => "#{params['title']}"}
+            
+          .pure-control-group
+            %label{:for => "tag_type"} Method:
+            %select{:name => "tag_types"}
+              %option{:value => "text", :selected => params['method'] == 'text'} Text
+              %option{:value => "image", :selected => params['method'] == 'image'} Image
+              %option{:value => "sound", :selected => params['method'] == 'sound'} Sound
+              %option{:value => "map", :selected => params['method'] == 'map'} Map
+                
+          .pure-control-group
+            %label{:for => "text"} Text:
+            %input{:type => "text", :name => "text", :value => "#{params['text']}"}
+            
+          .pure-control-group
+            %label{:for => "lat"} GPS latitude:
+            %input{:type => "text", :id => "lat", :name => "lat", :value => "#{params['lat']}"}
+            
+          .pure-control-group
+            %label{:for => "long"} GPS longitude:
+            %input{:type => "text", :id => "long", :name => "long", :value => "#{params['long']}"}
+            
+          .pure-control-group
+            %label{:for => "next"} Next:
+            %select{:name => "next"}
+              - tags.each do | key, value |
+                %option{:value => key, :selected => params['next'] == key} #{key}
+
+          .pure-control-group
+            %ul.pure-paginator
+              %li
+                %p Options
+              - tags[tagId]["options"].each_with_index do | array, index |
+                %li
+                  - @url = "/mystories/edit/story/#{storyId}/#{tagId}/#{array[0]}"
+                  - @class = "#{"pure-button-active" if array[0] == optionId}"
+                  %a.pure-button{:href => @url, :class => @class} #{index + 1}
+                    
+          .pure-control-group
+            %ul.pure-paginator
+              %li
+                %a.pure-button{:href => "/mystories/edit/story/#{storyId}"} Story
+              - tags.each_with_index do | array, index |
+                %li
+                  - @url = "/mystories/edit/story/#{storyId}/#{array[0]}"
+                  - @class = "#{"pure-button-active" if array[0] == tagId}"
+                  %a.pure-button{:href => @url, :class => @class} #{index + 1}
+
+          .pure-control-group
+            %button.pure-button{:type => "submit", :name => "save"} Save
+            %button.pure-button{:type => "submit", :name => "add_tag"} Add tag
+            %button.pure-button{:type => "submit", :name => "add_option"} Add option
+      .pure-u-1-4
+        
+      .pure-u-1-4
+      .pure-u-1-2
+        .pure-g
+          %div{:id => "map_canvas"}
+      .pure-u-1-4

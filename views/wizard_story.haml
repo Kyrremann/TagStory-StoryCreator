@@ -1,63 +1,146 @@
 !!!
 %html
   %head
-    %title Story Wizard
-    = haml :"templates/header_imports"
+    %title Story Wizard - Tag
+    %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
+    %link{:href => "http://yui.yahooapis.com/pure/0.5.0/pure-min.css", :rel => "stylesheet"}
+    %link{:href => "http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css", :rel => "stylesheet"}
+    %link{:href => "/css/style.css", :rel => "stylesheet"}
+    %link{:href => "/css/pikaday.css", :rel => "stylesheet"}
   %body
-    %div{:class => ""}
-      = haml :"templates/nav"
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        %img.pure-img{:src => "/images/tagstory-logo.png"}
+      .pure-u-1-4
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        .pure-menu.pure-menu-open.pure-menu-horizontal
+          %ul
+            %li
+              %a{:href => "/"} Home
+            %li
+              %a{:href => "/login"} Log in
+            %li.pure-menu-selected
+              %a{:href => "/mystories/wizard/story"} New story
+            %li
+              %a{:href => "/stories"} Stories
+            %li
+              %a{:href => "https://github.com/Kyrremann/TagStory"} Github
+      .pure-u-1-4
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        %form.pure-form.pure-form-aligned{:action => "/mystories/wizard/story", :method => "post", :role => "form"}
+          %fieldset
+            %legend Story wizard
 
-    %div{:class => "container"}
-      %div{:class => "panel panel-default"}
-        %div{:class => "panel-heading"}
-          %h3{:class =>"panel-title"}
-            Story wizard - Part I
+          .pure-control-group
+            %label{:for => "title"} Title:
+            %input{:type => "text", :name => "title", :value => "#{params['title']}"}
 
-        %div{:class => "panel-body"}
-          Welcome to the story wizard. We'll try to help you as much as we can with making a basic story.
-          If you want to use more advanced features you can hit advanced after you are done with the story.
-          %br
-          Let's get starting. First we need some basic information about the story.
-          
-      %div{:class => "panel panel-default"}
-        %div{:class => "panel-heading"}
-          %h3{:class =>"panel-title"}
-            About the story
-        %div{:class => "panel-body"}
-          %form{:action => "/mystories/edit/story", :method => "post", :role => "form", :class => "form-horizontal"}
-            %fieldset
-              %div{:class => "row form-group"}
-                %div{:class => "col-md-3"}
-                  %label{:for => "title", :class => "no-bold"} 
-                    Every story needs a title:
-                %input{:type => "text", :name => "title", :value => "#{params['title']}"}
+          .pure-control-group  
+            %label{:for => "author"} Author:
+            %input{:type => "text", :name => "author", :value => "#{params['author']}"}
 
-          %div{:class => "row form-group"}
-            %div{:class => "col-md-3"}
-              %label{:for => "description", :class => "no-bold"}
-                Write a short description of the story
-            %textarea{:name => "description"}
+          .pure-control-group  
+            %label{:for => "release_date"} Release date:
+            %input{:type => "text", :id => "datepicker", :name => "release_date", :value => "#{params['release_date']}"}
+                
+          .pure-control-group
+            %label{:for => "agegroup"} Agegroup:
+            %input{:type => "text", :name => "agegroup", :value => "#{params['agegroup']}"}
+                
+          .pure-control-group
+            %label{:for => "genre"} Genre:
+            %input{:type => "text", :name => "genre", :value => "#{params['genre']}"}
+                
+          .pure-control-group
+            %label{:for => "description"} Description:
+            %textarea{:name => "description", :rows => "6", :cols => "23"}
               #{params['description']}
-
-          %div{:class => "row form-group"}
-            %div{:class => "col-md-3"}
-              %label{:for => "author", :class => "no-bold"}
-                Who is the author of this story?
-            %input{:type => "text", :name => "author", :value => get_name}
-            -# #{params['author']}
-            We took the liberty to prefilled it with your profile name
-
-          %div{:class => "row form-group"}
-            %div{:class => "col-md-3"}
-              %label{:for => "title", :class => "no-bold"}
-                And lastely, where is the story?
-            %input{:type => "text", :name => "area", :value => "#{params['area']}"}
-            For example: Oslo, Sognsvann, or Frognerparken
+                
+          .pure-control-group
+            %label{:for => "start_tag"} Start tag:
+            %select{:name => "start_tag"}
+              - params['tags'].each do | key, value |
+                %option{:value => key, :selected => params['start_tag'] == key} #{key}
+                
+          .pure-control-group
+            %label{:for => "keywords"} Keywords:
+            %input{:type => "text", :name => "keywords", :hint => "Comma seperated", :value => "#{params['keywords']}"}
             
-          Okay, let continue on with our first tag. Tags in TagStory is what a story is made up of.
-          So a Story will usually have a lot of different tags that can all be connected. So watch out
-          for repeating loops. You don't want your adventurers to walk in circles.
-          %br
-          %br
-          %a{:href => "/mystories/wizard/tag", :class => "btn btn-default"}
-            Add your first tag
+          .pure-control-group
+            %label{:for => "country"} Country:
+            %input{:type => "text", :name => "country", :value => "#{params['country']}"}
+            
+          .pure-control-group
+            %label{:for => "image"} Image:
+            %input{:type => "text", :name => "image", :value => "#{params['image']}"}
+            
+          .pure-control-group
+            %label{:for => "tag_types"} Tag types:
+            %select{:name => "tag_types"}
+              %option{:value => "gps", :selected => params['tag_types'] == 'gps'} GPS
+              %option{:value => "qr", :selected => params['tag_types'] == 'qr'} QR
+              %option{:value => "nfc", :selected => params['tag_types'] == 'nfc'} NFC
+              %option{:value => "qr_and_nfc", :selected => params['tap_types'] == 'qr_and_nfc'} QR and NFC
+            
+          .pure-control-group
+            %label{:for => "game_modes"} Game modes:
+            %select{:name => "game_modes"}
+              %option{:value => "none", :selected => params['game_modes'] == 'none'} None
+              %option{:value => "camera", :selected => params['game_modes'] == 'camera'} Camera
+              %option{:value => "quiz", :selected => params['game_modes'] == 'quiz'} Quiz
+            
+          .pure-control-group
+            %label{:for => "area"} Area:
+            %input{:type => "text", :name => "area", :value => "#{params['area']}"}
+            
+          .pure-control-group
+            %label{:for => "language"} Language:
+            %select{:name => "language"}
+              %option{:value => "nb", :selected => params['language'] == 'nb'} Bokmål
+              %option{:value => "nn", :selected => params['language'] == 'nn'} Nynorsk
+              %option{:value => "en", :selected => params['language'] == 'en'} English
+            
+          .pure-control-group
+            %label{:for => "status"} Status:
+            %select{:name => "status"}
+              %option{:value => "draft", :selected => params['status'] == 'draft'} Draft
+              %option{:value => "publisjed", :selected => params['status'] == 'published'} Published
+              %option{:value => "pending", :selected => params['status'] == 'pending'} Pending
+            
+          .pure-control-group
+            %label{:for => "url"} URL:
+            %input{:type => "text", :name => "url", :value => "#{params['url']}"}
+               
+          .pure-control-group
+            %label{:for => "estimated_time"} Estimated time:
+            %input{:type => "text", :name => "estimated_time", :value => "#{params['estimated_time']}"}
+
+          .pure-control-group
+            %ul.pure-paginator
+              %li
+                %a.pure-button.pure-button-active{:href => "/mystories/edit/story/#{storyId}"} Story
+              - params['tags'].each_with_index do | array, index |
+                %li
+                  %a.pure-button{:href => "/mystories/edit/story/#{storyId}/#{array[0]}"} #{index + 1}
+
+          .pure-control-group
+            %button.pure-button{:type => "submit", :name => "save"} Save
+            %button.pure-button{:type => "submit", :name => "add_tag"} Add tag
+      .pure-u-1-4
+        
+    %script{:src => "/js/moment.min.js"}
+    %script{:src => "/js/pikaday.js"}
+    :javascript
+      var picker = new Pikaday(
+        {
+          field: document.getElementById('datepicker'),
+          format: 'DD.MM.YYYY',
+          firstDay: 1,
+          showWeekNumber: true
+        }
+      );                                                                                      
