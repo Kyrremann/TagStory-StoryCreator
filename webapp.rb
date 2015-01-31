@@ -1,17 +1,4 @@
-require 'rubygems'
-require 'sinatra'
-require 'haml'
-require 'json'
-require 'uuid'
-require 'securerandom'
-
-use Rack::Session::Cookie, :secret => 'super_secret_key_that_should_be_an_env_variable'
-
-unless CLOUDANT_URL = ENV['CLOUDANT_URL']
-  raise "You must specify the CLOUDANT_URL env variable"
-end
-
-DB = "#{ENV['CLOUDANT_URL']}"
+require_relative 'lib/Setup.rb'
 
 before do
   content_type :html, 'charset' => 'utf-8'
@@ -22,7 +9,7 @@ get '/' do
 end
 
 get '/login' do
-  "not implemented"
+  redirect '/auth/google_oauth2'
 end
 
 # new story
@@ -118,4 +105,28 @@ get '/story/:id/json' do | id |
   @result = JSON.parse(@doc)
   content_type :json, 'charset' => 'utf-8'
   @result.to_json
+end
+
+# sign in
+get '/auth/:provider/callback' do
+  content_type 'text/plain'
+  begin
+    log_in_user request.env['omniauth.auth']
+    redirect '/'
+  rescue => e
+    puts "User was not logged in with request #{request.env}"
+    puts e
+    redirect '/'
+  end
+end
+
+get '/auth/failure' do
+  content_type 'text/plain'
+  begin
+    request.env['omniauth.auth'].to_hash.inspect
+  rescue => e
+    puts "User could not log in with request #{request.env}"
+    puts e
+    redirect '/'
+  end
 end

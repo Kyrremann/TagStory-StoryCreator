@@ -18,12 +18,14 @@
           %ul
             %li.pure-menu-selected
               %a{:href => "/"} Home
-            %li
-              %a{:href => "/login"} Log in
-            %li
-              %a{:href => "/mystories/wizard/story"} New story
-            %li
-              %a{:href => "/stories"} Stories
+            - unless logged_in?
+              %li
+                %a{:href => "/login"} Log in
+            - if logged_in?
+              %li
+                %a{:href => "/mystories/wizard/story"} New story
+              %li
+                %a{:href => "/stories"} Stories
             %li
               %a{:href => "https://github.com/Kyrremann/TagStory"} Github
       .pure-u-1-4
