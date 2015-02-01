@@ -1,22 +1,23 @@
-%nav{:class => "navbar navbar-default navbar-static-top", :role => "navigation"}
-  %div{:class => "container"}
-    %span{:class => "navbar-brand"}
-      TagStory
-    %ul{:class => "nav navbar-nav"}
-      %li{:class => "#{is_active_url('/')}"}
-        %a{:href => "/"}
-          Home
-      - if not session[:access_token].nil?
-        %li{:class => "#{is_active_url(['/mystories', '/mystories/edit/story', '/mystories/edit/tag', '/mystories/edit/tag/quiz', '/mystories/edit/tag/options'])}"}
-          %a{:href => "/mystories"}
-            My Stories
-      %li{:class => "#{is_active_url('/stories')}"}
-        %a{:href => "/stories"}
-          Stories
-      %li{:class => "#{is_active_url('/help')}"}
-        %a{:href => "/help"}
-          Help
-      - unless has_access_token?
-        %li{:class => "#{is_active_url('/auth')}"}
-          %a{:href => "/auth"}
-            Log in
+.pure-g
+  .pure-u-1-4
+  .pure-u-1-2
+    %img.pure-img{:src => "/images/tagstory-logo.png"}
+  .pure-u-1-4
+.pure-g
+  .pure-u-1-4
+  .pure-u-1-2
+    .pure-menu.pure-menu-open.pure-menu-horizontal
+      %ul
+        %li.pure-menu-selected
+          %a{:href => "/"} Home
+        - unless logged_in?
+          %li
+            %a{:href => "/login"} Log in
+        - if logged_in?
+          %li
+            %a{:href => "/mystories"} My stories
+          %li
+            %a{:href => "/stories"} Stories
+        %li
+          %a{:href => "https://github.com/Kyrremann/TagStory"} Github
+  .pure-u-1-4n

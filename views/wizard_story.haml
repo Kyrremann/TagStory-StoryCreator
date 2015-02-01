@@ -2,37 +2,14 @@
 %html
   %head
     %title Story Wizard - Tag
-    %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
-    %link{:href => "http://yui.yahooapis.com/pure/0.5.0/pure-min.css", :rel => "stylesheet"}
-    %link{:href => "http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css", :rel => "stylesheet"}
-    %link{:href => "/css/style.css", :rel => "stylesheet"}
+    = haml :"templates/header_imports"
     %link{:href => "/css/pikaday.css", :rel => "stylesheet"}
   %body
+    = haml :"templates/nav"
     .pure-g
       .pure-u-1-4
       .pure-u-1-2
-        %img.pure-img{:src => "/images/tagstory-logo.png"}
-      .pure-u-1-4
-    .pure-g
-      .pure-u-1-4
-      .pure-u-1-2
-        .pure-menu.pure-menu-open.pure-menu-horizontal
-          %ul
-            %li
-              %a{:href => "/"} Home
-            %li
-              %a{:href => "/login"} Log in
-            %li.pure-menu-selected
-              %a{:href => "/mystories/wizard/story"} New story
-            %li
-              %a{:href => "/stories"} Stories
-            %li
-              %a{:href => "https://github.com/Kyrremann/TagStory"} Github
-      .pure-u-1-4
-    .pure-g
-      .pure-u-1-4
-      .pure-u-1-2
-        %form.pure-form.pure-form-aligned{:action => "/mystories/wizard/story", :method => "post", :role => "form"}
+        %form.pure-form.pure-form-aligned{:method => "POST", :role => "form"}
           %fieldset
             %legend Story wizard
 
@@ -109,7 +86,7 @@
             %label{:for => "status"} Status:
             %select{:name => "status"}
               %option{:value => "draft", :selected => params['status'] == 'draft'} Draft
-              %option{:value => "publisjed", :selected => params['status'] == 'published'} Published
+              %option{:value => "published", :selected => params['status'] == 'published'} Published
               %option{:value => "pending", :selected => params['status'] == 'pending'} Pending
             
           .pure-control-group

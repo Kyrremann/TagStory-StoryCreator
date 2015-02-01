@@ -2,7 +2,21 @@
 DB = "#{ENV['CLOUDANT_URL']}"
 USER_ID = '7a89ad827876e3a207fda55b1ab9e510'
 
-#users
+# stories
+def get_story_json_from_cloudant(id)
+  JSON.parse(RestClient.get("#{DB}/stories/#{id}"))
+end
+
+def get_stories_json_from_cloudant
+  @doc = RestClient.get("#{DB}/stories/_design/lists/_view/story_header")
+  @result = JSON.parse(@doc)["rows"]
+end
+
+def save_story_to_cloudant(story)
+  save_to_cloudant("stories", story.to_json)
+end
+
+# users
 private
 def get_users_json_from_cloudant
   JSON.parse(RestClient.get("#{DB}/users/#{USER_ID}"))

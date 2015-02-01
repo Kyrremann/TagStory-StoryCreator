@@ -13,19 +13,11 @@ get '/login' do
 end
 
 # new story
-get '/mystories/wizard/story' do
-  haml :wizard_story
-end
+# TODO
 
-post '/mystories/wizard/story' do
-  p params
-  if params["add_tag"] then
-    redirect '/mystories/wizard/story/tag'
-  else
-    redirect '/mystories/wizard/story'
-  end
-end
+# edit story
 
+# story wizard
 get '/mystories/wizard/story/tag' do
   haml :wizard_tag
 end
@@ -54,57 +46,73 @@ post '/mystories/wizard/story/tag/option' do
   end
 end
 
-# edit story
-get '/mystories/edit/story/:storyId/:tagId/:optionId' do | storyId, tagId, optionId |
-  @doc = RestClient.get("#{DB}/stories/#{storyId}")
-  @result = JSON.parse(@doc)
-  haml :wizard_tag_option, :locals => {
-    :params => @result["story"]["tags"][tagId]["options"][optionId],
-    :storyId => storyId,
-    :tagId => tagId,
-    :optionId => optionId,
-    :tags => @result["story"]["tags"]
-  }
-end
-
-get '/mystories/edit/story/:storyId/:tagId' do | storyId, tagId |
-  @doc = RestClient.get("#{DB}/stories/#{storyId}")
-  @result = JSON.parse(@doc)
-  haml :wizard_tag, :locals => {
-    :params => @result["story"]["tags"][tagId],
-    :storyId => storyId,
-    :tagId => tagId,
-    :tags => @result["story"]["tags"]}
-end
-
-get '/mystories/edit/story/:storyId' do | storyId |
-  @doc = RestClient.get("#{DB}/stories/#{storyId}")
-  @result = JSON.parse(@doc)
+get '/mystories/wizard/:storyId' do | storyId |
   haml :wizard_story, :locals => {
-    :params => @result["story"],
+    :params => get_current_story(storyId),
     :storyId => storyId
   }
 end
 
+post '/mystories/wizard/:storyId' do | storyId |
+  p params
+  if params.has_key? "save" then
+    params.delete "save"
+    params.delete "captures"
+    params.delete "storyId"
+    params.delete_if { | key, value | 
+      value.empty?
+    }
+    save_story storyId, params
+    redirect '/mystories/wizard/' + storyId
+  end
+  
+  redirect '/'
+end
 
+# edit story
+get '/mystories/edit/story/:storyId/:tagId/:optionId' do | storyId, tagId, optionId |
+  story = get_current_story storyId
+  haml :wizard_tag_option, :locals => {
+    :params => story["tags"][tagId]["options"][optionId],
+    :storyId => storyId,
+    :tagId => tagId,
+    :optionId => optionId,
+    :tags => story["tags"]
+  }
+end
+
+get '/mystories/edit/story/:storyId/:tagId' do | storyId, tagId |
+  story = get_current_story storyId
+  haml :wizard_tag, :locals => {
+    :params => story["tags"][tagId],
+    :storyId => storyId,
+    :tagId => tagId,
+    :tags => story["tags"]}
+end
+
+get '/mystories/edit/story/:storyId' do | storyId |
+  # Set storyId as current story and then redirect to the wizard
+  redirect '/mystories/wizard/' + storyId
+end
+
+# my stories
+get '/mystories' do
+  haml :mystories, :locals => { :stories => get_user_stories }
+end
+
+# other
 get '/stories' do
-  @doc = RestClient.get("#{DB}/stories/_design/lists/_view/story_header")
-  @result = JSON.parse(@doc)["rows"]
-  haml :stories
+  haml :stories, :locals => { :stories => get_stories }
 end
 
 get '/stories/json' do
-  @doc = RestClient.get("#{DB}/stories/_design/lists/_view/story_header")
-  @result = JSON.parse(@doc)
   content_type :json, 'charset' => 'utf-8'
-  @result["rows"].to_json
+  get_stories.to_json
 end
 
 get '/story/:id/json' do | id |
-  @doc = RestClient.get("#{DB}/stories/#{id}")
-  @result = JSON.parse(@doc)
   content_type :json, 'charset' => 'utf-8'
-  @result.to_json
+  get_story_json(id).to_json
 end
 
 # sign in

@@ -10,16 +10,17 @@
       .pure-u-1-2
         .posts
           - stories.each do | value |
-            - story = value["value"]
+            - story = value["fields"]
             %section.post
               %header.post-header
-                %img.post-avatar{:alt => "#{story["author"]}'s avatar", :height => "48", :src => "/images/ericf-avatar.png", :width => "48"}
+                %img.post-avatar{:alt => "#{story["author"]}'s avatar", :height => "48", :src => get_user_image, :width => "48"}
                   %h2.post-title #{story["title"]}
                   %p.post-meta
                     By
                     %a.post-author{:href => "#"} #{story["author"]}
                     under
                     %a.post-category.post-category-js{:href => "#"} #{story["genre"]}
+                    %a.post-category.post-category-design{:href => "/mystories/edit/story/#{value["id"]}"} edit
               .post-description
                 %p #{story["description"]}
       .pure-u-1-4

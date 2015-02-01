@@ -36,3 +36,11 @@ end
 def logged_in?
   session[:uid]
 end
+
+def get_uid
+  session[:uid]
+end
+
+def get_user_image
+  session[:info][:image]
+end

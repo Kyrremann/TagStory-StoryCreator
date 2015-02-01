@@ -1,44 +1,26 @@
-$story_map
+def get_story(id)
 
-def get_story_map()
-  $story_map || $story_map = {}
 end
 
-def init_story()
-  session[:story_id] = "new_story"
+def get_story_json(id)
+  get_story_json_from_cloudant id
 end
 
-def load_story(id, story)
-  get_story_map[id.to_s] = story
-  set_story_id(id)
-  key, value = get_tags.first
-  switch_to_tag!(key)
+def get_current_story(id)
+  get_story_json_from_cloudant(id)["story"]
 end
 
-def set_story_id(id)
-  session[:story_id] = id
+def get_stories
+  get_stories_json_from_cloudant
 end
 
-def get_story_id()
-  session[:story_id]
+def get_user_stories
+  @doc = RestClient.get("#{DB}/stories/_design/lists/_search/editors?q=" + get_uid)
+  @result = JSON.parse(@doc)["rows"]
 end
 
-def get_story()
-  get_story_map[session[:story_id]] || get_story_map[session[:story_id]] = {}
-end
-
-def get_story_as_json()
-  get_story.to_json
-end
-
-def get_from_story(key)
-  get_story[key]
-end
-
-def merge_story!(data)
-  get_story.merge!(data)
-end
-
-def is_a_story_id(uuid)
-  true
+def save_story(id, data)
+  story = get_story_json id
+  story["story"].merge! data
+  save_story_to_cloudant story
 end

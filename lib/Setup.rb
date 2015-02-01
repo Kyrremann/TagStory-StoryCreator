@@ -10,6 +10,7 @@ require 'omniauth-google-oauth2'
 
 require_relative 'AuthHandler.rb'
 require_relative 'DatabaseHandler.rb'
+require_relative 'StoryHandler.rb'
 
 use Rack::Session::Cookie, :secret => 'super_secret_key_that_should_be_an_env_variable' # TODO
 
