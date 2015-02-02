@@ -100,10 +100,11 @@
           .pure-control-group
             %ul.pure-paginator
               %li
-                %a.pure-button.pure-button-active{:href => "/mystories/edit/story/#{storyId}"} Story
-              - params['tags'].each_with_index do | array, index |
-                %li
-                  %a.pure-button{:href => "/mystories/edit/story/#{storyId}/#{array[0]}"} #{index + 1}
+                %a.pure-button.pure-button-active{:href => "/mystories/wizard/#{storyId}"} Story
+              - if params.has_key? 'tags'
+                - params['tags'].each_with_index do | array, index |
+                  %li
+                    %a.pure-button{:href => "/mystories/wizard/#{storyId}/#{array[0]}"} #{index + 1}
 
           .pure-control-group
             %button.pure-button{:type => "submit", :name => "save"} Save

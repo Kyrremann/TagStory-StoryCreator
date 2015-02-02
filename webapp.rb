@@ -18,32 +18,57 @@ end
 # edit story
 
 # story wizard
-get '/mystories/wizard/story/tag' do
-  haml :wizard_tag
+get '/mystories/wizard/:storyId/:tagId/:optionId' do | storyId, tagId, optionId |
+  story = get_current_story storyId
+  haml :wizard_tag_option, :locals => {
+    :params => story["tags"][tagId]["options"][optionId],
+    :storyId => storyId,
+    :tagId => tagId,
+    :optionId => optionId,
+    :tags => story["tags"]}
 end
 
-post '/mystories/wizard/story/tag' do
-  p params
-  if params["add_tag"] then
-    redirect '/mystories/wizard/story/tag'
-  elsif params["add_option"] then
-    redirect '/mystories/wizard/story/tag/option'
-  else
-    redirect '/mystories/wizard/story/tag'
+post '/mystories/wizard/:storyId/:tagId/:optionId' do | storyId, tagId, optionId |
+  if params.has_key? "save" then
+    save_option_from_params optionId, tagId, storyId, params
+    redirect '/mystories/wizard/' + storyId + '/' + tagId + '/' + URI.escape(optionId)
+  elsif params.has_key? "add_option" then
+    optionId = SecureRandom.uuid
+    add_option optionId, tagId, storyId
+    redirect '/mystories/wizard/' + storyId + '/' + tagId + '/' + URI.escape(optionId)
+  elsif params.has_key? "delete_option" then
+    remove_option optionId, tagId, storyId
+    redirect '/mystories/wizard/' + storyId + '/' + tagId    
   end
+  redirect '/mystories/wizard/' + storyId + '/' + tagId + '/' + URI.escape(optionId)
 end
 
-get '/mystories/wizard/story/tag/option' do
-  haml :wizard_tag_option
+get '/mystories/wizard/:storyId/:tagId' do | storyId, tagId |
+  story = get_current_story storyId
+  haml :wizard_tag, :locals => {
+    :params => story["tags"][tagId],
+    :storyId => storyId,
+    :tagId => tagId,
+    :tags => story["tags"]}
 end
 
-post '/mystories/wizard/story/tag/option' do
-  p params
-  if params["add_tag"] then
-    redirect '/mystories/wizard/story/tag'
-  else
-    redirect '/mystories/wizard/story/tag/option'
+post '/mystories/wizard/:storyId/:tagId' do | storyId, tagId |
+  if params.has_key? "save" then
+    save_tag_from_params tagId, storyId, params
+    redirect '/mystories/wizard/' + storyId + '/' + tagId
+  elsif params.has_key? "add_option" then
+    optionId = SecureRandom.uuid
+    add_option optionId, tagId, storyId
+    redirect '/mystories/wizard/' + storyId + '/' + tagId + '/' + optionId
+  elsif params.has_key? "add_tag" then
+    tagId = SecureRandom.uuid
+    add_tag tagId, storyId
+    redirect '/mystories/wizard/' + storyId + '/' + tagId
+  elsif params.has_key? "delete_tag" then
+    remove_tag tagId, storyId
+    redirect '/mystories/wizard/' + storyId
   end
+  redirect '/mystories/wizard/' + storyId + '/' + tagId
 end
 
 get '/mystories/wizard/:storyId' do | storyId |
@@ -54,19 +79,16 @@ get '/mystories/wizard/:storyId' do | storyId |
 end
 
 post '/mystories/wizard/:storyId' do | storyId |
-  p params
   if params.has_key? "save" then
-    params.delete "save"
-    params.delete "captures"
-    params.delete "storyId"
-    params.delete_if { | key, value | 
-      value.empty?
-    }
-    save_story storyId, params
+    save_story_from_params storyId, params
     redirect '/mystories/wizard/' + storyId
+  elsif params.has_key? "add_tag" then
+    tagId = SecureRandom.uuid
+    add_tag tagId, storyId
+    redirect '/mystories/wizard/' + storyId + '/' + tagId
   end
   
-  redirect '/'
+  redirect '/mystories/wizard/' + storyId
 end
 
 # edit story

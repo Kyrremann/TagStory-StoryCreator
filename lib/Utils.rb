@@ -1,6 +1,6 @@
 class Hash
   def strip_empty!
-    delete_if { |k, v| v == "" }
+    delete_if { |k, v| v.empty? }
   end
 end
 

@@ -8,7 +8,7 @@
     .pure-g
       .pure-u-1-4
       .pure-u-1-2
-        %form.pure-form.pure-form-aligned
+        %form.pure-form.pure-form-aligned{:method => "POST", :role => "form"}
           %fieldset
             %legend Tag wizard
 
@@ -56,18 +56,19 @@
             %ul.pure-paginator
               %li
                 %p Options
-              - params["options"].each_with_index do | array, index |
-                %li
-                  - @url = "/mystories/edit/story/#{storyId}/#{tagId}/#{array[0]}"
-                  %a.pure-button{:href => @url} #{index + 1}
+              - if params.has_key? 'options'
+                - params["options"].each_with_index do | array, index |
+                  %li
+                    - @url = "/mystories/wizard/#{storyId}/#{tagId}/#{array[0]}"
+                    %a.pure-button{:href => @url} #{index + 1}
                     
           .pure-control-group
             %ul.pure-paginator
               %li
-                %a.pure-button{:href => "/mystories/edit/story/#{storyId}"} Story
+                %a.pure-button{:href => "/mystories/wizard/#{storyId}"} Story
               - tags.each_with_index do | array, index |
                 %li
-                  - @url = "/mystories/edit/story/#{storyId}/#{array[0]}"
+                  - @url = "/mystories/wizard/#{storyId}/#{array[0]}"
                   - @class = "#{"pure-button-active" if array[0] == tagId}"
                   %a.pure-button{:href => @url, :class => @class} #{index + 1}
 
@@ -75,4 +76,5 @@
             %button.pure-button{:type => "submit", :name => "save"} Save
             %button.pure-button{:type => "submit", :name => "add_tag"} Add tag
             %button.pure-button{:type => "submit", :name => "add_option"} Add option
+            %button.pure-button{:type => "submit", :name => "delete_tag"} Delete tag
       .pure-u-1-4
