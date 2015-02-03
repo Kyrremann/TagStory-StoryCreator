@@ -58,10 +58,12 @@ def save_tag(tagId, storyId, params)
   save_story_to_cloudant story
 end
 
-def add_option(optionId, tagId, storyId)
+def add_option(tagId, storyId)
   story = get_story_json storyId
-  story["story"]["tags"][tagId]["options"][optionId] = {}
+  count = story["story"]["tags"][tagId]["options"].length
+  story["story"]["tags"][tagId]["options"][count] = {}
   save_story_to_cloudant story
+  count
 end
 
 def save_option(optionId, tagId, storyId, params)
@@ -72,7 +74,7 @@ end
 
 def remove_option(optionId, tagId, storyId)
   story = get_story_json storyId
-  story["story"]["tags"][tagId]["options"].delete optionId
+  story["story"]["tags"][tagId]["options"].delete_at optionId
   save_story_to_cloudant story
 end
 

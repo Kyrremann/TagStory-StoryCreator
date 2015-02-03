@@ -59,7 +59,7 @@
               - if params.has_key? 'options'
                 - params["options"].each_with_index do | array, index |
                   %li
-                    - @url = "/mystories/wizard/#{storyId}/#{tagId}/#{array[0]}"
+                    - @url = "/mystories/wizard/#{storyId}/#{tagId}/#{index}"
                     %a.pure-button{:href => @url} #{index + 1}
                     
           .pure-control-group

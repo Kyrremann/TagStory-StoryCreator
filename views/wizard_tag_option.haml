@@ -6,9 +6,9 @@
     %script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBj0MzAv62ik_KGQi9WCVkSCx3qDGykiZ0")
     :javascript
       function initialize() {
-        var lat = #{params["lat"].empty? ? "59.9167055" : params["lat"]}
-        var long = #{params["long"].empty? ? "10.7294875" : params["long"]}
-        var zoomLevel = #{params["lat"].empty? ? 12 : 17}
+        var lat = #{empty_s?(params["lat"]) ? "59.9167055" : params["lat"]}
+        var long = #{empty_s?(params["long"]) ? "10.7294875" : params["long"]}
+        var zoomLevel = #{empty_s?(params["lat"]) ? 12 : 17}
         var myLatLng = new google.maps.LatLng(lat, long);
         var map_options = {
           center: myLatLng,
@@ -50,7 +50,7 @@
 
           .pure-control-group
             %label{:for => "answer"} Answer:
-            %input{:type => "text", :name => "answer", :value => "#{optionId}"}
+            %input{:type => "text", :name => "answer", :value => "#{params['answer']}"}
             
           .pure-control-group
             %label{:for => "title"} Title:
@@ -88,7 +88,7 @@
                 %p Options
               - tags[tagId]["options"].each_with_index do | array, index |
                 %li
-                  - @url = "/mystories/wizard/#{storyId}/#{tagId}/#{array[0]}"
+                  - @url = "/mystories/wizard/#{storyId}/#{tagId}/#{index}"
                   - @class = "#{"pure-button-active" if array[0] == optionId}"
                   %a.pure-button{:href => @url, :class => @class} #{index + 1}
                     

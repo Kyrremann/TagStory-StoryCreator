@@ -20,8 +20,9 @@ end
 # story wizard
 get '/mystories/wizard/:storyId/:tagId/:optionId' do | storyId, tagId, optionId |
   story = get_current_story storyId
+  p story["tags"][tagId]["options"][optionId.to_i]
   haml :wizard_tag_option, :locals => {
-    :params => story["tags"][tagId]["options"][optionId],
+    :params => story["tags"][tagId]["options"][optionId.to_i],
     :storyId => storyId,
     :tagId => tagId,
     :optionId => optionId,
@@ -30,17 +31,16 @@ end
 
 post '/mystories/wizard/:storyId/:tagId/:optionId' do | storyId, tagId, optionId |
   if params.has_key? "save" then
-    save_option_from_params optionId, tagId, storyId, params
-    redirect '/mystories/wizard/' + storyId + '/' + tagId + '/' + URI.escape(optionId)
+    save_option_from_params optionId.to_i, tagId, storyId, params
+    redirect '/mystories/wizard/' + storyId + '/' + tagId + '/' + optionId
   elsif params.has_key? "add_option" then
-    optionId = SecureRandom.uuid
-    add_option optionId, tagId, storyId
-    redirect '/mystories/wizard/' + storyId + '/' + tagId + '/' + URI.escape(optionId)
+    optionId = add_option tagId, storyId
+    redirect '/mystories/wizard/' + storyId + '/' + tagId + '/' + optionId.to_s
   elsif params.has_key? "delete_option" then
-    remove_option optionId, tagId, storyId
+    remove_option optionId.to_i, tagId, storyId
     redirect '/mystories/wizard/' + storyId + '/' + tagId    
   end
-  redirect '/mystories/wizard/' + storyId + '/' + tagId + '/' + URI.escape(optionId)
+  redirect '/mystories/wizard/' + storyId + '/' + tagId + '/' + optionId
 end
 
 get '/mystories/wizard/:storyId/:tagId' do | storyId, tagId |
@@ -57,9 +57,8 @@ post '/mystories/wizard/:storyId/:tagId' do | storyId, tagId |
     save_tag_from_params tagId, storyId, params
     redirect '/mystories/wizard/' + storyId + '/' + tagId
   elsif params.has_key? "add_option" then
-    optionId = SecureRandom.uuid
-    add_option optionId, tagId, storyId
-    redirect '/mystories/wizard/' + storyId + '/' + tagId + '/' + optionId
+    optionId = add_option tagId, storyId
+    redirect '/mystories/wizard/' + storyId + '/' + tagId + '/' + optionId.to_s
   elsif params.has_key? "add_tag" then
     tagId = SecureRandom.uuid
     add_tag tagId, storyId

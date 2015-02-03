@@ -9,3 +9,7 @@ class String
     gsub("\s", replace)
   end
 end
+
+def empty_s?(value)
+  return (value.nil? or value.empty?)
+end
