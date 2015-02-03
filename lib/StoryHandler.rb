@@ -19,6 +19,18 @@ def get_user_stories
   @result = JSON.parse(@doc)["rows"]
 end
 
+def create_new_story
+  id = SecureRandom.uuid
+  value = { 
+    "story" => { 
+      "UUID" => id,
+      "editors" => [ get_uid ]
+    }
+  }
+  @response = save_story_to_cloudant value
+  @respons["_id"]
+end
+
 def save_story(id, data)
   story = get_story_json id
   story["story"].merge! data

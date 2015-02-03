@@ -13,9 +13,16 @@ get '/login' do
 end
 
 # new story
-# TODO
-
+get '/mystories/new/story' do
+  storyId = create_new_story
+  redirect '/mystories/wizard/' + storyId
+end
 # edit story
+get '/mystories/edit/story/:storyId' do | storyId |
+  # Set storyId as current story and then redirect to the wizard
+  redirect '/mystories/wizard/' + storyId
+end
+
 
 # story wizard
 get '/mystories/wizard/:storyId/:tagId/:optionId' do | storyId, tagId, optionId |
@@ -87,32 +94,6 @@ post '/mystories/wizard/:storyId' do | storyId |
     redirect '/mystories/wizard/' + storyId + '/' + tagId
   end
   
-  redirect '/mystories/wizard/' + storyId
-end
-
-# edit story
-get '/mystories/edit/story/:storyId/:tagId/:optionId' do | storyId, tagId, optionId |
-  story = get_current_story storyId
-  haml :wizard_tag_option, :locals => {
-    :params => story["tags"][tagId]["options"][optionId],
-    :storyId => storyId,
-    :tagId => tagId,
-    :optionId => optionId,
-    :tags => story["tags"]
-  }
-end
-
-get '/mystories/edit/story/:storyId/:tagId' do | storyId, tagId |
-  story = get_current_story storyId
-  haml :wizard_tag, :locals => {
-    :params => story["tags"][tagId],
-    :storyId => storyId,
-    :tagId => tagId,
-    :tags => story["tags"]}
-end
-
-get '/mystories/edit/story/:storyId' do | storyId |
-  # Set storyId as current story and then redirect to the wizard
   redirect '/mystories/wizard/' + storyId
 end
 

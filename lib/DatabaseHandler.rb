@@ -38,6 +38,7 @@ def save_to_cloudant(table, json)
     @respons =  RestClient.post("#{DB}/#{table}", json, {:content_type => :json, :accept => :json})
     if @respons["ok"] then
       puts "OK"
+      @respons
     else
       p @respons
       # something bad :\
