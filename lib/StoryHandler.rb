@@ -24,11 +24,21 @@ def create_new_story
   value = { 
     "story" => { 
       "UUID" => id,
-      "editors" => [ get_uid ]
+      "author" => get_full_name,
+      "editors" => [ get_uid ],
+      "title": "New story",
+      "genre": "draft",
+      "description" => "Please fill in a description about your story",
+      "image" => "placeimg_960_720_nature_1.jpg",
+      "status" => "draft"
     }
   }
   @response = save_story_to_cloudant value
-  @respons["_id"]
+  if @response["ok"] then
+    @respons["_id"]
+  else
+    nil
+  end
 end
 
 def save_story(id, data)

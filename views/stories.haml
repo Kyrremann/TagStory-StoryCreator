@@ -13,13 +13,13 @@
             - story = value["value"]
             %section.post
               %header.post-header
-                %img.post-avatar{:alt => "#{story["author"]}'s avatar", :height => "48", :src => "/images/ericf-avatar.png", :width => "48"}
-                  %h2.post-title #{story["title"]}
-                  %p.post-meta
-                    By
-                    %a.post-author{:href => "#"} #{story["author"]}
-                    under
-                    %a.post-category.post-category-js{:href => "#"} #{story["genre"]}
+                -#%img.post-avatar{:alt => "#{story["author"]}'s avatar", :height => "48", :src => "/images/ericf-avatar.png", :width => "48"}
+                %h2.post-title #{story["title"]}
+                %p.post-meta
+                  By
+                  %a.post-author{:href => "#"} #{story["author"]}
+                  under
+                  %a.post-category.post-category-js{:href => "#"} #{story["genre"]}
               .post-description
                 %p #{story["description"]}
       .pure-u-1-4

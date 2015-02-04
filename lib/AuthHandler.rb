@@ -44,3 +44,7 @@ end
 def get_user_image
   session[:info][:image]
 end
+
+def get_full_name
+  session[:info][:name]
+end

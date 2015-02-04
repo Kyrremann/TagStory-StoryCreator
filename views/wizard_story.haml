@@ -41,8 +41,9 @@
           .pure-control-group
             %label{:for => "start_tag"} Start tag:
             %select{:name => "start_tag"}
-              - params['tags'].each do | key, value |
-                %option{:value => key, :selected => params['start_tag'] == key} #{key}
+              - if params.has_key? 'tags'
+                - params['tags'].each do | key, value |
+                  %option{:value => key, :selected => params['start_tag'] == key} #{key}
                 
           .pure-control-group
             %label{:for => "keywords"} Keywords:
