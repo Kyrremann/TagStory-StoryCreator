@@ -41,6 +41,10 @@ def create_new_story
   end
 end
 
+def delete_story(id)
+  delete_story_from_cloudant id
+end
+
 def save_story(id, data)
   story = get_story_json id
   story["story"].merge! data
@@ -64,6 +68,9 @@ end
 
 def add_tag(tagId, storyId)
   story = get_story_json storyId
+  unless story["story"].has_key? 'tags' then
+    story["story"]["tags"] = {}
+  end
   story["story"]["tags"][tagId] = {"options": {}}
   save_story_to_cloudant story
 end
@@ -82,10 +89,12 @@ end
 
 def add_option(tagId, storyId)
   story = get_story_json storyId
-  count = story["story"]["tags"][tagId]["options"].length
-  story["story"]["tags"][tagId]["options"][count] = {}
+  unless story["story"]['tags'][tagId].has_key? 'options' then
+    story["story"]['tags'][tagId]['options'] = []
+  end
+  story["story"]["tags"][tagId]["options"] << {}
   save_story_to_cloudant story
-  count
+  story["story"]["tags"][tagId]["options"].length - 1
 end
 
 def save_option(optionId, tagId, storyId, params)

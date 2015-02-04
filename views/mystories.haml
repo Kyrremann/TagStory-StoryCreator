@@ -29,8 +29,11 @@
                   %a.post-author{:href => "#"} #{story["author"]}
                   - if story.has_key? "genre"
                     under
-                    %a.post-category.post-category-js{:href => "#"} #{story["genre"]}
+                    %a.post-category.post-category-pure{:href => "#"} #{story["genre"]}
+                  Do you want to
                   %a.post-category.post-category-design{:href => "/mystories/edit/story/#{value["id"]}"} edit
+                  or
+                  %a.post-category.post-category-js{:href => "/mystories/delete/story/#{value["id"]}"} delete
               .post-description
                 - if story.has_key? "description"
                   %p #{story["description"]}

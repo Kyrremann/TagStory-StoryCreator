@@ -32,6 +32,22 @@ def save_user_to_cloudant(uid, user)
   save_to_cloudant "users", jdata.to_json
 end
 
+def delete_story_from_cloudant(id)
+  begin
+    @respons =  RestClient.delete("#{DB}/stories/#{id}")
+    if @respons["ok"] then
+      puts "OK"
+      @respons
+    else
+      p @respons
+      # something bad :\
+    end
+  rescue => e
+    p e
+    # inform someone
+  end
+end
+
 private
 def save_to_cloudant(table, json)
   begin

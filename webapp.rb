@@ -17,12 +17,18 @@ get '/mystories/new/story' do
   storyId = create_new_story
   redirect '/mystories/wizard/' + storyId
 end
+
 # edit story
 get '/mystories/edit/story/:storyId' do | storyId |
   # Set storyId as current story and then redirect to the wizard
   redirect '/mystories/wizard/' + storyId
 end
 
+# delete story
+get '/mystories/delete/story/:storyId' do | storyId |
+  delete_story storyId
+  redirect '/mystories'
+end
 
 # story wizard
 get '/mystories/wizard/:storyId/:tagId/:optionId' do | storyId, tagId, optionId |
