@@ -116,5 +116,7 @@ def delete_common_params_key!(params)
   params.delete "add_option"
   params.delete "captures"
   params.delete "storyId"
+  params.delete "tagId"
+  params.delete "optionId"
   params.delete "splat"
 end
