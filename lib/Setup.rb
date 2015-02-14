@@ -1,6 +1,5 @@
-require 'rubygems'
-require 'sinatra'
 require 'haml'
+require 'tilt/haml'
 require 'json'
 require 'rest_client'
 require 'uuid'
@@ -38,6 +37,13 @@ use OmniAuth::Builder do
   provider :google_oauth2, G_API_CLIENT, G_API_SECRET, {
     :scope => "email, profile",
     :image_aspect_ratio => "square",
-    :image_size => 100
+    :image_size => 100,
+    :prompt => 'consent'
   }
+end
+
+before '/mystories/*' do
+  unless logged_in?
+    redirect '/'
+  end
 end

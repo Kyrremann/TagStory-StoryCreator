@@ -1,3 +1,7 @@
+require 'rubygems'
+require 'bundler/setup'
+require 'sinatra'
+
 require_relative 'lib/Setup.rb'
 
 before do
@@ -123,17 +127,21 @@ get '/story/:id/json' do | id |
   get_story_json(id).to_json
 end
 
+get '/api' do
+  validate_user session[:refresh_token]
+  redirect '/'
+end
+
 # sign in
 get '/auth/:provider/callback' do
   content_type 'text/plain'
   begin
     log_in_user request.env['omniauth.auth']
-    redirect '/'
   rescue => e
     puts "User was not logged in with request #{request.env}"
     puts e
-    redirect '/'
   end
+  redirect '/'
 end
 
 get '/auth/failure' do
@@ -143,6 +151,6 @@ get '/auth/failure' do
   rescue => e
     puts "User could not log in with request #{request.env}"
     puts e
-    redirect '/'
   end
+  redirect '/'
 end
