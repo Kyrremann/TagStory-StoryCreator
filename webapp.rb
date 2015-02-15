@@ -128,9 +128,14 @@ get '/api/story/:id/json' do | id |
   get_story_json(id).to_json
 end
 
-get '/api/test' do
-  #validate_user session[:refresh_token]
-  redirect '/'
+get '/api/statistic/:id/json' do | id |
+  content_type :json, 'charset' => 'utf-8'
+  user = validate_user id, params["refresh_token"]
+  if user then
+    get_statistic(user["id"]).to_json
+  else
+    '{"error": "We can\'t find that user"}'.to_json
+  end
 end
 
 # sign in

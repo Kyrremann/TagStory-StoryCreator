@@ -12,6 +12,7 @@ require 'sinatra/cross_origin'
 require_relative 'AuthHandler.rb'
 require_relative 'DatabaseHandler.rb'
 require_relative 'StoryHandler.rb'
+require_relative 'UserHandler.rb'
 require_relative 'Utils.rb'
 
 use Rack::Session::Cookie, :secret => 'super_secret_key_that_should_be_an_env_variable' # TODO

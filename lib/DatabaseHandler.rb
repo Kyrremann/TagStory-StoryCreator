@@ -32,6 +32,11 @@ def save_user_to_cloudant(uid, user)
   save_to_cloudant "users", jdata.to_json
 end
 
+# Statistic
+def get_statistic_from_cloudant(id)
+  JSON.parse(RestClient.get("#{DB}/Statistic/#{id}"))
+end
+
 def delete_story_from_cloudant(id)
   begin
     @respons =  RestClient.delete("#{DB}/stories/#{id}")
