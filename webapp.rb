@@ -117,18 +117,19 @@ get '/stories' do
   haml :stories, :locals => { :stories => get_stories }
 end
 
-get '/stories/json' do
+# api
+get '/api/stories/json' do
   content_type :json, 'charset' => 'utf-8'
   get_stories.to_json
 end
 
-get '/story/:id/json' do | id |
+get '/api/story/:id/json' do | id |
   content_type :json, 'charset' => 'utf-8'
   get_story_json(id).to_json
 end
 
-get '/api' do
-  validate_user session[:refresh_token]
+get '/api/test' do
+  #validate_user session[:refresh_token]
   redirect '/'
 end
 

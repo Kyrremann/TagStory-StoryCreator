@@ -7,6 +7,7 @@ require 'securerandom'
 require 'omniauth'
 require 'omniauth-google-oauth2'
 require 'uri'
+require 'sinatra/cross_origin'
 
 require_relative 'AuthHandler.rb'
 require_relative 'DatabaseHandler.rb'
@@ -46,4 +47,8 @@ before '/mystories/*' do
   unless logged_in?
     redirect '/'
   end
+end
+
+before '/api/*' do
+  cross_origin
 end

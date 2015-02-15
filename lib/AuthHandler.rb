@@ -47,8 +47,10 @@ def validate_user(refresh_token)
     unless @respons["access_token"].nil?
       session[:acess_token] = @respons["access_token"]
       session[:expires_at] = Time.now.utc + @respons["expires_in"].to_i
-      @respons = JSON.parse(RestClient.get "https://www.googleapis.com/oauth2/v1/userinfo?access_token=#{session[:access_token]}")
-      uid = @respons["id"]
+      #@respons = JSON.parse(RestClient.get "https://www.googleapis.com/oauth2/v1/userinfo?access_token=#{session[:access_token]}")
+      @respons = JSON.parse(RestClient.get "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=#{session[:access_token]}")
+      p @respons
+      #uid = @respons["id"]
     else
       # No Token
       p @respons
