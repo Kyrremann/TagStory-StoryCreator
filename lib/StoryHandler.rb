@@ -15,6 +15,7 @@ def get_stories
 end
 
 def get_user_stories
+  p get_uid
   @doc = RestClient.get("#{DB}/stories/_design/lists/_search/editors?q=" + get_uid)
   @result = JSON.parse(@doc)["rows"]
 end
@@ -33,9 +34,9 @@ def create_new_story
       "status" => "draft"
     }
   }
-  @response = save_story_to_cloudant value
-  if @response["ok"] then
-    @respons["_id"]
+  @respons = save_story_to_cloudant value
+  if @respons["ok"] then
+    return @respons["id"]
   else
     nil
   end

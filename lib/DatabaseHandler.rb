@@ -39,10 +39,10 @@ end
 
 def delete_story_from_cloudant(id)
   begin
-    @respons =  RestClient.delete("#{DB}/stories/#{id}")
+    @respons =  JSON.parse(RestClient.delete("#{DB}/stories/#{id}"))
     if @respons["ok"] then
       puts "OK"
-      @respons
+      return @respons
     else
       p @respons
       # something bad :\
@@ -56,10 +56,10 @@ end
 private
 def save_to_cloudant(table, json)
   begin
-    @respons =  RestClient.post("#{DB}/#{table}", json, {:content_type => :json, :accept => :json})
+    @respons =  JSON.parse(RestClient.post("#{DB}/#{table}", json, {:content_type => :json, :accept => :json}))
     if @respons["ok"] then
       puts "OK"
-      @respons
+      return @respons
     else
       p @respons
       # something bad :\
