@@ -20,7 +20,7 @@ def log_in_user(authJson)
     session[:info][:ids] = user["ids"]
   end
 
-  session[:uid] = uid
+  session[:uid] = user["id"]
 
   # always update information
   save_user session[:uid], session[:info]
