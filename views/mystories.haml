@@ -33,7 +33,7 @@
                   Do you want to
                   %a.post-category.post-category-design{:href => "/mystories/edit/story/#{value["id"]}"} edit
                   or
-                  %a.post-category.post-category-js{:href => "/mystories/delete/story/#{value["id"]}"} delete
+                  %a.post-category.post-category-js{:href => "/mystories/delete/story/#{value["id"]}?mode=soft"} delete
               .post-description
                 - if story.has_key? "description"
                   %p #{story["description"]}

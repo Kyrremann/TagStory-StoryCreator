@@ -1,5 +1,5 @@
 def get_story(id)
-
+  get_story_json_from_cloudant(id)["story"]
 end
 
 def get_story_json(id)
@@ -7,7 +7,7 @@ def get_story_json(id)
 end
 
 def get_current_story(id)
-  get_story_json_from_cloudant(id)["story"]
+  get_story id
 end
 
 def get_stories
@@ -15,9 +15,15 @@ def get_stories
 end
 
 def get_user_stories
-  p get_uid
   @doc = RestClient.get("#{DB}/stories/_design/lists/_search/editors?q=" + get_uid)
   @result = JSON.parse(@doc)["rows"]
+end
+
+def get_non_deleted_user_stories
+  stories = get_user_stories
+  stories.delete_if { | story |
+    story["fields"]["status"] == "deleted"
+  }
 end
 
 def create_new_story
@@ -42,8 +48,15 @@ def create_new_story
   end
 end
 
-def delete_story(id)
-  delete_story_from_cloudant id
+def delete_soft_story(id)
+  story = get_story id
+  p story
+  story["status"] = "deleted"
+  p story
+  save_story id, story
+end
+
+def delete_hard_story(id)
 end
 
 def save_story(id, data)

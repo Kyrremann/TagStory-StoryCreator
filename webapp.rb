@@ -30,7 +30,12 @@ end
 
 # delete story
 get '/mystories/delete/story/:storyId' do | storyId |
-  delete_story storyId
+  p params
+  if params["mode"] == "soft" then
+    delete_soft_story storyId
+  elsif params["mode"] == "hard" then
+    delete_hard_story storyId
+  end
   redirect '/mystories'
 end
 
@@ -109,7 +114,7 @@ end
 
 # my stories
 get '/mystories' do
-  haml :mystories, :locals => { :stories => get_user_stories }
+  haml :mystories, :locals => { :stories => get_non_deleted_user_stories }
 end
 
 # other
