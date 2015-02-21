@@ -1,0 +1,67 @@
+!!!
+%html
+  %head
+    %title Story Wizard - Tag
+    = haml :"templates/header_imports"
+    %script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBj0MzAv62ik_KGQi9WCVkSCx3qDGykiZ0")
+    :javascript
+      function initialize() {
+        - if params.has_key? 'tags'
+          - params['tags'].each_with_index do | array, index |
+        var tags = [];
+        var lat = #{empty_s?(params["lat"]) ? "59.9167055" : params["lat"]}
+        var long = #{empty_s?(params["long"]) ? "10.7294875" : params["long"]}
+        var zoomLevel = #{empty_s?(params["lat"]) ? 12 : 17}
+        var myLatLng = new google.maps.LatLng(lat, long);
+        var map_options = {
+          center: myLatLng,
+          zoom: zoomLevel,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        
+        var map_canvas = document.getElementById('map_canvas');
+        var map = new google.maps.Map(map_canvas, map_options)
+
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          draggable: true
+        });
+        var infowindow = new google.maps.InfoWindow({
+          content: "Option: "
+        });
+        
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.open(map, marker);
+        });
+        google.maps.event.addListener(marker, 'drag', function() {
+          document.getElementById('lat').value = marker.position.lat();
+          document.getElementById('long').value = marker.position.lng();
+        });
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+  %body
+    = haml :"templates/nav"
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        %form.pure-form.pure-form-aligned{:method => "POST", :role => "form"}
+          %fieldset
+            %legend Story wizard overview
+
+          .pure-control-group            
+            %div{:id => "map_canvas", :style => "width: auto; height: 600px;"}
+
+          .pure-control-group
+            %ul.pure-paginator
+              %li
+                %a.pure-button{:href => "/mystories/wizard/#{storyId}"} Story
+              - if params.has_key? 'tags'
+                - params['tags'].each_with_index do | array, index |
+                  %li
+                    %a.pure-button{:href => "/mystories/wizard/#{storyId}/#{array[0]}"} #{index + 1}
+                    
+          .pure-control-group
+            %button.pure-button{:type => "submit", :name => "save"} Save
