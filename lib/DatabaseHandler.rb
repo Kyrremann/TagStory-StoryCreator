@@ -34,7 +34,7 @@ end
 
 # Statistic
 def get_statistic_from_cloudant(id)
-  JSON.parse(RestClient.get("#{DB}/Statistic/#{id}"))
+  JSON.parse(RestClient.get("#{DB}/statistic/#{id}"))
 end
 
 def delete_story_from_cloudant(id)

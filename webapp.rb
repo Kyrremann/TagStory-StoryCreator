@@ -65,6 +65,13 @@ post '/mystories/wizard/:storyId/:tagId/:optionId' do | storyId, tagId, optionId
   redirect '/mystories/wizard/' + storyId + '/' + tagId + '/' + optionId
 end
 
+get '/mystories/wizard/:storyId/overview' do | storyId |
+  haml :wizard_story_overview, :locals => {
+    :params => get_current_story(storyId),
+    :storyId => storyId
+  }
+end
+
 get '/mystories/wizard/:storyId/:tagId' do | storyId, tagId |
   story = get_current_story storyId
   haml :wizard_tag, :locals => {
@@ -130,7 +137,9 @@ end
 
 get '/api/story/:id/json' do | id |
   content_type :json, 'charset' => 'utf-8'
-  get_story_json(id).to_json
+  story = get_story_json(id)["story"]
+  story.delete "editors"
+  story.to_json
 end
 
 get '/api/statistic/:id/json' do | id |
