@@ -24,6 +24,10 @@
           .pure-control-group  
             %label{:for => "release_date"} Release date:
             %input{:type => "text", :id => "datepicker", :name => "release_date", :value => "#{params['release_date']}"}
+            
+          .pure-control-group  
+            %label{:for => "version"} Version:
+            %input{:type => "text", :name => "version", :value => "#{params['version']}"}
                 
           .pure-control-group
             %label{:for => "agegroup"} Agegroup:
