@@ -137,7 +137,9 @@ end
 
 get '/api/story/:id/json' do | id |
   content_type :json, 'charset' => 'utf-8'
-  get_story_json(id).to_json
+  story = get_story_json(id)["story"]
+  story.delete "editors"
+  story.to_json
 end
 
 get '/api/statistic/:id/json' do | id |
