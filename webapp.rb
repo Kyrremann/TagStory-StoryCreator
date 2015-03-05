@@ -135,6 +135,16 @@ get '/api/stories/json' do
   get_stories.to_json
 end
 
+get '/api/story/:id/:key/json' do | id, key |
+  content_type :json, 'charset' => 'utf-8'
+  story = get_story_json(id)["story"]
+  story.delete "editors"
+  {
+    "UUID" => story["UUID"],
+    key => story[key]
+  }.to_json
+end
+
 get '/api/story/:id/json' do | id |
   content_type :json, 'charset' => 'utf-8'
   story = get_story_json(id)["story"]
@@ -148,7 +158,9 @@ get '/api/statistic/:id/json' do | id |
   if user then
     get_statistic(user["id"]).to_json
   else
-    '{"error": "We can\'t find that user"}'.to_json
+    {
+      "error" => "We can\'t find that user"
+    }.to_json
   end
 end
 
