@@ -10,6 +10,16 @@ def get_current_story(id)
   get_story id
 end
 
+def get_story_id(uuid)
+  @doc = RestClient.get("#{DB}/stories/_design/lists/_search/uuid?q=UUID:\"" + uuid + "\"")
+  @result = JSON.parse(@doc)
+  if (@result["total_rows"] == 1) then
+    return @result["rows"][0]["id"]
+  else
+    return nil
+  end
+end
+
 def get_stories
   get_stories_json_from_cloudant
 end
