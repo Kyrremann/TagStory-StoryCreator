@@ -137,6 +137,7 @@ end
 
 get '/api/story/:id/:key/json' do | id, key |
   content_type :json, 'charset' => 'utf-8'
+  
   if (id.is_uuid?) then
     id = get_story_id id
   end
@@ -157,6 +158,17 @@ end
 
 get '/api/story/:id/json' do | id |
   content_type :json, 'charset' => 'utf-8'
+  
+  if (id.is_uuid?) then
+    id = get_story_id id
+  end
+  
+  if (id.nil?) then
+    return {
+      "error" => "We can\'t find that story"
+    }.to_json
+  end
+
   story = get_story_json(id)["story"]
   story.delete "editors"
   story.to_json
