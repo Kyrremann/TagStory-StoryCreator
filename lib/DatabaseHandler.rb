@@ -39,6 +39,7 @@ end
 
 def delete_story_from_cloudant(id)
   begin
+    story = get_story_json_from_cloudant id
     @respons =  JSON.parse(RestClient.delete("#{DB}/stories/#{id}"))
     if @respons["ok"] then
       puts "OK"

@@ -1,0 +1,33 @@
+!!!
+%html
+  %head
+    %title Stories
+    = haml :"templates/header_imports"
+  %body
+    = haml :"templates/nav"
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        .pure-menu.pure-menu-open.pure-menu-horizontal
+          %ul
+            %li
+              %a{:href => "/mystories/new/story"} New story
+            %li
+              %a{:href => "/mystories/trash"} Trash bin
+      .pure-u-1-4
+    
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        .posts
+          - trash.each do | value |
+            - story = value["fields"]
+            %section.post
+              %header.post-header
+                %h2.post-title #{story["title"]}
+                %p.post-meta
+                  Do you want to
+                  %a.post-category.post-category-design{:href => "/mystories/delete/story/#{value["id"]}?mode=restore"} restore
+                  or
+                  %a.post-category.post-category-js{:href => "/mystories/delete/story/#{value["id"]}?mode=hard"} delete
+      .pure-u-1-4

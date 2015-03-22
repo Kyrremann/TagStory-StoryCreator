@@ -12,6 +12,8 @@
           %ul
             %li
               %a{:href => "/mystories/new/story"} New story
+            %li
+              %a{:href => "/mystories/trash"} Trash bin
       .pure-u-1-4
     
     .pure-g
@@ -33,7 +35,7 @@
                   Do you want to
                   %a.post-category.post-category-design{:href => "/mystories/edit/story/#{value["id"]}"} edit
                   or
-                  %a.post-category.post-category-js{:href => "/mystories/delete/story/#{value["id"]}?mode=soft"} delete
+                  %a.post-category.post-category-js{:href => "/mystories/delete/story/#{value["id"]}?mode=soft"} trash
               .post-description
                 - if story.has_key? "description"
                   %p #{story["description"]}

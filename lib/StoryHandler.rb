@@ -29,6 +29,13 @@ def get_user_stories
   @result = JSON.parse(@doc)["rows"]
 end
 
+def get_trashed_stories_for_user
+  stories = get_user_stories
+  stories.delete_if { | story |
+    story["fields"]["status"] != "deleted"
+  }
+end
+
 def get_non_deleted_user_stories
   stories = get_user_stories
   stories.delete_if { | story |
@@ -60,13 +67,18 @@ end
 
 def delete_soft_story(id)
   story = get_story id
-  p story
   story["status"] = "deleted"
-  p story
   save_story id, story
 end
 
 def delete_hard_story(id)
+  delete_story_from_cloudant id
+end
+
+def delete_soft_story(id)
+  story = get_story id
+  story['status'] = 'draft'
+  save_story id, story
 end
 
 def save_story(id, data)
