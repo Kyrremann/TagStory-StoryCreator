@@ -49,6 +49,12 @@
               %option{:value => "quiz", :selected => params['game_mode'] == 'quiz'} Quiz
 
           .pure-control-group
+            %label{:for => "skipable"} Skipable:
+            %select{:name => "skipable"}
+              %option{:value => "False", :selected => params['skipable'] == 'False'} False
+              %option{:value => "True", :selected => params['skipable'] == 'True'} True
+
+          .pure-control-group
             %label{:for => "endpoint"} Last tag:
             %input{:type=>"checkbox", :name=>"isEndpoint", :checked => params['isEndPoint'] == "true"}
 
