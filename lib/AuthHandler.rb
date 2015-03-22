@@ -1,5 +1,5 @@
 def log_in_user(authJson)
-  user = get_unknown_user authJson["uid"]
+  user = get_unknown_user authJson['uid']
 
   session[:access_token] = authJson[:credentials][:token]
   session[:refresh_token] = authJson[:credentials][:refresh_token]
@@ -12,16 +12,16 @@ def log_in_user(authJson)
     :birthday => raw[:birthday],
     :locale => raw[:locale]
   }
-  
+
   unless user then
     uid = SecureRandom.uuid
-    session[:info][:ids] = [ authJson["uid"] ]
+    session[:info][:ids] = [ authJson['uid'] ]
   else
-    session[:info][:ids] = user["ids"]
+    uid = user['id']
+    session[:info][:ids] = user['ids']
   end
 
-  session[:uid] = user["id"]
-
+  session[:uid] = uid
   # always update information
   save_user session[:uid], session[:info]
 end
