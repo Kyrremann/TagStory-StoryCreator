@@ -107,7 +107,7 @@ def add_tag(tagId, storyId)
   unless story["story"].has_key? 'tags' then
     story["story"]["tags"] = {}
   end
-  story["story"]["tags"][tagId] = {"options": {}}
+  story["story"]["tags"][tagId] = {"options": []}
   save_story_to_cloudant story
 end
 
