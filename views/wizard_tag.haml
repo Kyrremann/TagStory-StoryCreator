@@ -11,35 +11,38 @@
         %form.pure-form.pure-form-aligned{:method => "POST", :role => "form"}
           %fieldset
             %legend Tag wizard
-
-          .pure-control-group
-            %label{:for => "title"} Title:
-            %input{:type => "text", :name => "title", :value => "#{params['title']}"}
                 
           .pure-control-group
             %label{:for => "description"} Description:
             %textarea{:name => "description", :rows => "6", :cols => "23"}
               #{params['description']}
+            
+          .pure-control-group
+            %label{:for => "tag_image"} Tag image:
+            %input{:type => "text", :name => "tag_image", :value => "#{params['tag_image']}"}
+
+          %legend
+            Optionally
+
+          .pure-control-group
+            %label{:for => "title"} Title:
+            %input{:type => "text", :name => "title", :value => "#{params['title']}"}
               
           .pure-control-group
             %label{:for => "question"} Question:
             %input{:type => "text", :name => "question", :value => "#{params['question']}"}
             
           .pure-control-group
-            %label{:for => "tag_type"} Tag type:
+            %label{:for => "travel_button"} Travel button:
+            %input{:type => "text", :name => "travel_button", :placeholder => "See where to go next", :value => "#{params['travel_button']}"}
+            
+          .pure-control-group
+            %label{:for => "tag_type"} Tag technology:
             %select{:name => "tag_types"}
               %option{:value => "gps", :selected => params['tag_types'] == 'gps'} GPS
               %option{:value => "qr", :selected => params['tag_type'] == 'qr'} QR
               %option{:value => "nfc", :selected => params['tag_type'] == 'nfc'} NFC
               %option{:value => "qr_and_nfc", :selected => params['tap_type'] == 'qr_and_nfc'} QR and NFC
-            
-          .pure-control-group
-            %label{:for => "travel_button"} Travel button:
-            %input{:type => "text", :name => "travel_button", :value => "#{params['travel_button']}"}
-            
-          .pure-control-group
-            %label{:for => "tag_image"} Tag image:
-            %input{:type => "text", :name => "tag_image", :value => "#{params['tag_image']}"}
             
           .pure-control-group
             %label{:for => "game_mode"} Game mode:
@@ -49,13 +52,13 @@
               %option{:value => "quiz", :selected => params['game_mode'] == 'quiz'} Quiz
 
           .pure-control-group
-            %label{:for => "skipable"} Skipable:
-            %select{:name => "skipable"}
-              %option{:value => "False", :selected => params['skipable'] == 'False'} False
-              %option{:value => "True", :selected => params['skipable'] == 'True'} True
+            %label{:for => "skippable"} Is the tag skippable:
+            %select{:name => "skippable"}
+              %option{:value => "False", :selected => params['skippable'] == 'False'} False
+              %option{:value => "True", :selected => params['skippable'] == 'True'} True
 
           .pure-control-group
-            %label{:for => "endpoint"} Last tag:
+            %label{:for => "endpoint"} Is it the last tag:
             %input{:type=>"checkbox", :name=>"isEndpoint", :checked => params['isEndPoint'] == "true"}
 
           .pure-control-group
