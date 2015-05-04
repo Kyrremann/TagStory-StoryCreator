@@ -8,7 +8,7 @@
       function initialize() {
         var lat = #{empty_s?(params["lat"]) ? "59.9167055" : params["lat"]}
         var long = #{empty_s?(params["long"]) ? "10.7294875" : params["long"]}
-        var zoomLevel = #{empty_s?(params["lat"]) ? 12 : 17}
+        var zoomLevel = #{empty_s?(params["zoom_level"]) ? 12 : params['zoom_level']}
         var myLatLng = new google.maps.LatLng(lat, long);
         var map_options = {
           center: myLatLng,
@@ -47,14 +47,6 @@
         %form.pure-form.pure-form-aligned{:method => "POST", :role => "form"}
           %fieldset
             %legend Option wizard
-
-          .pure-control-group
-            %label{:for => "answer"} Answer:
-            %input{:type => "text", :name => "answer", :value => "#{params['answer']}"}
-            
-          .pure-control-group
-            %label{:for => "title"} Title:
-            %input{:type => "text", :name => "title", :value => "#{params['title']}"}
             
           .pure-control-group
             %label{:for => "method"} Method:
@@ -63,24 +55,65 @@
               %option{:value => "image", :selected => params['method'] == 'image'} Image
               %option{:value => "sound", :selected => params['method'] == 'sound'} Sound
               %option{:value => "map", :selected => params['method'] == 'map'} Map
+            %img{:src => "/images/information-icon.png", 'data-ot' => ""}
+
+          %legend These are based on what you have previously chosen
+
+          .pure-control-group
+            %label{:for => "answer"} Answer:
+            %input{:type => "text", :name => "answer", :value => "#{params['answer']}"}
+            %img{:src => "/images/information-icon.png", 'data-ot' => "If you have chosen Question on this tag, this field needs to be filled out, as it acts as one of the answer."}
+            
+          .pure-control-group
+            %label{:for => "title"} Title:
+            %input{:type => "text", :name => "title", :value => "#{params['title']}"}
+            %img{:src => "/images/information-icon.png", 'data-ot' => "You can set the title of each tag-option screen. Will change the title in the action bar."}
+
+          %legend These depends on your method of choice
                 
           .pure-control-group
             %label{:for => "text"} Text:
             %input{:type => "text", :name => "text", :value => "#{params['text']}"}
+            %img{:src => "/images/information-icon.png", 'data-ot' => "If you chose method: text, this field needs to be filled out. On other methods this can act as a supplementing field. For example, informing that you picked the correct answer on the tag question."}
             
-          .pure-control-group
-            %label{:for => "lat"} GPS latitude:
-            %input{:type => "text", :id => "lat", :name => "lat", :value => "#{params['lat']}"}
+          - if params['method'] == 'image'
+            .pure-control-group
+              %label{:for => "image"} Image:
+              %input{:type => "text", :name => "image", :value => "#{params['image_source']}"}
+              %img{:src => "/images/information-icon.png", 'data-ot' => ""}
             
-          .pure-control-group
-            %label{:for => "long"} GPS longitude:
-            %input{:type => "text", :id => "long", :name => "long", :value => "#{params['long']}"}
+          - if params['method'] == 'sound'
+            .pure-control-group
+              %label{:for => "sound"} Sound:
+              %input{:type => "text", :name => "sound", :value => "#{params['sound_source']}"}
+              %img{:src => "/images/information-icon.png", 'data-ot' => ""}
+            
+          - if params['method'] == 'map'
+            .pure-control-group
+              %label{:for => "lat"} GPS latitude:
+              %input{:type => "text", :id => "lat", :name => "lat", :value => "#{params['lat']}"}
+              %img{:src => "/images/information-icon.png", 'data-ot' => ""}
+            
+            .pure-control-group
+              %label{:for => "long"} GPS longitude:
+              %input{:type => "text", :id => "long", :name => "long", :value => "#{params['long']}"}
+              %img{:src => "/images/information-icon.png", 'data-ot' => ""}
+              
+            .pure-control-group
+              %label{:for => "zoom_level"} Zoom level:
+              %input{:type => "text", :name => "zoom_level", :placeholder => "15", :value => "#{params['zoom_level']}"}
+
+            .pure-control-group
+              %div{:id => "map_canvas"}
+
+          %legend Points to the next tag, can't be filled out before the next tag is made
             
           .pure-control-group
             %label{:for => "next"} Next:
             %select{:name => "next"}
               - tags.each do | key, value |
                 %option{:value => key, :selected => params['next'] == key} #{key}
+            %img{:src => "/images/information-icon.png", 'data-ot' => ""}
 
           .pure-control-group
             %ul.pure-paginator
@@ -95,7 +128,7 @@
           .pure-control-group
             %ul.pure-paginator
               %li
-                %a.pure-button{:href => "/mystories/wizard/#{storyId}"} Story
+                %p Tags
               - tags.each_with_index do | array, index |
                 %li
                   - @url = "/mystories/wizard/#{storyId}/#{array[0]}"
@@ -103,14 +136,9 @@
                   %a.pure-button{:href => @url, :class => @class} #{index + 1}
 
           .pure-control-group
+            %a.pure-button{:href => "/mystories/wizard/#{storyId}"} Story
             %button.pure-button{:type => "submit", :name => "save"} Save
             %button.pure-button{:type => "submit", :name => "add_tag"} Add tag
             %button.pure-button{:type => "submit", :name => "add_option"} Add option
             %button.pure-button{:type => "submit", :name => "delete_option"} Delete option
       .pure-u-1-4
-      - if params['method'] == 'map'
-        .pure-u-1-4
-        .pure-u-1-2
-          .pure-g
-            %div{:id => "map_canvas"}
-        .pure-u-1-4

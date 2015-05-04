@@ -13,7 +13,7 @@
             %legend Tag wizard
                 
           .pure-control-group
-            %label{:for => "description"} Description:
+            %label{:for => "description"} Tag text:
             %textarea{:name => "description", :rows => "6", :cols => "23"}
               #{params['description']}
             
@@ -27,14 +27,30 @@
           .pure-control-group
             %label{:for => "title"} Title:
             %input{:type => "text", :name => "title", :value => "#{params['title']}"}
+            %img{:src => "/images/information-icon.png", 'data-ot' => "You can set the title of each tag screen. Will change the title in the action bar."}
               
           .pure-control-group
             %label{:for => "question"} Question:
             %input{:type => "text", :name => "question", :value => "#{params['question']}"}
+            %img{:src => "/images/information-icon.png", 'data-ot' => "You can ask a single question instead of making a quiz. A typicall question would be; Which road do you want to take?. When using the question button, each title of an option will be used as an answer. So when the user click the button at the bottom, a list of possible answer will be shown."}
             
           .pure-control-group
             %label{:for => "travel_button"} Travel button:
             %input{:type => "text", :name => "travel_button", :placeholder => "See where to go next", :value => "#{params['travel_button']}"}
+            %img{:src => "/images/information-icon.png", 'data-ot' => "This is the bottom button, normally it says 'See where to go next'. This can be customized if needed. Typically when you ask a single question (see previous field), you would like to have the title of the travel button say something like 'See answers' or 'See roads'"}
+
+          .pure-control-group
+            %label{:for => "skippable"} Is this tag skippable:
+            %input{:type=>"checkbox", :name=>"skippable", :checked => params['skippable'] == "False"}
+            %img{:src => "/images/information-icon.png", 'data-ot' => "Checking this box will let the reader skip the tag if he or she can't find it."}
+
+          .pure-control-group
+            %label{:for => "endpoint"} Is this the last tag:
+            %input{:type=>"checkbox", :name=>"isEndpoint", :checked => params['isEndPoint'] == "true"}
+            %img{:src => "/images/information-icon.png", 'data-ot' => "Need to be checked on the tag that is the last tag, so that the story can end."}
+
+          %legend
+            To be implemented better later
             
           .pure-control-group
             %label{:for => "tag_type"} Tag technology:
@@ -52,16 +68,6 @@
               %option{:value => "quiz", :selected => params['game_mode'] == 'quiz'} Quiz
 
           .pure-control-group
-            %label{:for => "skippable"} Is the tag skippable:
-            %select{:name => "skippable"}
-              %option{:value => "False", :selected => params['skippable'] == 'False'} False
-              %option{:value => "True", :selected => params['skippable'] == 'True'} True
-
-          .pure-control-group
-            %label{:for => "endpoint"} Is it the last tag:
-            %input{:type=>"checkbox", :name=>"isEndpoint", :checked => params['isEndPoint'] == "true"}
-
-          .pure-control-group
             %ul.pure-paginator
               %li
                 %p Options
@@ -74,7 +80,7 @@
           .pure-control-group
             %ul.pure-paginator
               %li
-                %a.pure-button{:href => "/mystories/wizard/#{storyId}"} Story
+                %p Tags
               - tags.each_with_index do | array, index |
                 %li
                   - @url = "/mystories/wizard/#{storyId}/#{array[0]}"
@@ -82,6 +88,7 @@
                   %a.pure-button{:href => @url, :class => @class} #{index + 1}
 
           .pure-control-group
+            %a.pure-button{:href => "/mystories/wizard/#{storyId}"} Story
             %button.pure-button{:type => "submit", :name => "save"} Save
             %button.pure-button{:type => "submit", :name => "add_tag"} Add tag
             %button.pure-button{:type => "submit", :name => "add_option"} Add option

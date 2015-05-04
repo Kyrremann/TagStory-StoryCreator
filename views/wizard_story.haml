@@ -28,11 +28,16 @@
                 
           .pure-control-group
             %label{:for => "genre"} Genre:
-            %input{:type => "text", :name => "genre", :value => "#{params['genre']}"}
+            %input{:type => "text", :name => "genre", :placeholder => "science fiction, horror", :value => "#{params['genre']}"}
                 
           .pure-control-group
             %label{:for => "agegroup"} Age group:
-            %input{:type => "text", :name => "agegroup", :value => "#{params['agegroup']}"}
+            %select{:name => "age_group"}
+              %option{:value => "e", :selected => params['age_group'] == 'e'} Everyone
+              %option{:value => "k", :selected => params['age_group'] == 'k'} Kids
+              %option{:value => "tw", :selected => params['age_group'] == 'tw'} Tweens
+              %option{:value => "t", :selected => params['age_group'] == 't'} Teens
+              %option{:value => "m", :selected => params['age_group'] == 'm'} Mature
                 
           .pure-control-group
             %label{:for => "keywords"} Keywords:
@@ -55,11 +60,11 @@
             
           .pure-control-group
             %label{:for => "country"} Country:
-            %input{:type => "text", :name => "country", :value => "#{params['country']}"}
+            %input{:type => "text", :name => "country", :placeholder => "Bulgaria", :value => "#{params['country']}"}
             
           .pure-control-group
             %label{:for => "area"} Area:
-            %input{:type => "text", :name => "area", :value => "#{params['area']}"}
+            %input{:type => "text", :name => "area", :placeholder => "Doktorska Gradina", :value => "#{params['area']}"}
 
           %legend
             Other
@@ -67,13 +72,14 @@
           .pure-control-group
             %label{:for => "estimated_time"} Estimated time:
             %input{:type => "text", :name => "estimated_time", :value => "#{params['estimated_time']}"}
+            %img{:src => "/images/information-icon.png", 'data-ot' => "The estimated time used to finish the whole story. In hours (2h, 1-2h, 1,5h)."}
             
           .pure-control-group
             %label{:for => "url"} Website:
             %input{:type => "text", :name => "url", :value => "#{params['url']}"}
 
           %legend
-            For later
+            For release, will be handled different later
             
           .pure-control-group
             %label{:for => "status"} Status:
@@ -89,9 +95,6 @@
           .pure-control-group  
             %label{:for => "version"} Version:
             %input{:type => "text", :name => "version", :value => "#{params['version']}"}
-
-          %legend
-            To be automated
                 
           .pure-control-group
             %label{:for => "start_tag"} Start tag:
@@ -99,6 +102,9 @@
               - if params.has_key? 'tags'
                 - params['tags'].each do | key, value |
                   %option{:value => key, :selected => params['start_tag'] == key} #{key}
+
+          %legend
+            To be automated
             
           .pure-control-group
             %label{:for => "tag_types"} Tag technology used:
@@ -118,13 +124,14 @@
           .pure-control-group
             %ul.pure-paginator
               %li
-                %a.pure-button.pure-button-active{:href => "/mystories/wizard/#{storyId}"} Story
+                %p Tags
               - if params.has_key? 'tags'
                 - params['tags'].each_with_index do | array, index |
                   %li
                     %a.pure-button{:href => "/mystories/wizard/#{storyId}/#{array[0]}"} #{index + 1}
 
           .pure-control-group
+            %a.pure-button{:href => "/mystories/wizard/#{storyId}"} Story
             %button.pure-button{:type => "submit", :name => "save"} Save
             %button.pure-button{:type => "submit", :name => "add_tag"} Add tag
             %a.pure-button.pure-button{:href => "/mystories/wizard/#{storyId}/overview"} Map overview
