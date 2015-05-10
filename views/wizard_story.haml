@@ -100,8 +100,10 @@
             %label{:for => "start_tag"} Start tag:
             %select{:name => "start_tag"}
               - if params.has_key? 'tags'
+                - index = 1
                 - params['tags'].each do | key, value |
-                  %option{:value => key, :selected => params['start_tag'] == key} #{key}
+                  %option{:value => key, :selected => params['start_tag'] == key} ##{index} #{value['title']}
+                  - index += 1
 
           %legend
             To be automated

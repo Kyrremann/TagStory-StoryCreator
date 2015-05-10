@@ -111,8 +111,10 @@
           .pure-control-group
             %label{:for => "next"} Next:
             %select{:name => "next"}
+              - index = 1
               - tags.each do | key, value |
-                %option{:value => key, :selected => params['next'] == key} #{key}
+                %option{:value => key, :selected => params['next'] == key} ##{index} #{value['title']}
+                - index += 1
             %img{:src => "/images/information-icon.png", 'data-ot' => ""}
 
           .pure-control-group
