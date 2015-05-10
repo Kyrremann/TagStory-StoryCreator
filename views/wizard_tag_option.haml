@@ -73,7 +73,8 @@
                 
           .pure-control-group
             %label{:for => "text"} Text:
-            %input{:type => "text", :name => "text", :value => "#{params['text']}"}
+            %textarea{:name => "text", :rows => "6", :cols => "23"}
+              #{params['text']}
             %img{:src => "/images/information-icon.png", 'data-ot' => "If you chose method: text, this field needs to be filled out. On other methods this can act as a supplementing field. For example, informing that you picked the correct answer on the tag question."}
             
           - if params['method'] == 'image'
