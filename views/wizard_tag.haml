@@ -41,13 +41,21 @@
 
           .pure-control-group
             %label{:for => "skippable"} Is this tag skippable:
-            %input{:type=>"checkbox", :name=>"skippable", :checked => params['skippable'] == "true"}
-            %img{:src => "/images/information-icon.png", 'data-ot' => "Checking this box will let the reader skip the tag if he or she can't find it."}
+            %select{:name => "skippable"}
+              %option{:value => "true", :selected => params['skippable'] == 'true'} True
+              %option{:value => "false", :selected => params['skippable'] == 'false'} False
+              
+            -#%input{:type=>"checkbox", :name=>"skippable", :checked => params['skippable'] == "true"}
+            -#%img{:src => "/images/information-icon.png", 'data-ot' => "Checking this box will let the reader skip the tag if he or she can't find it."}
 
           .pure-control-group
             %label{:for => "endpoint"} Is this the last tag:
-            %input{:type=>"checkbox", :name=>"isEndpoint", :checked => params['isEndPoint'] == "true"}
-            %img{:src => "/images/information-icon.png", 'data-ot' => "Need to be checked on the tag that is the last tag, so that the story can end."}
+            %select{:name => "endpoint"}
+              %option{:value => "false", :selected => params['endpoint'] == 'false'} False
+              %option{:value => "true", :selected => params['endpoint'] == 'true'} True
+            
+            -#%input{:type=>"checkbox", :name=>"isEndpoint", :checked => params['isEndPoint'] == "true"}
+            -#%img{:src => "/images/information-icon.png", 'data-ot' => "Need to be checked on the tag that is the last tag, so that the story can end."}
 
           %legend
             To be implemented better later
