@@ -8,6 +8,7 @@
       function initialize() {
         - if params.has_key? 'tags'
           - params['tags'].each_with_index do | array, index |
+            = index
         var tags = [];
         var lat = #{empty_s?(params["lat"]) ? "59.9167055" : params["lat"]}
         var long = #{empty_s?(params["long"]) ? "10.7294875" : params["long"]}
@@ -54,14 +55,19 @@
           .pure-control-group            
             %div{:id => "map_canvas", :style => "width: auto; height: 600px;"}
 
-          .pure-control-group
-            %ul.pure-paginator
-              %li
-                %a.pure-button{:href => "/mystories/wizard/#{storyId}"} Story
-              - if params.has_key? 'tags'
-                - params['tags'].each_with_index do | array, index |
-                  %li
-                    %a.pure-button{:href => "/mystories/wizard/#{storyId}/#{array[0]}"} #{index + 1}
-                    
-          .pure-control-group
-            %button.pure-button{:type => "submit", :name => "save"} Save
+        .pure-control-group
+          %ul.pure-paginator
+            %li
+              %p Tags
+            - if params.has_key? 'tags'
+              - params['tags'].each_with_index do | array, index |
+                %li
+                  %a.pure-button{:href => "/mystories/wizard/#{storyId}/#{array[0]}"} #{index + 1}
+
+        .pure-control-group
+          %a.pure-button{:href => "/mystories/wizard/#{storyId}"} Story
+          %button.pure-button{:type => "submit", :name => "save"} Save
+          %button.pure-button{:type => "submit", :name => "add_tag"} Add tag
+          %a.pure-button.pure-button{:href => "/mystories/wizard/#{storyId}/overview"} Map overview
+          %a.pure-button.pure-button{:href => "/mystories/wizard/#{storyId}/qr-codes"} See tags QR-code text
+      .pure-u-1-4

@@ -1,0 +1,34 @@
+!!!
+%html
+  %head
+    %title Story Wizard - Tag
+    = haml :"templates/header_imports"
+  %body
+    = haml :"templates/nav"
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        - if params.has_key? 'tags'
+          - params['tags'].each do | key, value  |
+            %p
+              = value['title']
+              %br
+              QR-Code text:
+              %strong #{value['UUID']}
+
+        .pure-control-group
+          %ul.pure-paginator
+            %li
+              %p Tags
+            - if params.has_key? 'tags'
+              - params['tags'].each_with_index do | array, index |
+                %li
+                  %a.pure-button{:href => "/mystories/wizard/#{storyId}/#{array[0]}"} #{index + 1}
+
+        .pure-control-group
+          %a.pure-button{:href => "/mystories/wizard/#{storyId}"} Story
+          %button.pure-button{:type => "submit", :name => "save"} Save
+          %button.pure-button{:type => "submit", :name => "add_tag"} Add tag
+          %a.pure-button.pure-button{:href => "/mystories/wizard/#{storyId}/overview"} Map overview
+          %a.pure-button.pure-button{:href => "/mystories/wizard/#{storyId}/qr-codes"} See tags QR-code text
+      .pure-u-1-4

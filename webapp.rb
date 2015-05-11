@@ -74,6 +74,13 @@ get '/mystories/wizard/:storyId/overview' do | storyId |
   }
 end
 
+get '/mystories/wizard/:storyId/qr-codes' do | storyId |
+  haml :wizard_story_qrcodes, :locals => {
+    :params => get_current_story(storyId),
+    :storyId => storyId
+  }
+end
+
 get '/mystories/wizard/:storyId/:tagId' do | storyId, tagId |
   story = get_current_story storyId
   haml :wizard_tag, :locals => {
