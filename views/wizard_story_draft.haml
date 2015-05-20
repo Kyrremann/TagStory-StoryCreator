@@ -1,0 +1,15 @@
+!!!
+%html
+  %head
+    %title Story Wizard - Publish Story
+    = haml :"templates/header_imports"
+  %body
+    = haml :"templates/nav"
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+
+        Your game have now been taken of the story market. People can no longer download it to their phone.
+        .pure-control-group
+          %a.pure-button{:href => "/mystories/wizard/#{storyId}"} Story
+      .pure-u-1-4

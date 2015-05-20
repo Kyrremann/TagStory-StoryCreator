@@ -83,33 +83,6 @@
             %input{:type => "text", :name => "url", :value => "#{params['url']}"}
 
           %legend
-            For release, will be handled different later
-            
-          .pure-control-group
-            %label{:for => "status"} Status:
-            %select{:name => "status"}
-              %option{:value => "draft", :selected => params['status'] == 'draft'} Draft
-              %option{:value => "published", :selected => params['status'] == 'published'} Published
-              %option{:value => "pending", :selected => params['status'] == 'pending'} Pending
-
-          .pure-control-group  
-            %label{:for => "release_date"} Release date:
-            %input{:type => "text", :id => "datepicker", :name => "release_date", :value => "#{params['release_date']}"}
-            
-          .pure-control-group  
-            %label{:for => "version"} Version:
-            %input{:type => "text", :name => "version", :value => "#{params['version']}"}
-                
-          .pure-control-group
-            %label{:for => "start_tag"} Start tag:
-            %select{:name => "start_tag"}
-              - if params.has_key? 'tags'
-                - index = 1
-                - params['tags'].each do | key, value |
-                  %option{:value => key, :selected => params['start_tag'] == key} ##{index} #{value['title']}
-                  - index += 1
-
-          %legend
             To be automated
             
           .pure-control-group
@@ -140,6 +113,14 @@
             %a.pure-button{:href => "/mystories/wizard/#{storyId}"} Story
             %button.pure-button{:type => "submit", :name => "save"} Save
             %button.pure-button{:type => "submit", :name => "add_tag"} Add tag
+            - if params['status'] == 'published'
+              - status_name = 'Unpublish'
+              - status = 'draft'
+            - else
+              - status_name = 'Publish'
+              - status = 'published'
+            %a.pure-button.pure-button{:href => "/mystories/wizard/#{storyId}/change-status?status=#{status}"}
+              = status_name
             %a.pure-button.pure-button{:href => "/mystories/wizard/#{storyId}/overview"} Map overview
             %a.pure-button.pure-button{:href => "/mystories/wizard/#{storyId}/qr-codes"} See tags QR-code text
       .pure-u-1-4

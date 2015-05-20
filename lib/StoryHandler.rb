@@ -54,7 +54,8 @@ def create_new_story
       "genre": "draft",
       "description" => "Please fill in a description about your story",
       "image" => "placeimg_960_720_nature_1.jpg",
-      "status" => "draft"
+      "status" => "draft",
+      "version" => 1
     }
   }
   @respons = save_story_to_cloudant value

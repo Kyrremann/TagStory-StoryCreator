@@ -1,0 +1,35 @@
+!!!
+%html
+  %head
+    %title Story Wizard - Publish Story
+    = haml :"templates/header_imports"
+  %body
+    = haml :"templates/nav"
+    .pure-g
+      .pure-u-1-4
+      .pure-u-1-2
+        %form.pure-form.pure-form-aligned{:method => "POST", :role => "form"}
+          %fieldset
+            %legend Story wizard - Publish Story
+
+          %p
+            Publising a story is really simple. All you have to do is to choose a start tag,
+            and then press save at the bottom. After that you will find the story at the officle Tag Story web page,
+            and in the Story Market in the app.
+
+          %legend
+            Please choose a start tag
+
+          .pure-control-group
+            %label{:for => "start_tag"} Start tag:
+            %select{:name => "start_tag"}
+              - if params.has_key? 'tags'
+                - index = 1
+                - params['tags'].each do | key, value |
+                  %option{:value => key, :selected => params['start_tag'] == key} ##{index} #{value['title']}
+                  - index += 1
+
+          .pure-control-group
+            %a.pure-button{:href => "/mystories/wizard/#{storyId}"} Story
+            %button.pure-button{:type => "submit", :name => "save"} Save
+      .pure-u-1-4

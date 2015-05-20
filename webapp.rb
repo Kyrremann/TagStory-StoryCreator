@@ -30,7 +30,6 @@ end
 
 # delete story
 get '/mystories/delete/story/:storyId' do | storyId |
-  p params
   if params["mode"] == "soft" then
     delete_soft_story storyId
   elsif params["mode"] == "hard" then
@@ -44,7 +43,6 @@ end
 # story wizard
 get '/mystories/wizard/:storyId/:tagId/:optionId' do | storyId, tagId, optionId |
   story = get_current_story storyId
-  p story["tags"][tagId]["options"][optionId.to_i]
   haml :wizard_tag_option, :locals => {
     :params => story["tags"][tagId]["options"][optionId.to_i],
     :storyId => storyId,
@@ -79,6 +77,45 @@ get '/mystories/wizard/:storyId/qr-codes' do | storyId |
     :params => get_current_story(storyId),
     :storyId => storyId
   }
+end
+
+get '/mystories/wizard/:storyId/change-status' do | storyId |
+  if params['status'] == 'published'
+    haml :wizard_story_publish, :locals => {
+      :params => get_current_story(storyId),
+      :storyId => storyId
+    }
+  elsif params['status'] == 'draft'
+    story = get_current_story(storyId)
+    story['status'] = 'draft'
+    save_story(storyId, story)
+    haml :wizard_story_draft, :locals => {
+      :storyId => storyId
+    }
+  end
+end
+
+post '/mystories/wizard/:storyId/change-status' do | storyId |
+  story = get_current_story(storyId)
+  if story['status'] == 'draft'
+    story['status'] = 'published'
+    
+    version = story['version'].to_i
+    if version
+      version += 1
+    else
+      version = 1
+    end
+    story['version'] = version
+    
+    unless story['release_date']
+      story['release_date'] = Time.now()
+    end
+    story['start_tag'] = params['start_tag']
+    save_story(storyId, story)
+  end
+  
+  redirect '/mystories/wizard/' + storyId
 end
 
 get '/mystories/wizard/:storyId/:tagId' do | storyId, tagId |
