@@ -49,10 +49,10 @@
             -#%img{:src => "/images/information-icon.png", 'data-ot' => "Checking this box will let the reader skip the tag if he or she can't find it."}
 
           .pure-control-group
-            %label{:for => "endpoint"} Is this the last tag:
-            %select{:name => "endpoint"}
-              %option{:value => "false", :selected => params['endpoint'] == 'false'} False
-              %option{:value => "true", :selected => params['endpoint'] == 'true'} True
+            %label{:for => "isEndPoint"} Is this the last tag:
+            %select{:name => "isEndPoint"}
+              %option{:value => "false", :selected => params['isEndPoint'] == 'false'} False
+              %option{:value => "true", :selected => params['isEndPoint'] == 'true'} True
             
             -#%input{:type=>"checkbox", :name=>"isEndpoint", :checked => params['isEndPoint'] == "true"}
             -#%img{:src => "/images/information-icon.png", 'data-ot' => "Need to be checked on the tag that is the last tag, so that the story can end."}
