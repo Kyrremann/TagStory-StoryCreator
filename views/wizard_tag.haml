@@ -62,8 +62,8 @@
             
           .pure-control-group
             %label{:for => "tag_type"} Tag technology:
-            %select{:name => "tag_types"}
-              %option{:value => "gps", :selected => params['tag_types'] == 'gps'} GPS
+            %select{:name => "tag_type"}
+              %option{:value => "gps", :selected => params['tag_type'] == 'gps'} GPS
               %option{:value => "qr", :selected => params['tag_type'] == 'qr'} QR
               %option{:value => "nfc", :selected => params['tag_type'] == 'nfc'} NFC
               %option{:value => "qr_and_nfc", :selected => params['tap_type'] == 'qr_and_nfc'} QR and NFC
