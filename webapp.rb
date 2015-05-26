@@ -53,6 +53,18 @@ end
 
 post '/mystories/wizard/:storyId/:tagId/:optionId' do | storyId, tagId, optionId |
   if params.has_key? "save" then
+    if params[:content]
+      content = params[:content]
+      if content['top']
+        filename = upload_image(content['top'][:filename],
+                                content['top'][:tempfile])
+        params['image_source_top'] = filename
+      end
+      if content['bottom']
+        filename = upload_image(content['bottom'][:filename],
+                                content['bottom'][:tempfile])
+        params['image_source_bottom'] = filename
+      end
     save_option_from_params optionId.to_i, tagId, storyId, params
     redirect '/mystories/wizard/' + storyId + '/' + tagId + '/' + optionId
   elsif params.has_key? "add_option" then
@@ -129,6 +141,24 @@ end
 
 post '/mystories/wizard/:storyId/:tagId' do | storyId, tagId |
   if params.has_key? "save" then
+    if params[:content]
+      content = params[:content]
+      if content['top']
+        filename = upload_image(content['top'][:filename],
+                                content['top'][:tempfile])
+        params['tag_image_top'] = filename
+      end
+      if content['middle']
+        filename = upload_image(content['middle'][:filename],
+                                content['middle'][:tempfile])
+        params['tag_image_middle'] = filename
+      end
+      if content['bottom']
+        filename = upload_image(content['bottom'][:filename],
+                                content['bottom'][:tempfile])
+        params['tag_image_bottom'] = filename
+      end
+    end
     save_tag_from_params tagId, storyId, params
     redirect '/mystories/wizard/' + storyId + '/' + tagId
   elsif params.has_key? "add_option" then
@@ -154,6 +184,11 @@ end
 
 post '/mystories/wizard/:storyId' do | storyId |
   if params.has_key? "save" then
+    if params[:cover_image]
+      filename = upload_image(params[:cover_image][:filename],
+                              params[:cover_image][:tempfile])
+      params['image'] = filename
+    end
     save_story_from_params storyId, params
     redirect '/mystories/wizard/' + storyId
   elsif params.has_key? "add_tag" then
@@ -257,4 +292,28 @@ get '/auth/failure' do
     puts e
   end
   redirect '/'
+end
+
+helpers do
+  def upload_image(filename, file)
+    s3 = Aws::S3::Resource.new
+    bucket = s3.bucket('tagstory')
+    obj = bucket.object('images/' + filename)
+    File.open(file, 'rb') do | toFile |
+      obj.put(body: toFile)
+    end
+
+    filename
+  end
+
+  def upload_audio(filename, file)
+    s3 = Aws::S3::Resource.new
+    bucket = s3.bucket('tagstory')
+    obj = bucket.object('audio/' + filename)
+    File.open(file, 'rb') do | toFile |
+      obj.put(body: toFile)
+    end
+
+    filename
+  end
 end

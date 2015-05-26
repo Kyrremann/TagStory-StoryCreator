@@ -1,11 +1,22 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    aws-sdk (2.0.45)
+      aws-sdk-resources (= 2.0.45)
+    aws-sdk-core (2.0.45)
+      builder (~> 3.0)
+      jmespath (~> 1.0)
+      multi_json (~> 1.0)
+    aws-sdk-resources (2.0.45)
+      aws-sdk-core (= 2.0.45)
+    builder (3.2.2)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     haml (4.0.6)
       tilt
     hashie (3.4.0)
+    jmespath (1.0.2)
+      multi_json (~> 1.0)
     json (1.8.2)
     jwt (1.2.1)
     macaddr (1.7.1)
@@ -54,6 +65,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aws-sdk (~> 2)
   haml (~> 4.0)
   json (~> 1.8)
   omniauth-google-oauth2 (~> 0.2)

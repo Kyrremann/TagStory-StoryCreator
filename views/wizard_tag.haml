@@ -8,27 +8,51 @@
     .pure-g
       .pure-u-1-4
       .pure-u-1-2
-        %form.pure-form.pure-form-aligned{:method => "POST", :role => "form"}
+        %form.pure-form.pure-form-aligned{:method => "POST", :role => "form", :enctype => "multipart/form-data"}
           %fieldset
             %legend Tag wizard
-                
+
           .pure-control-group
             %label{:for => "description"} Tag text:
             %textarea{:name => "description", :rows => "6", :cols => "23"}
               #{params['description']}
-            
+
           .pure-control-group
             %label{:for => "tag_image_top"} Tag image (top):
             %input{:type => "text", :name => "tag_image_top", :value => "#{params['tag_image_top']}"}
 
           .pure-control-group
+            %label{:for => "content"} Upload new:
+            %input{:type => "file", :name => "content[top]"}
+
+            - unless params['tag_image_top'].nil? or params['tag_image_top'].empty?
+              .pure-control-group
+                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/images/#{params['tag_image_top']}", :width => '500px'}
+
+          .pure-control-group
             %label{:for => "tag_image_middle"} Tag image (middle):
             %input{:type => "text", :name => "tag_image_middle", :value => "#{params['tag_image_middle']}"}
-            
+
+          .pure-control-group
+            %label{:for => "content"} Upload new:
+            %input{:type => "file", :name => "content[middle]"}
+
+            - unless params['tag_image_middle'].nil? or params['tag_image_middle'].empty?
+              .pure-control-group
+                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/images/#{params['tag_image_middle']}", :width => '500px'}
+
           .pure-control-group
             %label{:for => "tag_image_bottom"} Tag image (bottom):
             %input{:type => "text", :name => "tag_image_bottom", :value => "#{params['tag_image_bottom']}"}
-            
+
+          .pure-control-group
+            %label{:for => "content"} Upload new:
+            %input{:type => "file", :name => "content[bottom]"}
+
+            - unless params['tag_image_bottom'].nil? or params['tag_image_bottom'].empty?
+              .pure-control-group
+                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/images/#{params['tag_image_bottom']}", :width => '500px'}
+
           %legend
             Optionally
 
@@ -36,12 +60,12 @@
             %label{:for => "title"} Title:
             %input{:type => "text", :name => "title", :value => "#{params['title']}"}
             %img{:src => "/images/information-icon.png", 'data-ot' => "You can set the title of each tag screen. Will change the title in the action bar."}
-              
+
           .pure-control-group
             %label{:for => "question"} Question:
             %input{:type => "text", :name => "question", :value => "#{params['question']}"}
             %img{:src => "/images/information-icon.png", 'data-ot' => "You can ask a single question instead of making a quiz. A typicall question would be; Which road do you want to take?. When using the question button, each title of an option will be used as an answer. So when the user click the button at the bottom, a list of possible answer will be shown."}
-            
+
           .pure-control-group
             %label{:for => "travel_button"} Travel button:
             %input{:type => "text", :name => "travel_button", :placeholder => "See where to go next", :value => "#{params['travel_button']}"}
@@ -52,7 +76,7 @@
             %select{:name => "skippable"}
               %option{:value => "true", :selected => params['skippable'] == 'true'} True
               %option{:value => "false", :selected => params['skippable'] == 'false'} False
-              
+
             -#%input{:type=>"checkbox", :name=>"skippable", :checked => params['skippable'] == "true"}
             -#%img{:src => "/images/information-icon.png", 'data-ot' => "Checking this box will let the reader skip the tag if he or she can't find it."}
 
@@ -61,13 +85,13 @@
             %select{:name => "isEndPoint"}
               %option{:value => "false", :selected => params['isEndPoint'] == 'false'} False
               %option{:value => "true", :selected => params['isEndPoint'] == 'true'} True
-            
+
             -#%input{:type=>"checkbox", :name=>"isEndpoint", :checked => params['isEndPoint'] == "true"}
             -#%img{:src => "/images/information-icon.png", 'data-ot' => "Need to be checked on the tag that is the last tag, so that the story can end."}
 
           %legend
             To be implemented better later
-            
+
           .pure-control-group
             %label{:for => "tag_type"} Tag technology:
             %select{:name => "tag_type"}
@@ -75,7 +99,7 @@
               %option{:value => "qr", :selected => params['tag_type'] == 'qr'} QR
               %option{:value => "nfc", :selected => params['tag_type'] == 'nfc'} NFC
               %option{:value => "qr_and_nfc", :selected => params['tap_type'] == 'qr_and_nfc'} QR and NFC
-            
+
           .pure-control-group
             %label{:for => "game_mode"} Game mode:
             %select{:name => "game_mode"}
@@ -92,7 +116,7 @@
                   %li
                     - @url = "/mystories/wizard/#{storyId}/#{tagId}/#{index}"
                     %a.pure-button{:href => @url} #{index + 1}
-                    
+
           .pure-control-group
             %ul.pure-paginator
               %li

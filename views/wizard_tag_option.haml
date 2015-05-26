@@ -15,7 +15,7 @@
           zoom: zoomLevel,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         }
-        
+
         var map_canvas = document.getElementById('map_canvas');
         var map = new google.maps.Map(map_canvas, map_options)
 
@@ -27,7 +27,7 @@
         var infowindow = new google.maps.InfoWindow({
           content: "Option: "
         });
-        
+
         google.maps.event.addListener(marker, 'click', function() {
           infowindow.open(map, marker);
         });
@@ -38,7 +38,7 @@
       }
 
       google.maps.event.addDomListener(window, 'load', initialize);
-      
+
   %body
     = haml :"templates/nav"
     .pure-g
@@ -47,7 +47,7 @@
         %form.pure-form.pure-form-aligned{:method => "POST", :role => "form"}
           %fieldset
             %legend Option wizard
-            
+
           .pure-control-group
             %label{:for => "method"} Method:
             %select{:name => "method"}
@@ -63,20 +63,20 @@
             %label{:for => "answer"} Answer:
             %input{:type => "text", :name => "answer", :value => "#{params['answer']}"}
             %img{:src => "/images/information-icon.png", 'data-ot' => "If you have chosen Question on this tag, this field needs to be filled out, as it acts as one of the answer."}
-            
+
           .pure-control-group
             %label{:for => "title"} Title:
             %input{:type => "text", :name => "title", :value => "#{params['title']}"}
             %img{:src => "/images/information-icon.png", 'data-ot' => "You can set the title of each tag-option screen. Will change the title in the action bar."}
 
           %legend These depends on your method of choice
-                
+
           .pure-control-group
             %label{:for => "text"} Text:
             %textarea{:name => "text", :rows => "6", :cols => "23"}
               #{params['text']}
             %img{:src => "/images/information-icon.png", 'data-ot' => "If you chose method: text, this field needs to be filled out. On other methods this can act as a supplementing field. For example, informing that you picked the correct answer on the tag question."}
-            
+
           - if params['method'] == 'image'
             .pure-control-group
               %label{:for => "image_source_top"} Image (top):
@@ -84,27 +84,43 @@
               %img{:src => "/images/information-icon.png", 'data-ot' => ""}
 
             .pure-control-group
+              %label{:for => "content"} Upload new:
+              %input{:type => "file", :name => "content[top]"}
+
+            - unless params['image_source_top'].nil? or params['image_source_top'].empty?
+              .pure-control-group
+                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/images/#{params['image_source_top']}", :width => '500px'}
+
+            .pure-control-group
               %label{:for => "image_source_bottom"} Image (bottom):
               %input{:type => "text", :name => "image_source_bottom", :value => "#{params['image_source_bottom']}"}
               %img{:src => "/images/information-icon.png", 'data-ot' => ""}
-            
+
+            .pure-control-group
+              %label{:for => "content"} Upload new:
+              %input{:type => "file", :name => "content[bottom]"}
+
+            - unless params['image_source_bottom'].nil? or params['image_source_bottom'].empty?
+              .pure-control-group
+                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/images/#{params['image_source_bottom']}", :width => '500px'}
+
           - if params['method'] == 'sound'
             .pure-control-group
               %label{:for => "sound_source"} Sound:
               %input{:type => "text", :name => "sound_source", :value => "#{params['sound_source']}"}
               %img{:src => "/images/information-icon.png", 'data-ot' => ""}
-            
+
           - if params['method'] == 'map'
             .pure-control-group
               %label{:for => "lat"} GPS latitude:
               %input{:type => "text", :id => "lat", :name => "lat", :value => "#{params['lat']}"}
               %img{:src => "/images/information-icon.png", 'data-ot' => ""}
-            
+
             .pure-control-group
               %label{:for => "long"} GPS longitude:
               %input{:type => "text", :id => "long", :name => "long", :value => "#{params['long']}"}
               %img{:src => "/images/information-icon.png", 'data-ot' => ""}
-              
+
             .pure-control-group
               %label{:for => "zoom_level"} Zoom level:
               %input{:type => "text", :name => "zoom_level", :placeholder => "15", :value => "#{params['zoom_level']}"}
@@ -113,7 +129,7 @@
               %div{:id => "map_canvas"}
 
           %legend Points to the next tag, can't be filled out before the next tag is made
-            
+
           .pure-control-group
             %label{:for => "next"} Next:
             %select{:name => "next"}
@@ -132,7 +148,7 @@
                   - @url = "/mystories/wizard/#{storyId}/#{tagId}/#{index}"
                   - @class = "#{"pure-button-active" if array[0] == optionId}"
                   %a.pure-button{:href => @url, :class => @class} #{index + 1}
-                    
+
           .pure-control-group
             %ul.pure-paginator
               %li

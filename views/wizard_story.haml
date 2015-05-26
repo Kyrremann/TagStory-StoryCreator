@@ -9,7 +9,7 @@
     .pure-g
       .pure-u-1-4
       .pure-u-1-2
-        %form.pure-form.pure-form-aligned{:method => "POST", :role => "form"}
+        %form.pure-form.pure-form-aligned{:method => "POST", :role => "form", :enctype => "multipart/form-data"}
           %fieldset
             %legend Story wizard - Details about the story
 
@@ -54,6 +54,13 @@
           .pure-control-group
             %label{:for => "image"} Cover image:
             %input{:type => "text", :name => "image", :value => "#{params['image']}"}
+          .pure-control-group
+            %label{:for => "cover_image"} Upload new:
+            %input{:type => "file", :name => "cover_image"}
+
+            - unless params['image'].nil? or params['image'].empty?
+              .pure-control-group
+                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/images/#{params['image']}", :width => '500px'}
 
           %legend
             Where is the story taking place?

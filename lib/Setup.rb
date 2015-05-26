@@ -8,6 +8,7 @@ require 'omniauth'
 require 'omniauth-google-oauth2'
 require 'uri'
 require 'sinatra/cross_origin'
+require 'aws-sdk'
 
 require_relative 'AuthHandler.rb'
 require_relative 'DatabaseHandler.rb'
@@ -17,7 +18,30 @@ require_relative 'Utils.rb'
 
 use Rack::Session::Cookie, :secret => 'super_secret_key_that_should_be_an_env_variable' # TODO
 
-# Environment checks
+# CloudAnt
+unless CLOUDANT_URL = ENV['CLOUDANT_URL']
+  raise "You must specify the CLOUDANT_URL env variable"
+end
+
+# Amazon S3
+unless AWS_ACCESS_KEY_ID = ENV['AWS_ACCESS_KEY_ID']
+  raise "You must specify the AWS_ACCESS_KEY_ID env variable"
+end
+
+unless AWS_SECRET_ACCESS_KEY = ENV['AWS_SECRET_ACCESS_KEY']
+  raise "You must specify the AWS_SECRET_ACCESS_KEY env variable"
+end
+
+unless AWS_REGION = ENV['AWS_REGION']
+  raise "You must specify the AWS_REGION env variable"
+end
+
+Aws.config.update({
+                    region: AWS_REGION,
+                    credentials: Aws::Credentials.new(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+                  })
+
+# Google API
 unless G_API_CLIENT = ENV['G_API_CLIENT']
   raise "You must specify the G_API_CLIENT env variable"
 end
@@ -25,12 +49,7 @@ end
 unless G_API_SECRET = ENV['G_API_SECRET']
   raise "You must specify the G_API_SECRET env variable"
 end
-unless CLOUDANT_URL = ENV['CLOUDANT_URL']
-  raise "You must specify the CLOUDANT_URL env variable"
-end
 
-# Sign in
-# Scopes are space separated strings
 SCOPES =
   'https://www.googleapis.com/auth/userinfo.email' +
   ' https://www.googleapis.com/auth/userinfo.profile'

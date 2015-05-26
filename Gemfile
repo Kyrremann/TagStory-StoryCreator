@@ -7,4 +7,5 @@ gem 'rest-client', '~> 1.7'
 gem 'uuid', '~> 2.3'
 gem 'omniauth-google-oauth2', '~> 0.2'
 gem 'puma', '~> 2.11'
-gem "sinatra-cross_origin", "~> 0.3"
+gem 'sinatra-cross_origin', '~> 0.3'
+gem 'aws-sdk', '~>2'
