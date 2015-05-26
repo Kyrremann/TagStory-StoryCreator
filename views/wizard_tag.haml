@@ -18,9 +18,17 @@
               #{params['description']}
             
           .pure-control-group
-            %label{:for => "tag_image"} Tag image:
-            %input{:type => "text", :name => "tag_image", :value => "#{params['tag_image']}"}
+            %label{:for => "tag_image_top"} Tag image (top):
+            %input{:type => "text", :name => "tag_image_top", :value => "#{params['tag_image_top']}"}
 
+          .pure-control-group
+            %label{:for => "tag_image_middle"} Tag image (middle):
+            %input{:type => "text", :name => "tag_image_middle", :value => "#{params['tag_image_middle']}"}
+            
+          .pure-control-group
+            %label{:for => "tag_image_bottom"} Tag image (bottom):
+            %input{:type => "text", :name => "tag_image_bottom", :value => "#{params['tag_image_bottom']}"}
+            
           %legend
             Optionally
 
