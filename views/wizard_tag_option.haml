@@ -79,8 +79,13 @@
             
           - if params['method'] == 'image'
             .pure-control-group
-              %label{:for => "image_source"} Image:
-              %input{:type => "text", :name => "image_source", :value => "#{params['image_source']}"}
+              %label{:for => "image_source_top"} Image:
+              %input{:type => "text", :name => "image_source_top", :value => "#{params['image_source_top']}"}
+              %img{:src => "/images/information-icon.png", 'data-ot' => ""}
+
+            .pure-control-group
+              %label{:for => "image_source_bottom"} Image:
+              %input{:type => "text", :name => "image_source_bottom", :value => "#{params['image_source_bottom']}"}
               %img{:src => "/images/information-icon.png", 'data-ot' => ""}
             
           - if params['method'] == 'sound'
