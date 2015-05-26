@@ -79,14 +79,14 @@
             
           - if params['method'] == 'image'
             .pure-control-group
-              %label{:for => "image"} Image:
-              %input{:type => "text", :name => "image", :value => "#{params['image_source']}"}
+              %label{:for => "image_source"} Image:
+              %input{:type => "text", :name => "image_source", :value => "#{params['image_source']}"}
               %img{:src => "/images/information-icon.png", 'data-ot' => ""}
             
           - if params['method'] == 'sound'
             .pure-control-group
-              %label{:for => "sound"} Sound:
-              %input{:type => "text", :name => "sound", :value => "#{params['sound_source']}"}
+              %label{:for => "sound_source"} Sound:
+              %input{:type => "text", :name => "sound_source", :value => "#{params['sound_source']}"}
               %img{:src => "/images/information-icon.png", 'data-ot' => ""}
             
           - if params['method'] == 'map'
