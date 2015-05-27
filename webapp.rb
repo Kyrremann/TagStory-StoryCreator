@@ -65,6 +65,7 @@ post '/mystories/wizard/:storyId/:tagId/:optionId' do | storyId, tagId, optionId
                                 content['bottom'][:tempfile])
         params['image_source_bottom'] = filename
       end
+    end
     save_option_from_params optionId.to_i, tagId, storyId, params
     redirect '/mystories/wizard/' + storyId + '/' + tagId + '/' + optionId
   elsif params.has_key? "add_option" then
