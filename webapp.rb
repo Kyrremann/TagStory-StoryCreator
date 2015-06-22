@@ -297,14 +297,16 @@ end
 
 helpers do
   def upload_image(filename, file)
+    ending = filename.split('.')[1]
+    filename = SecureRandom.uuid
     s3 = Aws::S3::Resource.new
     bucket = s3.bucket('tagstory')
-    obj = bucket.object('images/' + filename)
+    obj = bucket.object('images/' + filename + '.' + ending)
     File.open(file, 'rb') do | toFile |
       obj.put(body: toFile)
     end
 
-    filename
+    filename + '.' + ending
   end
 
   def upload_audio(filename, file)
