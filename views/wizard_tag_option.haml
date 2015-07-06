@@ -3,9 +3,10 @@
   %head
     %title Story Wizard
     = haml :"templates/header_imports"
-    %script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBj0MzAv62ik_KGQi9WCVkSCx3qDGykiZ0")
+    %script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBj0MzAv62ik_KGQi9WCVkSCx3qDGykiZ0&libraries=places")
     :javascript
       function initialize() {
+        var markers = [];
         var lat = #{empty_s?(params["lat"]) ? "59.9167055" : params["lat"]}
         var long = #{empty_s?(params["long"]) ? "10.7294875" : params["long"]}
         var zoomLevel = #{empty_s?(params["zoom_level"]) ? 12 : params['zoom_level']}
@@ -19,17 +20,43 @@
         var map_canvas = document.getElementById('map_canvas');
         var map = new google.maps.Map(map_canvas, map_options)
 
+        var input = /** @type {HTMLInputElement} */(document.getElementById('pac-input'));
+
+        var autocomplete = new google.maps.places.Autocomplete(input)
+        autocomplete.bindTo('bounds', map);
+
+        var infowindow = new google.maps.InfoWindow({
+          // content: "Option: "
+        });
         var marker = new google.maps.Marker({
           position: myLatLng,
           map: map,
           draggable: true
         });
-        var infowindow = new google.maps.InfoWindow({
-          content: "Option: "
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            infowindow.close();
+            marker.setVisible(false);
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+              return;
+            }
+
+            if (place.geometry.viewport) {
+              map.fitBounds(place.geometry.viewport);
+            } else {
+              map.setCenter(place.geometry.location);
+              map.setZoom(zoomLevel);
+            }
+
+            marker.position = place.geometry.location;
+            document.getElementById('lat').value = marker.position.lat();
+            document.getElementById('long').value = marker.position.lng();
+            marker.setVisible(true);
         });
 
         google.maps.event.addListener(marker, 'click', function() {
-          infowindow.open(map, marker);
+          // infowindow.open(map, marker);
         });
         google.maps.event.addListener(marker, 'drag', function() {
           document.getElementById('lat').value = marker.position.lat();
@@ -122,10 +149,7 @@
 
             .pure-control-group
               %label{:for => "zoom_level"} Zoom level:
-              %input{:type => "text", :name => "zoom_level", :placeholder => "15", :value => "#{params['zoom_level']}"}
-
-            .pure-control-group
-              %div{:id => "map_canvas"}
+              %input{:type => "text", :name => "zoom_level", :placeholder => "12", :value => "#{params['zoom_level']}"}
 
           %legend Points to the next tag, can't be filled out before the next tag is made
 
@@ -161,7 +185,12 @@
           .pure-control-group
             %a.pure-button{:href => "/mystories/wizard/#{storyId}"} Story
             %button.pure-button{:type => "submit", :name => "save"} Save
-            %button.pure-button{:type => "submit", :name => "add_tag"} Add tag
             %button.pure-button{:type => "submit", :name => "add_option"} Add option
             %button.pure-button{:type => "submit", :name => "delete_option"} Delete option
+
+        .pure-form.pure-form-aligned
+          .pure-control-group
+            %label{:for => "pac_input"} Search:
+            %input{:id => "pac-input", :class => "", :type => "text", :placeholder => "Search Box"}
+            %div{:id => "map_canvas"}
       .pure-u-1-4
