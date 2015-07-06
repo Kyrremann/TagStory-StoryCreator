@@ -44,15 +44,15 @@
             %label{:for => "author"} Author:
             %input{:type => "text", :name => "author", :value => "#{params['author']}", :required => ""}
 
-            .pure-control-group
+          .pure-control-group
             %label{:for => "description"} Description:
             %textarea{:name => "description", :rows => "6", :cols => "23"} #{params['description']}
 
-              .pure-control-group
+          .pure-control-group
             %label{:for => "genre"} Genre:
             %input{:type => "text", :name => "genre", :placeholder => "science fiction, horror", :value => "#{params['genre']}"}
 
-            .pure-control-group
+          .pure-control-group
             %label{:for => "agegroup"} Age group:
             %select{:name => "age_group"}
               %option{:value => "e", :selected => params['age_group'] == 'e'} Everyone
@@ -61,11 +61,11 @@
               %option{:value => "t", :selected => params['age_group'] == 't'} Teens
               %option{:value => "m", :selected => params['age_group'] == 'm'} Mature
 
-              .pure-control-group
+          .pure-control-group
             %label{:for => "keywords"} Keywords:
             %input{:type => "text", :name => "keywords", :placeholder => "Mystery, forest, murder, lake", :value => "#{params['keywords']}"}
 
-            .pure-control-group
+          .pure-control-group
             %label{:for => "language"} Language:
             %select{:name => "language"}
               %option{:value => "nb", :selected => params['language'] == 'nb'} Bokmål
@@ -73,9 +73,10 @@
               %option{:value => "en", :selected => params['language'] == 'en'} English
               %option{:value => "bg", :selected => params['language'] == 'bg'} Bulgarian
 
-              .pure-control-group
+          .pure-control-group
             %label{:for => "image"} Cover image:
             %input{:type => "text", :name => "image", :value => "#{params['image']}"}
+
           .pure-control-group
             %label{:for => "cover_image"} Upload new:
             %input{:type => "file", :name => "cover_image"}
@@ -87,11 +88,11 @@
           %legend
             Where is the story taking place?
 
-            .pure-control-group
+          .pure-control-group
             %label{:for => "place"} Place:
             %input{:id => "place", :type => "text", :name => "place", :placeholder => "Doktorska Gradina", :value => "#{params['place']}"}
 
-            .pure-control-group
+          .pure-control-group
             %label{:for => "city"} City:
             %input{:id => "city", :type => "text", :name => "city", :placeholder => "Sofia", :value => "#{params['city']}"}
 
@@ -102,19 +103,19 @@
           %legend
             Other
 
-            .pure-control-group
+          .pure-control-group
             %label{:for => "estimated_time"} Estimated time:
             %input{:type => "text", :name => "estimated_time", :value => "#{params['estimated_time']}"}
             %img{:src => "/images/information-icon.png", 'data-ot' => "The estimated time used to finish the whole story. In hours (2h, 1-2h, 1,5h)."}
 
-            .pure-control-group
+          .pure-control-group
             %label{:for => "url"} Website:
             %input{:type => "text", :name => "url", :value => "#{params['url']}"}
 
           %legend
             To be automated
 
-            .pure-control-group
+          .pure-control-group
             %label{:for => "tag_types"} Tag technology used:
             %select{:name => "tag_types"}
               %option{:value => "gps", :selected => params['tag_types'] == 'gps'} GPS
@@ -122,7 +123,7 @@
               %option{:value => "nfc", :selected => params['tag_types'] == 'nfc'} NFC
               %option{:value => "qr_and_nfc", :selected => params['tap_types'] == 'qr_and_nfc'} QR and NFC
 
-              .pure-control-group
+          .pure-control-group
             %label{:for => "game_modes"} Game modes used:
             %select{:name => "game_modes"}
               %option{:value => "none", :selected => params['game_modes'] == 'none'} None
@@ -154,14 +155,14 @@
             %a.pure-button.pure-button{:href => "/mystories/wizard/#{storyId}/qr-codes"} See tags QR-code text
       .pure-u-1-4
 
-        %script{:src => "/js/moment.min.js"}
-    %script{:src => "/js/pikaday.js"}
-    :javascript
-      var picker = new Pikaday(
-        {
-          field: document.getElementById('datepicker'),
-          format: 'DD.MM.YYYY',
-          firstDay: 1,
-          showWeekNumber: true
-        }
-      );                                                                                      
+      %script{:src => "/js/moment.min.js"}
+      %script{:src => "/js/pikaday.js"}
+      :javascript
+        var picker = new Pikaday(
+          {
+            field: document.getElementById('datepicker'),
+            format: 'DD.MM.YYYY',
+            firstDay: 1,
+            showWeekNumber: true
+          }
+        );                                                                                      
