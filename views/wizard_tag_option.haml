@@ -6,7 +6,6 @@
     %script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBj0MzAv62ik_KGQi9WCVkSCx3qDGykiZ0&libraries=places")
     :javascript
       function initialize() {
-        var markers = [];
         var lat = #{empty_s?(params["lat"]) ? "59.9167055" : params["lat"]}
         var long = #{empty_s?(params["long"]) ? "10.7294875" : params["long"]}
         var zoomLevel = #{empty_s?(params["zoom_level"]) ? 12 : params['zoom_level']}
@@ -188,9 +187,11 @@
             %button.pure-button{:type => "submit", :name => "add_option"} Add option
             %button.pure-button{:type => "submit", :name => "delete_option"} Delete option
 
-        .pure-form.pure-form-aligned
-          .pure-control-group
-            %label{:for => "pac_input"} Search:
-            %input{:id => "pac-input", :class => "", :type => "text", :placeholder => "Search Box"}
-            %div{:id => "map_canvas"}
+            
+        - if params['method'] == 'map'
+          .pure-form.pure-form-aligned
+            .pure-control-group
+              %label{:for => "pac_input"} Search:
+              %input{:id => "pac-input", :class => "", :type => "text", :placeholder => "Search Box"}
+              %div{:id => "map_canvas"}
       .pure-u-1-4
