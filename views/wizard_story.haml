@@ -4,6 +4,29 @@
     %title Story Wizard - Tag
     = haml :"templates/header_imports"
     %link{:href => "/css/pikaday.css", :rel => "stylesheet"}
+    %script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBj0MzAv62ik_KGQi9WCVkSCx3qDGykiZ0&libraries=places")
+    :javascript
+      function initialize() {
+        var input = /** @type {HTMLInputElement} */(
+          document.getElementById('place'));
+        var autocomplete = new google.maps.places.Autocomplete(
+          input,
+          { types: ['geocode'] });
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+          var place = autocomplete.getPlace();
+          input.value = place.name;
+          var adress = place.address_components;
+          for (var i = 0; i < adress.length; i++) {
+            if (adress[i].types[0] === "locality") {
+              document.getElementById('city').value = adress[i].long_name;
+            } else if (adress[i].types[0] === "country") {
+              document.getElementById('country').value = adress[i].long_name;
+            }
+          }
+        });
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
   %body
     = haml :"templates/nav"
     .pure-g
@@ -20,16 +43,16 @@
           .pure-control-group  
             %label{:for => "author"} Author:
             %input{:type => "text", :name => "author", :value => "#{params['author']}", :required => ""}
-                
-          .pure-control-group
+
+            .pure-control-group
             %label{:for => "description"} Description:
             %textarea{:name => "description", :rows => "6", :cols => "23"} #{params['description']}
-                
-          .pure-control-group
+
+              .pure-control-group
             %label{:for => "genre"} Genre:
             %input{:type => "text", :name => "genre", :placeholder => "science fiction, horror", :value => "#{params['genre']}"}
-                
-          .pure-control-group
+
+            .pure-control-group
             %label{:for => "agegroup"} Age group:
             %select{:name => "age_group"}
               %option{:value => "e", :selected => params['age_group'] == 'e'} Everyone
@@ -37,20 +60,20 @@
               %option{:value => "tw", :selected => params['age_group'] == 'tw'} Tweens
               %option{:value => "t", :selected => params['age_group'] == 't'} Teens
               %option{:value => "m", :selected => params['age_group'] == 'm'} Mature
-                
-          .pure-control-group
+
+              .pure-control-group
             %label{:for => "keywords"} Keywords:
             %input{:type => "text", :name => "keywords", :placeholder => "Mystery, forest, murder, lake", :value => "#{params['keywords']}"}
-            
-          .pure-control-group
+
+            .pure-control-group
             %label{:for => "language"} Language:
             %select{:name => "language"}
               %option{:value => "nb", :selected => params['language'] == 'nb'} Bokmål
               %option{:value => "nn", :selected => params['language'] == 'nn'} Nynorsk
               %option{:value => "en", :selected => params['language'] == 'en'} English
               %option{:value => "bg", :selected => params['language'] == 'bg'} Bulgarian
-            
-          .pure-control-group
+
+              .pure-control-group
             %label{:for => "image"} Cover image:
             %input{:type => "text", :name => "image", :value => "#{params['image']}"}
           .pure-control-group
@@ -63,43 +86,43 @@
 
           %legend
             Where is the story taking place?
-            
-          .pure-control-group
-            %label{:for => "country"} Country:
-            %input{:type => "text", :name => "country", :placeholder => "Bulgaria", :value => "#{params['country']}"}
-            
-          .pure-control-group
+
+            .pure-control-group
+            %label{:for => "place"} Place:
+            %input{:id => "place", :type => "text", :name => "place", :placeholder => "Doktorska Gradina", :value => "#{params['place']}"}
+
+            .pure-control-group
             %label{:for => "city"} City:
-            %input{:type => "text", :name => "city", :placeholder => "Sofia", :value => "#{params['city']}"}
+            %input{:id => "city", :type => "text", :name => "city", :placeholder => "Sofia", :value => "#{params['city']}"}
 
           .pure-control-group
-            %label{:for => "place"} Place:
-            %input{:type => "text", :name => "place", :placeholder => "Doktorska Gradina", :value => "#{params['place']}"}
+            %label{:for => "country"} Country:
+            %input{:id => "country", :type => "text", :name => "country", :placeholder => "Bulgaria", :value => "#{params['country']}"}
 
           %legend
             Other
-               
-          .pure-control-group
+
+            .pure-control-group
             %label{:for => "estimated_time"} Estimated time:
             %input{:type => "text", :name => "estimated_time", :value => "#{params['estimated_time']}"}
             %img{:src => "/images/information-icon.png", 'data-ot' => "The estimated time used to finish the whole story. In hours (2h, 1-2h, 1,5h)."}
-            
-          .pure-control-group
+
+            .pure-control-group
             %label{:for => "url"} Website:
             %input{:type => "text", :name => "url", :value => "#{params['url']}"}
 
           %legend
             To be automated
-            
-          .pure-control-group
+
+            .pure-control-group
             %label{:for => "tag_types"} Tag technology used:
             %select{:name => "tag_types"}
               %option{:value => "gps", :selected => params['tag_types'] == 'gps'} GPS
               %option{:value => "qr", :selected => params['tag_types'] == 'qr'} QR
               %option{:value => "nfc", :selected => params['tag_types'] == 'nfc'} NFC
               %option{:value => "qr_and_nfc", :selected => params['tap_types'] == 'qr_and_nfc'} QR and NFC
-            
-          .pure-control-group
+
+              .pure-control-group
             %label{:for => "game_modes"} Game modes used:
             %select{:name => "game_modes"}
               %option{:value => "none", :selected => params['game_modes'] == 'none'} None
@@ -130,8 +153,8 @@
             %a.pure-button.pure-button{:href => "/mystories/wizard/#{storyId}/overview"} Map overview
             %a.pure-button.pure-button{:href => "/mystories/wizard/#{storyId}/qr-codes"} See tags QR-code text
       .pure-u-1-4
-        
-    %script{:src => "/js/moment.min.js"}
+
+        %script{:src => "/js/moment.min.js"}
     %script{:src => "/js/pikaday.js"}
     :javascript
       var picker = new Pikaday(
