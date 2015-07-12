@@ -113,6 +113,17 @@
             %input{:type => "text", :name => "url", :value => "#{params['url']}"}
 
           %legend
+            Default values, used in the story creation
+
+          .pure-control-group
+            %label{:for => "zoom_level"} Zoom level:
+            %input{:type => "text", :name => "zoom_level", :placeholder => "12", :value => "#{params['zoom_level']}"}
+
+          .pure-control-group
+            %label{:for => "gps_radius"} GPS Radius:
+            %input{:type => "text", :name => "gps_radius", :placeholder => "20", :value => "#{params['gps_radius']}"}
+
+          %legend
             To be automated
 
           .pure-control-group

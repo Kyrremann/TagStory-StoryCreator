@@ -43,8 +43,17 @@ end
 # story wizard
 get '/mystories/wizard/:storyId/:tagId/:optionId' do | storyId, tagId, optionId |
   story = get_current_story storyId
+  option = story["tags"][tagId]["options"][optionId.to_i]
+  if option["gps_radius"].nil? or option["gps_radius"].empty?  then
+    option["gps_radius"] = story["gps_radius"]
+  end
+
+  if option["zoom_level"].nil? or option["zoom_level"].empty? then
+    option["zoom_level"] = story["zoom_level"]
+  end
+
   haml :wizard_tag_option, :locals => {
-    :params => story["tags"][tagId]["options"][optionId.to_i],
+    :params => option,
     :storyId => storyId,
     :tagId => tagId,
     :optionId => optionId,
