@@ -1,1 +1,1 @@
-web: bundle exec ruby webapp.rb -s Puma -p $PORT
+web: bundle exec rackup config.ru -s thin -p $PORT

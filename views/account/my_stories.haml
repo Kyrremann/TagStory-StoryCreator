@@ -1,0 +1,50 @@
+!!!
+%html
+  %head
+    = haml :'templates/header_imports'
+    %link{:href => "/css/layouts/blog.css", :rel => "stylesheet"}
+  %body
+    = haml :'templates/nav'
+    #layout.pure-g
+      .content.pure-u-1.pure-u-md-3-4
+        %div
+          .posts
+            %h1.content-subhead Published
+            - @stories.each do | story |
+              - next unless story.published
+              %section.post
+                %header.post-header
+                  %img.post-avatar{:alt => "Tilo Mitra's avatar", :height => "48", :src => "img/common/tilo-avatar.png", :width => "48"}
+                    %h2.post-title
+                      = story.title
+                    %p.post-meta
+                      By
+                      %a.post-author{:href => "#"}
+                        = story.author
+                      under
+                      %a.post-category.post-category-design{:href => "#"} CSS
+                      %a.post-category.post-category-pure{:href => "#"} Pure
+                .post-description
+                  %p
+                    = story.description
+
+          .posts
+            %h1.content-subhead Drafts
+            - @stories.each do | story |
+              - next if story.published
+              %section.post
+                %header.post-header
+                  %img.post-avatar{:alt => "Tilo Mitra's avatar", :height => "48", :src => "img/common/tilo-avatar.png", :width => "48"}
+                    %h2.post-title
+                      = story.title
+                    %p.post-meta
+                      By
+                      %a.post-author{:href => "#"}
+                        = story.author
+                      under
+                      %a.post-category.post-category-design{:href => "#"} CSS
+                      %a.post-category.post-category-pure{:href => "#"} Pure
+                .post-description
+                  %p
+                    = story.description
+          .footer
