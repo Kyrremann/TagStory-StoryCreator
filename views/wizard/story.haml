@@ -1,0 +1,152 @@
+!!!
+%html
+  %head
+    = haml :'templates/header_imports'
+    %link{:href => "/css/layouts/blog.css", :rel => "stylesheet"}
+    %link{:href => "/css/layouts/email.css", :rel => "stylesheet"}
+    %link{:href => "/css/pikaday.css", :rel => "stylesheet"}
+    -#%script{:src => "https://maps.googleapis.com/maps/api/js?key=AIzaSyBj0MzAv62ik_KGQi9WCVkSCx3qDGykiZ0&libraries=places"}
+    :javascript
+      function initialize() {
+        var input = /** @type {HTMLInputElement} */(
+          document.getElementById('place'));
+        var autocomplete = new google.maps.places.Autocomplete(
+          input,
+          { types: ['geocode'] });
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+          var place = autocomplete.getPlace();
+          input.value = place.name;
+          var adress = place.address_components;
+          for (var i = 0; i < adress.length; i++) {
+            if (adress[i].types[0] === "locality") {
+              document.getElementById('city').value = adress[i].long_name;
+            } else if (adress[i].types[0] === "country") {
+              document.getElementById('country').value = adress[i].long_name;
+            }
+          }
+        });
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+  %body
+    = haml :'templates/nav'
+
+    #layout.content.pure-g
+      #list.pure-u-1
+        %a.pure-button#add_tag{:href => "/wizard/story?sid=#{@story.id}&action=add_tag", :style => "width: 100%;"} Add tag
+        - @story.tags.each do | tag |
+          -# Use email-item-unread for colors, can be used to color the different type of tags, one color for qr, another for gps
+          .email-item.email-item.pure-g
+            .pure-u
+              -# the image can be used to show that the tag uses games, so that we have one image for camera, another for quiz
+              -#%img.email-avatar{:alt => "Tilo Mitra's avatar", :height => "64", :src => "img/common/tilo-avatar.png", :width => "64"}
+            .pure-u-3-4
+              -#%h5.email-name
+              %h4.email-subject
+                = tag.title
+              %p.email-desc
+                = tag.description
+              %a.secondary-button.pure-button{:href => "/wizard/tag?sid=#{@story.id}&tid=#{tag.id}"} Edit
+
+      #main.pure-u-1
+        %form.pure-form.pure-form-aligned{:method => "POST", :role => "form", :enctype => "multipart/form-data"}
+          %fieldset
+            %legend Story wizard - Details about the story
+          .pure-control-group
+            %label#title Title:
+            %input#title{:type => "text", :value => "#{@story.title}", :required => ""}
+          .pure-control-group  
+            %label#author Author:
+            %input#author{:type => "text", :value => "#{@story.author}", :required => ""}
+          .pure-control-group
+            %label#description Description:
+            %textarea#description{:rows => "6", :cols => "23"}
+              = @story.description
+          .pure-control-group
+            %label#genre Genre:
+            %input#genre{:type => "text", :placeholder => "science fiction, horror", :value => ""}
+          .pure-control-group
+            %label#age_group Age group:
+            %select#age_group
+              %option{:value => "e", :selected => @story.age_group == 'e'} Everyone
+              %option{:value => "k", :selected => @story.age_group == 'k'} Kids
+              %option{:value => "tw", :selected => @story.age_group == 'tw'} Tweens
+              %option{:value => "t", :selected => @story.age_group == 't'} Teens
+              %option{:value => "m", :selected => @story.age_group == 'm'} Mature
+          .pure-control-group
+            %label#keywords Keywords:
+            %input#keywords{:type => "text", :placeholder => "Mystery, forest, murder, lake", :value => ""}
+          .pure-control-group
+            %label{:for => "language"} Language:
+            %select{:name => "language"}
+              - I18nData.languages.each do | language |
+                %option{:value => "#{language[0]}", :selected => @story.language == language[0]} #{language[1]}
+          .pure-control-group
+            %label#image Cover image:
+            %input#image{:type => "text", :value => ""}
+          .pure-control-group
+            %label#cover_image Upload new:
+            %input#cover_image{:type => "file"}
+            -# unless @story.image.nil? or @story.image.empty?
+              .pure-control-group
+                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/images/#{@story.image}", :width => '500px'}
+          %legend
+            Where is the story taking place?
+          .pure-control-group
+            %label#place Place:
+            %input#place{:type => "text", :placeholder => "Doktorska Gradina", :value => "#{@story.place}"}
+          .pure-control-group
+            %label#city City:
+            %input#city{:type => "text", :placeholder => "Sofia", :value => "#{@story.city}"}
+          .pure-control-group
+            %label#country Country:
+            %input#country{:type => "text", :placeholder => "Bulgaria", :value => "#{@story.country}"}
+          %legend
+            Other
+          .pure-control-group
+            %label{:for => "estimated_time"} Estimated time:
+            %input{:type => "text", :name => "estimated_time", :value => "#{@story.estimated_time}"}
+            %img{:src => "/images/information-icon.png", 'data-ot' => "The estimated time used to finish the whole story. In hours (2h, 1-2h, 1,5h)."}
+          .pure-control-group
+            %label{:for => "url"} Website:
+            %input{:type => "text", :name => "url", :value => "#{@story.url}"}
+          %legend
+            Default values, used in the story creation
+          .pure-control-group
+            %label{:for => "zoom_level"} Zoom level:
+            %input{:type => "text", :name => "zoom_level", :placeholder => "12", :value => ""}
+          .pure-control-group
+            %label{:for => "gps_radius"} GPS Radius:
+            %input{:type => "text", :name => "gps_radius", :placeholder => "20", :value => ""}
+          %legend
+            To be automated
+          .pure-control-group
+            %label{:for => "tag_types"} Tag technology used:
+            %select{:name => "tag_types"}
+            -#
+              %option{:value => "gps", :selected => @story.tag_types == 'gps'} GPS
+              %option{:value => "qr", :selected => @story.tag_types == 'qr'} QR
+              %option{:value => "nfc", :selected => @story.tag_types == 'nfc'} NFC
+              %option{:value => "qr_and_nfc", :selected => @story.tap_types == 'qr_and_nfc'} QR and NFC
+          .pure-control-group
+            %label{:for => "game_modes"} Game modes used:
+            %select{:name => "game_modes"}
+            -#
+              %option{:value => "none", :selected => @story.game_modes == 'none'} None
+              %option{:value => "camera", :selected => @story.game_modes == 'camera'} Camera
+              %option{:value => "quiz", :selected => @story.game_modes == 'quiz'} Quiz
+          .pure-control-group
+            %button.pure-button#save{:type => "submit"} Save
+            %button.pure-button#add_tag{:type => "submit"} Add tag
+            %a.pure-button.pure-button{:href => "/wizard/story/overview?sid=#{@story.id}"} Map overview
+            %a.pure-button.pure-button{:href => "/wizard/story/qr-codes?sid=#{@story.id}"} See tags QR-code text
+
+      %script{:src => "/js/moment.min.js"}
+      %script{:src => "/js/pikaday.js"}
+      :javascript
+        var picker = new Pikaday(
+          {
+            field: document.getElementById('datepicker'),
+            format: 'DD.MM.YYYY',
+            firstDay: 1,
+            showWeekNumber: true
+          }

@@ -27,6 +27,7 @@
                 .post-description
                   %p
                     = story.description
+                %a.post-category.post-category-pure{:href => "/wizard/story?sid=#{story.id}"} Edit
 
           .posts
             %h1.content-subhead Drafts
@@ -34,17 +35,20 @@
               - next if story.published
               %section.post
                 %header.post-header
-                  %img.post-avatar{:alt => "Tilo Mitra's avatar", :height => "48", :src => "img/common/tilo-avatar.png", :width => "48"}
+                  %img.post-avatar
+                    -#{:alt => "Tilo Mitra's avatar", :height => "48", :src => "img/common/tilo-avatar.png", :width => "48"}
                     %h2.post-title
                       = story.title
                     %p.post-meta
                       By
                       %a.post-author{:href => "#"}
                         = story.author
+                    /
                       under
                       %a.post-category.post-category-design{:href => "#"} CSS
                       %a.post-category.post-category-pure{:href => "#"} Pure
                 .post-description
                   %p
                     = story.description
+                %a.post-category.post-category-pure{:href => "/wizard/story?sid=#{story.id}"} Edit
           .footer

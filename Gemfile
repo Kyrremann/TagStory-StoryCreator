@@ -13,6 +13,7 @@ gem 'omniauth-google-oauth2', '~> 0.2'
 # gem 'puma', '~> 2.11'
 gem 'thin', '~> 1.6'
 gem 'aws-sdk', '~>2'
+gem 'i18n_data', '~> 0.7'
 
 gem 'pg', '~> 0.18'
 gem 'activerecord', '~> 4.2'

@@ -1,6 +1,6 @@
 module SessionHelper
 
   def logged_in?
-    false
+    not session[:id].nil?
   end
 end
