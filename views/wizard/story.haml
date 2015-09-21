@@ -48,18 +48,22 @@
               %a.secondary-button.pure-button{:href => "/wizard/tag?sid=#{@story.id}&tid=#{tag.id}"} Edit
 
       #main.pure-u-1
+        - if @story.errors
+          - @story.errors.full_messages.each do | message |
+            = message
+
         %form.pure-form.pure-form-aligned{:method => "POST", :role => "form", :enctype => "multipart/form-data"}
           %fieldset
             %legend Story wizard - Details about the story
           .pure-control-group
             %label#title Title:
-            %input#title{:type => "text", :value => "#{@story.title}", :required => ""}
+            %input#title{:type => "text", :name => "story[title]", :value => "#{@story.title}", :required => ""}
           .pure-control-group  
             %label#author Author:
-            %input#author{:type => "text", :value => "#{@story.author}", :required => ""}
+            %input#author{:type => "text", :name => "story[author]", :value => "#{@story.author}", :required => ""}
           .pure-control-group
             %label#description Description:
-            %textarea#description{:rows => "6", :cols => "23"}
+            %textarea#description{:name => "story[description]", :rows => "6", :cols => "23"}
               = @story.description
           .pure-control-group
             %label#genre Genre:
@@ -67,17 +71,17 @@
           .pure-control-group
             %label#age_group Age group:
             %select#age_group
-              %option{:value => "e", :selected => @story.age_group == 'e'} Everyone
-              %option{:value => "k", :selected => @story.age_group == 'k'} Kids
-              %option{:value => "tw", :selected => @story.age_group == 'tw'} Tweens
-              %option{:value => "t", :selected => @story.age_group == 't'} Teens
-              %option{:value => "m", :selected => @story.age_group == 'm'} Mature
+              %option{:value => "e", :name => "story[age_group]", :selected => @story.age_group == 'e'} Everyone
+              %option{:value => "k", :name => "story[age_group]", :selected => @story.age_group == 'k'} Kids
+              %option{:value => "tw", :name => "story[age_group]", :selected => @story.age_group == 'tw'} Tweens
+              %option{:value => "t", :name => "story[age_group]", :selected => @story.age_group == 't'} Teens
+              %option{:value => "m", :name => "story[age_group]", :selected => @story.age_group == 'm'} Mature
           .pure-control-group
             %label#keywords Keywords:
             %input#keywords{:type => "text", :placeholder => "Mystery, forest, murder, lake", :value => ""}
           .pure-control-group
             %label{:for => "language"} Language:
-            %select{:name => "language"}
+            %select{:name => "story[language]"}
               - I18nData.languages.each do | language |
                 %option{:value => "#{language[0]}", :selected => @story.language == language[0]} #{language[1]}
           .pure-control-group
@@ -93,44 +97,42 @@
             Where is the story taking place?
           .pure-control-group
             %label#place Place:
-            %input#place{:type => "text", :placeholder => "Doktorska Gradina", :value => "#{@story.place}"}
+            %input#place{:type => "text", :name => "story[place]", :placeholder => "Doktorska Gradina", :value => "#{@story.place}"}
           .pure-control-group
             %label#city City:
-            %input#city{:type => "text", :placeholder => "Sofia", :value => "#{@story.city}"}
+            %input#city{:type => "text", :name => "story[city]", :placeholder => "Sofia", :value => "#{@story.city}"}
           .pure-control-group
             %label#country Country:
-            %input#country{:type => "text", :placeholder => "Bulgaria", :value => "#{@story.country}"}
+            %input#country{:type => "text", :name => "story[country]", :placeholder => "Bulgaria", :value => "#{@story.country}"}
           %legend
             Other
           .pure-control-group
             %label{:for => "estimated_time"} Estimated time:
-            %input{:type => "text", :name => "estimated_time", :value => "#{@story.estimated_time}"}
+            %input{:type => "text", :name => "story[estimated_time]", :value => "#{@story.estimated_time}"}
             %img{:src => "/images/information-icon.png", 'data-ot' => "The estimated time used to finish the whole story. In hours (2h, 1-2h, 1,5h)."}
           .pure-control-group
             %label{:for => "url"} Website:
-            %input{:type => "text", :name => "url", :value => "#{@story.url}"}
+            %input{:type => "text", :name => "story[url]", :value => "#{@story.url}"}
           %legend
             Default values, used in the story creation
           .pure-control-group
             %label{:for => "zoom_level"} Zoom level:
-            %input{:type => "text", :name => "zoom_level", :placeholder => "12", :value => ""}
+            -#%input{:type => "text", :name => "story[zoom_level]", :placeholder => "12", :value => ""}
           .pure-control-group
             %label{:for => "gps_radius"} GPS Radius:
-            %input{:type => "text", :name => "gps_radius", :placeholder => "20", :value => ""}
+            -#%input{:type => "text", :name => "story[gps_radius]", :placeholder => "20", :value => ""}
           %legend
             To be automated
           .pure-control-group
             %label{:for => "tag_types"} Tag technology used:
-            %select{:name => "tag_types"}
-            -#
+            -#%select{:name => "tag_types"}
               %option{:value => "gps", :selected => @story.tag_types == 'gps'} GPS
               %option{:value => "qr", :selected => @story.tag_types == 'qr'} QR
               %option{:value => "nfc", :selected => @story.tag_types == 'nfc'} NFC
               %option{:value => "qr_and_nfc", :selected => @story.tap_types == 'qr_and_nfc'} QR and NFC
           .pure-control-group
             %label{:for => "game_modes"} Game modes used:
-            %select{:name => "game_modes"}
-            -#
+            -#%select{:name => "game_modes"}
               %option{:value => "none", :selected => @story.game_modes == 'none'} None
               %option{:value => "camera", :selected => @story.game_modes == 'camera'} Camera
               %option{:value => "quiz", :selected => @story.game_modes == 'quiz'} Quiz
@@ -149,4 +151,4 @@
             format: 'DD.MM.YYYY',
             firstDay: 1,
             showWeekNumber: true
-          }
+          });
