@@ -1,0 +1,145 @@
+!!!
+%html
+  %head
+    = haml :'templates/header_imports'
+    %link{:href => "/css/layouts/blog.css", :rel => "stylesheet"}
+    %link{:href => "/css/layouts/email.css", :rel => "stylesheet"}
+    %link{:href => "/css/pikaday.css", :rel => "stylesheet"}
+  %body
+    = haml :'templates/nav'
+    
+    #layout.content.pure-g
+      #list.pure-u-1
+        %a.pure-button#add_tag{:href => "/wizard/action?action=add_tag&sid=#{@story.id}", :style => "width: 100%;"} Add tag
+        - @story.tags.each do | tag |
+          -# Use email-item-unread for colors, can be used to color the different type of tags, one color for qr, another for gps
+          - selected_class = 'email-item'
+          - if @tag and @tag.id == tag.id
+            - selected_class = 'email-item-selected'
+
+          %div{:class => "email-item pure-g #{selected_class}"}
+            .pure-u
+              -# the image can be used to show that the tag uses games, so that we have one image for camera, another for quiz
+              -#%img.email-avatar{:alt => "Tilo Mitra's avatar", :height => "64", :src => "img/common/tilo-avatar.png", :width => "64"}
+            .pure-u-3-4
+              -#%h5.email-name
+              %h4.email-subject
+                = tag.title
+              %p.email-desc
+                = tag.description
+              %a.secondary-button.pure-button{:href => "/wizard/tag?sid=#{@story.id}&tid=#{tag.id}"} Edit
+
+      #main.pure-u-1
+        - if @story.errors
+          - @story.errors.full_messages.each do | message |
+            = message
+
+        %form.pure-form.pure-form-aligned{:method => "POST", :role => "form", :enctype => "multipart/form-data"}
+          %fieldset
+            %legend Tag wizard
+          .pure-control-group
+            %label#title Title:
+            %input#title{:type => "text", :name => "tag[title]", :value => @tag.title}
+            %img{:src => "/images/information-icon.png", 'data-ot' => "You can set the title of each tag screen. Will change the title in the action bar."}
+          .pure-control-group
+            %label#description Description:
+            %textarea#description{:name => "tag[description]", :rows => "6", :cols => "23"}
+              = @tag.description
+          .pure-control-group
+            %label{:for => "tag_image_top"} Tag image (top):
+            %input{:type => "text", :name => "tag_image_top", :value => "#{params['tag_image_top']}"}
+
+          .pure-control-group
+            %label{:for => "content"} Upload new:
+            %input{:type => "file", :name => "content[top]"}
+
+            - unless params['tag_image_top'].nil? or params['tag_image_top'].empty?
+              .pure-control-group
+                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/images/#{params['tag_image_top']}", :width => '500px'}
+
+          .pure-control-group
+            %label{:for => "tag_image_middle"} Tag image (middle):
+            %input{:type => "text", :name => "tag_image_middle", :value => "#{params['tag_image_middle']}"}
+
+          .pure-control-group
+            %label{:for => "content"} Upload new:
+            %input{:type => "file", :name => "content[middle]"}
+
+            - unless params['tag_image_middle'].nil? or params['tag_image_middle'].empty?
+              .pure-control-group
+                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/images/#{params['tag_image_middle']}", :width => '500px'}
+
+          .pure-control-group
+            %label{:for => "tag_image_bottom"} Tag image (bottom):
+            %input{:type => "text", :name => "tag_image_bottom", :value => "#{params['tag_image_bottom']}"}
+
+          .pure-control-group
+            %label{:for => "content"} Upload new:
+            %input{:type => "file", :name => "content[bottom]"}
+
+            - unless params['tag_image_bottom'].nil? or params['tag_image_bottom'].empty?
+              .pure-control-group
+                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/images/#{params['tag_image_bottom']}", :width => '500px'}
+
+          %legend
+            Optionally
+
+          .pure-control-group
+            %label#question Question:
+            %input#question{:type => "text", :name => "tag[question]", :value => @tag.question}
+            %img{:src => "/images/information-icon.png", 'data-ot' => "You can ask a single question instead of making a quiz. A typicall question would be; Which road do you want to take?. When using the question button, each title of an option will be used as an answer. So when the user click the button at the bottom, a list of possible answer will be shown."}
+
+          .pure-control-group
+            %label#travel_button Travel button:
+            %input#travel_button{:type => "text", :name => "tag[travel_button]", :placeholder => "See where to go next", :value => @tag.travel_button}
+            %img{:src => "/images/information-icon.png", 'data-ot' => "This is the bottom button, normally it says 'See where to go next'. This can be customized if needed. Typically when you ask a single question (see previous field), you would like to have the title of the travel button say something like 'See answers' or 'See roads'"}
+
+          .pure-control-group
+            %label#skippable Is this tag skippable:
+            %select#skippable{:name => "tag[skippable]"}
+              %option{:value => "true", :selected => @tag.skippable == true} True
+              %option{:value => "false", :selected => @tag.skippable == false} False
+
+            -#%input{:type=>"checkbox", :name=>"skippable", :checked => params['skippable'] == "true"}
+            -#%img{:src => "/images/information-icon.png", 'data-ot' => "Checking this box will let the reader skip the tag if he or she can't find it."}
+
+          .pure-control-group
+            %label#is_endpoint Is this the last tag:
+            %select#is_endpoint{:name => "tag[is_endpoint]"}
+              %option{:value => "false", :selected => @tag.is_endpoint == false} False
+              %option{:value => "true", :selected => @tag.is_endpoint == true} True
+
+            -#%input{:type=>"checkbox", :name=>"isEndpoint", :checked => params['isEndPoint'] == "true"}
+            -#%img{:src => "/images/information-icon.png", 'data-ot' => "Need to be checked on the tag that is the last tag, so that the story can end."}
+
+          %legend
+            To be implemented better later
+
+          .pure-control-group
+            %label{:for => "tag_type"} Tag technology:
+            %select{:name => "tag_type"}
+              %option{:value => "gps", :selected => params['tag_type'] == 'gps'} GPS
+              %option{:value => "qr", :selected => params['tag_type'] == 'qr'} QR
+              %option{:value => "nfc", :selected => params['tag_type'] == 'nfc'} NFC
+              %option{:value => "qr_and_nfc", :selected => params['tap_type'] == 'qr_and_nfc'} QR and NFC
+
+          .pure-control-group
+            %label{:for => "game_mode"} Game mode:
+            %select{:name => "game_mode"}
+              %option{:value => "none", :selected => params['game_mode'] == 'none'} None
+              %option{:value => "camera", :selected => params['game_mode'] == 'camera'} Camera
+              %option{:value => "quiz", :selected => params['game_mode'] == 'quiz'} Quiz
+
+          .pure-control-group
+            %ul.pure-paginator
+              %li
+                %p Travel options
+                - @tag.travel_options.each_with_index do | option, index |
+                  %li
+                    %a.pure-button{:href => "/wizard/tag/option?sid=#{tag.story_id}&tid=#{@tag.id}&toid=#{option.id}"} #{index + 1}
+
+          .pure-control-group
+            %a.pure-button{:href => "/wizard/story?sid=#{@tag.story_id}"} Story
+            %button.pure-button{:type => "submit", :name => "save"} Save
+            %button.pure-button{:type => "submit", :name => "add_option"} Add option
+            %button.pure-button{:type => "submit", :name => "delete_tag"} Delete tag

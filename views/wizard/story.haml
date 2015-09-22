@@ -5,7 +5,7 @@
     %link{:href => "/css/layouts/blog.css", :rel => "stylesheet"}
     %link{:href => "/css/layouts/email.css", :rel => "stylesheet"}
     %link{:href => "/css/pikaday.css", :rel => "stylesheet"}
-    -#%script{:src => "https://maps.googleapis.com/maps/api/js?key=AIzaSyBj0MzAv62ik_KGQi9WCVkSCx3qDGykiZ0&libraries=places"}
+    %script{:src => "https://maps.googleapis.com/maps/api/js?key=AIzaSyBj0MzAv62ik_KGQi9WCVkSCx3qDGykiZ0&libraries=places"}
     :javascript
       function initialize() {
         var input = /** @type {HTMLInputElement} */(
@@ -32,7 +32,7 @@
 
     #layout.content.pure-g
       #list.pure-u-1
-        %a.pure-button#add_tag{:href => "/wizard/story?sid=#{@story.id}&action=add_tag", :style => "width: 100%;"} Add tag
+        %a.pure-button#add_tag{:href => "/wizard/action?action=add_tag&sid=#{@story.id}", :style => "width: 100%;"} Add tag
         - @story.tags.each do | tag |
           -# Use email-item-unread for colors, can be used to color the different type of tags, one color for qr, another for gps
           .email-item.email-item.pure-g
@@ -57,10 +57,10 @@
             %legend Story wizard - Details about the story
           .pure-control-group
             %label#title Title:
-            %input#title{:type => "text", :name => "story[title]", :value => "#{@story.title}", :required => ""}
+            %input#title{:type => "text", :name => "story[title]", :value => @story.title, :required => ""}
           .pure-control-group  
             %label#author Author:
-            %input#author{:type => "text", :name => "story[author]", :value => "#{@story.author}", :required => ""}
+            %input#author{:type => "text", :name => "story[author]", :value => @story.author, :required => ""}
           .pure-control-group
             %label#description Description:
             %textarea#description{:name => "story[description]", :rows => "6", :cols => "23"}
@@ -83,7 +83,7 @@
             %label{:for => "language"} Language:
             %select{:name => "story[language]"}
               - I18nData.languages.each do | language |
-                %option{:value => "#{language[0]}", :selected => @story.language == language[0]} #{language[1]}
+                %option{:value => language[0], :selected => @story.language == language[0]} #{language[1]}
           .pure-control-group
             %label#image Cover image:
             %input#image{:type => "text", :value => ""}
@@ -97,22 +97,22 @@
             Where is the story taking place?
           .pure-control-group
             %label#place Place:
-            %input#place{:type => "text", :name => "story[place]", :placeholder => "Doktorska Gradina", :value => "#{@story.place}"}
+            %input#place{:type => "text", :name => "story[place]", :placeholder => "Doktorska Gradina", :value => @story.place}
           .pure-control-group
             %label#city City:
-            %input#city{:type => "text", :name => "story[city]", :placeholder => "Sofia", :value => "#{@story.city}"}
+            %input#city{:type => "text", :name => "story[city]", :placeholder => "Sofia", :value => @story.city}
           .pure-control-group
             %label#country Country:
-            %input#country{:type => "text", :name => "story[country]", :placeholder => "Bulgaria", :value => "#{@story.country}"}
+            %input#country{:type => "text", :name => "story[country]", :placeholder => "Bulgaria", :value => @story.country}
           %legend
             Other
           .pure-control-group
             %label{:for => "estimated_time"} Estimated time:
-            %input{:type => "text", :name => "story[estimated_time]", :value => "#{@story.estimated_time}"}
+            %input{:type => "text", :name => "story[estimated_time]", :value => @story.estimated_time}
             %img{:src => "/images/information-icon.png", 'data-ot' => "The estimated time used to finish the whole story. In hours (2h, 1-2h, 1,5h)."}
           .pure-control-group
             %label{:for => "url"} Website:
-            %input{:type => "text", :name => "story[url]", :value => "#{@story.url}"}
+            %input{:type => "text", :name => "story[url]", :value => @story.url}
           %legend
             Default values, used in the story creation
           .pure-control-group
