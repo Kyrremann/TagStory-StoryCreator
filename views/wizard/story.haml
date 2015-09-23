@@ -85,14 +85,11 @@
               - I18nData.languages.each do | language |
                 %option{:value => language[0], :selected => @story.language == language[0]} #{language[1]}
           .pure-control-group
-            %label#image Cover image:
-            %input#image{:type => "text", :value => ""}
-          .pure-control-group
-            %label#cover_image Upload new:
-            %input#cover_image{:type => "file"}
-            -# unless @story.image.nil? or @story.image.empty?
+            %label#cover_image Upload image:
+            %input#cover_image{:type => "file", :name => "cover_image"}
+            - unless @story.images.nil? or @story.images.empty?
               .pure-control-group
-                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/images/#{@story.image}", :width => '500px'}
+                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/images/#{@story.images}", :width => '500px'}
           %legend
             Where is the story taking place?
           .pure-control-group

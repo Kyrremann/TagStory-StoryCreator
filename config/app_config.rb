@@ -15,9 +15,27 @@ SCOPES =
 
 use OmniAuth::Builder do
   provider :google_oauth2, G_API_CLIENT, G_API_SECRET, {
-    :scope => SCOPES, #"email, profile",
+    :scope => SCOPES,
     :image_aspect_ratio => "square",
     :image_size => 100,
     :prompt => 'consent'
   }
 end
+
+# Amazon S3
+unless AWS_ACCESS_KEY_ID = ENV['AWS_ACCESS_KEY_ID']
+  raise "You must specify the AWS_ACCESS_KEY_ID env variable"
+end
+
+unless AWS_SECRET_ACCESS_KEY = ENV['AWS_SECRET_ACCESS_KEY']
+  raise "You must specify the AWS_SECRET_ACCESS_KEY env variable"
+end
+
+unless AWS_REGION = ENV['AWS_REGION']
+  raise "You must specify the AWS_REGION env variable"
+end
+
+Aws.config.update({
+                    region: AWS_REGION,
+                    credentials: Aws::Credentials.new(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+                  })
