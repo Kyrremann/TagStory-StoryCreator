@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(version: 20150919115849) do
     t.string   "travel_button"
     t.string   "tag_type",                       null: false
     t.string   "game_mode",     default: "none", null: false
-    t.boolean  "is_endpoint",   default: false,  null: false
+    t.boolean  "endpoint",      default: false,  null: false
     t.boolean  "skippable",     default: true,   null: false
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
@@ -104,7 +104,7 @@ ActiveRecord::Schema.define(version: 20150919115849) do
     t.string   "last_name",  null: false
     t.string   "email",      null: false
     t.string   "image"
-    t.string  "uid"
+    t.string   "uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

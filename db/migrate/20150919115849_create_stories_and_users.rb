@@ -30,7 +30,7 @@ class CreateStoriesAndUsers < ActiveRecord::Migration
       t.string :travel_button
       t.string :tag_type, null: false
       t.string :game_mode, default: 'none', null: false
-      t.boolean :is_endpoint, default: false, null: false
+      t.boolean :endpoint, default: false, null: false
       t.boolean :skippable, default: true, null: false
 
       t.timestamps null: false
