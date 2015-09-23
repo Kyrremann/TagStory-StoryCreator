@@ -30,9 +30,10 @@
               %a.secondary-button.pure-button{:href => "/wizard/tag?sid=#{@story.id}&tid=#{tag.id}"} Edit
 
       #main.pure-u-1
-        - if @story.errors
-          - @story.errors.full_messages.each do | message |
+        - if @tag.errors
+          - @tag.errors.full_messages.each do | message |
             = message
+            %br
 
         %form.pure-form.pure-form-aligned{:method => "POST", :role => "form", :enctype => "multipart/form-data"}
           %fieldset
@@ -104,10 +105,10 @@
             -#%img{:src => "/images/information-icon.png", 'data-ot' => "Checking this box will let the reader skip the tag if he or she can't find it."}
 
           .pure-control-group
-            %label#is_endpoint Is this the last tag:
-            %select#is_endpoint{:name => "tag[is_endpoint]"}
-              %option{:value => "false", :selected => @tag.is_endpoint == false} False
-              %option{:value => "true", :selected => @tag.is_endpoint == true} True
+            %label#endpoint Is this the last tag:
+            %select#endpoint{:name => "tag[endpoint]"}
+              %option{:value => "true", :selected => @tag.endpoint == true} True
+              %option{:value => "false", :selected => @tag.endpoint == false} False
 
             -#%input{:type=>"checkbox", :name=>"isEndpoint", :checked => params['isEndPoint'] == "true"}
             -#%img{:src => "/images/information-icon.png", 'data-ot' => "Need to be checked on the tag that is the last tag, so that the story can end."}

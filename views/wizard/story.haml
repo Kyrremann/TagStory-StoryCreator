@@ -138,7 +138,6 @@
               %option{:value => "quiz", :selected => @story.game_modes == 'quiz'} Quiz
           .pure-control-group
             %button.pure-button#save{:type => "submit"} Save
-            %button.pure-button#add_tag{:type => "submit"} Add tag
             %a.pure-button.pure-button{:href => "/wizard/story/overview?sid=#{@story.id}"} Map overview
             %a.pure-button.pure-button{:href => "/wizard/story/qr-codes?sid=#{@story.id}"} See tags QR-code text
 
