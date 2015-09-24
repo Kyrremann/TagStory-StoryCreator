@@ -1,24 +1,45 @@
 class TagStoryApp < Sinatra::Application
   get '/wizard/tag' do
-    @tag = Tag.find(params[:tid])
-    @story = Story.find(@tag.story_id)
     haml :'wizard/tag'
   end
 
   post '/wizard/tag' do
-    @tag = Tag.find(params[:tid])
+    if params[:content]
+      content = params[:content]
+      case content
+      when 'top'
+        filename = upload_image(@tag.story_id, content['top'])
+        @tag.image_top = filename
+      when 'middle'
+        filename = upload_image(@tag.story_id, content['middle'])
+        @tag.image_middle = filename
+      when 'bottom'
+        filename = upload_image(@tag.story_id, content['bottom'])
+        @tag.image_bottom = filename
+      end
+    end
+
     if @tag.update(params[:tag])
       redirect "wizard/tag?sid=#{@tag.story_id}&tid=#{@tag.id}"
     else
-      @story = Story.find(@tag.story_id)
       haml :'wizard/tag'
     end
   end
 
-  post '/wizard/travel-option' do
-    @travel_option = Travel_option.find(params[toid])
-    @tag = Tag.find(params[:tid])
-    @story = Story.find(params[:sid])
+  get '/wizard/travel-option' do
     haml :'wizard/travel_option'
+  end
+
+  get '/wizard/tag/image-delete' do
+    case params[:image]
+    when 'top'
+      @tag.image_top = nil
+    when 'middle'
+      @tag.image_middle = nil
+    when 'bottom'
+      @tag.image_bottom = nil
+    end
+    @tag.save
+    redirect "wizard/tag?sid=#{@tag.story_id}&tid=#{@tag.id}"
   end
 end

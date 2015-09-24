@@ -1,0 +1,47 @@
+!!!
+%html
+  %head
+    = haml :'templates/header_imports'
+    %link{:href => "/css/layouts/blog.css", :rel => "stylesheet"}
+    %link{:href => "/css/layouts/email.css", :rel => "stylesheet"}
+    %link{:href => "/css/pikaday.css", :rel => "stylesheet"}
+  %body
+    = haml :'templates/nav'
+    
+    #layout.content.pure-g
+      #list.pure-u-1
+        %a.pure-button#add_tag{:href => "/wizard/action?action=add_tag&sid=#{@story.id}", :style => "width: 100%;"} Add tag
+        - @story.tags.each do | tag |
+          -# Use email-item-unread for colors, can be used to color the different type of tags, one color for qr, another for gps
+          - selected_class = 'email-item'
+          - if @tag and @tag.id == tag.id
+            - selected_class = 'email-item-selected'
+
+          %div{:class => "email-item pure-g #{selected_class}"}
+            .pure-u
+              -# the image can be used to show that the tag uses games, so that we have one image for camera, another for quiz
+              -#%img.email-avatar{:alt => "Tilo Mitra's avatar", :height => "64", :src => "img/common/tilo-avatar.png", :width => "64"}
+            .pure-u-3-4
+              -#%h5.email-name
+              %h4.email-subject
+                = tag.title
+              %p.email-desc
+                = tag.description
+              %a.secondary-button.pure-button{:href => "/wizard/tag?sid=#{@story.id}&tid=#{tag.id}"} Edit
+          - tag.travel_options.each do | option |
+            .email-item.pure-g.email.item
+              .pure-u
+              .pure-u-3-4
+                %h5.email-name
+                  = option.title
+                  %a.secondary-button.pure-button{:href => "/wizard/travel-option?sid=#{@story.id}&tid=#{tag.id}&toid=#{option.id}"} Edit
+
+      #main.pure-u-1
+        - if @travel_option.errors
+          - @travel_option.errors.full_messages.each do | message |
+            = message
+            %br
+
+        %form.pure-form.pure-form-aligned{:method => "POST", :role => "form", :enctype => "multipart/form-data"}
+          %fieldset
+            %legend Travel Option wizard

@@ -1,7 +1,7 @@
 class Tag < ActiveRecord::Base
   belongs_to :story
-  has_many :travel_options
-  has_many :images, foreign_key: 'belongs_to'
+  has_many :travel_options, :dependent => :destroy
+  has_many :images, foreign_key: 'belongs_to', :dependent => :destroy
 
   validates_presence_of :title, :description
   validates :skippable, :endpoint, inclusion: { in: [true, false] }

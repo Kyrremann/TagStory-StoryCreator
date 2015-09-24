@@ -9,14 +9,15 @@ class TagStoryApp < Sinatra::Application
   configure :production do
     set :haml, { :ugly=>true }
     set :clean_trace, true
+    enable :logging
   end
 
   configure :development do
-    # ...
+    enable :logging
   end
 
   before do
-    # content_type :html, 'charset' => 'utf-8'
+    content_type :html, 'charset' => 'utf-8'
   end
 end
 

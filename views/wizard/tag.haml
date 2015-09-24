@@ -39,64 +39,55 @@
           %fieldset
             %legend Tag wizard
           .pure-control-group
-            %label#title Title:
+            %label{:for => 'title'} Title:
             %input#title{:type => "text", :name => "tag[title]", :value => @tag.title}
             %img{:src => "/images/information-icon.png", 'data-ot' => "You can set the title of each tag screen. Will change the title in the action bar."}
           .pure-control-group
-            %label#description Description:
+            %label{:for => 'description'} Description:
             %textarea#description{:name => "tag[description]", :rows => "6", :cols => "23"}
               = @tag.description
           .pure-control-group
-            %label{:for => "tag_image_top"} Tag image (top):
-            %input{:type => "text", :name => "tag_image_top", :value => "#{params['tag_image_top']}"}
-
-          .pure-control-group
-            %label{:for => "content"} Upload new:
-            %input{:type => "file", :name => "content[top]"}
-
-            - unless params['tag_image_top'].nil? or params['tag_image_top'].empty?
+            %label{:for => "image_top"} Tag image (top):
+            %input#image_top{:type => "file", :name => "content[top]"}
+            - unless @tag.image_top.nil?
               .pure-control-group
-                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/images/#{params['tag_image_top']}", :width => '500px'}
+                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/stories/#{@tag.story_id}/images/#{@tag.image_top}", :width => '500px'}
+                %br
+                %a.pure-button#add_tag{:href => "/wizard/tag/image-delete?tid=#{@tag.id}&image=top"} Delete
 
           .pure-control-group
-            %label{:for => "tag_image_middle"} Tag image (middle):
-            %input{:type => "text", :name => "tag_image_middle", :value => "#{params['tag_image_middle']}"}
-
-          .pure-control-group
-            %label{:for => "content"} Upload new:
-            %input{:type => "file", :name => "content[middle]"}
-
-            - unless params['tag_image_middle'].nil? or params['tag_image_middle'].empty?
+            %label{:for => "image_middle"} Tag image (middle):
+            %input#image_middle{:type => "file", :name => "content[middle]"}
+            - unless @tag.image_middle.nil?
               .pure-control-group
-                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/images/#{params['tag_image_middle']}", :width => '500px'}
+                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/stories/#{@tag.story_id}/images/#{@tag.image_middle}", :width => '500px'}
+                %br
+                %a.pure-button#add_tag{:href => "/wizard/tag/image-delete?tid=#{@tag.id}&image=middle"} Delete
 
           .pure-control-group
-            %label{:for => "tag_image_bottom"} Tag image (bottom):
-            %input{:type => "text", :name => "tag_image_bottom", :value => "#{params['tag_image_bottom']}"}
-
-          .pure-control-group
-            %label{:for => "content"} Upload new:
-            %input{:type => "file", :name => "content[bottom]"}
-
-            - unless params['tag_image_bottom'].nil? or params['tag_image_bottom'].empty?
+            %label{:for => "image_bottom"} Tag image (bottom):
+            %input#image_bottom{:type => "file", :name => "content[bottom]"}
+            - unless @tag.image_bottom.nil?
               .pure-control-group
-                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/images/#{params['tag_image_bottom']}", :width => '500px'}
+                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/stories/#{@tag.story_id}/images/#{@tag.image_bottom}", :width => '500px'}
+                %br
+                %a.pure-button#add_tag{:href => "/wizard/tag/image-delete?tid=#{@tag.id}&image=bottom"} Delete
 
           %legend
             Optionally
 
           .pure-control-group
-            %label#question Question:
+            %label{:for => 'question'} Question:
             %input#question{:type => "text", :name => "tag[question]", :value => @tag.question}
             %img{:src => "/images/information-icon.png", 'data-ot' => "You can ask a single question instead of making a quiz. A typicall question would be; Which road do you want to take?. When using the question button, each title of an option will be used as an answer. So when the user click the button at the bottom, a list of possible answer will be shown."}
 
           .pure-control-group
-            %label#travel_button Travel button:
+            %label{:for => 'travel_button'} Travel button:
             %input#travel_button{:type => "text", :name => "tag[travel_button]", :placeholder => "See where to go next", :value => @tag.travel_button}
             %img{:src => "/images/information-icon.png", 'data-ot' => "This is the bottom button, normally it says 'See where to go next'. This can be customized if needed. Typically when you ask a single question (see previous field), you would like to have the title of the travel button say something like 'See answers' or 'See roads'"}
 
           .pure-control-group
-            %label#skippable Is this tag skippable:
+            %label{:for => 'skippable'} Is this tag skippable:
             %select#skippable{:name => "tag[skippable]"}
               %option{:value => "true", :selected => @tag.skippable == true} True
               %option{:value => "false", :selected => @tag.skippable == false} False
@@ -105,7 +96,7 @@
             -#%img{:src => "/images/information-icon.png", 'data-ot' => "Checking this box will let the reader skip the tag if he or she can't find it."}
 
           .pure-control-group
-            %label#endpoint Is this the last tag:
+            %label{:for => 'endpoint'} Is this the last tag:
             %select#endpoint{:name => "tag[endpoint]"}
               %option{:value => "true", :selected => @tag.endpoint == true} True
               %option{:value => "false", :selected => @tag.endpoint == false} False
@@ -137,10 +128,10 @@
                 %p Travel options
                 - @tag.travel_options.each_with_index do | option, index |
                   %li
-                    %a.pure-button{:href => "/wizard/tag/option?sid=#{tag.story_id}&tid=#{@tag.id}&toid=#{option.id}"} #{index + 1}
+                    %a.pure-button{:href => "/wizard/travel-option?sid=#{@tag.story_id}&tid=#{@tag.id}&toid=#{option.id}"} #{index + 1}
 
           .pure-control-group
             %a.pure-button{:href => "/wizard/story?sid=#{@tag.story_id}"} Story
             %button.pure-button{:type => "submit", :name => "save"} Save
-            %button.pure-button{:type => "submit", :name => "add_option"} Add option
-            %button.pure-button{:type => "submit", :name => "delete_tag"} Delete tag
+            %a.pure-button{:href => "/wizard/action?action=add_travel_option&tid=#{@tag.id}&sid=#{@story.id}"} Add option
+            %a.pure-button{:href => "/wizard/action?action=delete_tag&tid=#{@tag.id}&sid=#{@story.id}"} Delete tag

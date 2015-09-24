@@ -4,7 +4,6 @@
     = haml :'templates/header_imports'
     %link{:href => "/css/layouts/blog.css", :rel => "stylesheet"}
     %link{:href => "/css/layouts/email.css", :rel => "stylesheet"}
-    %link{:href => "/css/pikaday.css", :rel => "stylesheet"}
     %script{:src => "https://maps.googleapis.com/maps/api/js?key=AIzaSyBj0MzAv62ik_KGQi9WCVkSCx3qDGykiZ0&libraries=places"}
     :javascript
       function initialize() {
@@ -25,6 +24,13 @@
             }
           }
         });
+        input.onkeypress = function() {
+          var evt = (evt) ? evt : ((event) ? event : null);
+          var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+          if ((evt.keyCode == 13) && (node.type == "text")) {
+            return false;
+          }
+        }
       }
       google.maps.event.addDomListener(window, 'load', initialize);
   %body
@@ -52,24 +58,24 @@
           - @story.errors.full_messages.each do | message |
             = message
 
-        %form.pure-form.pure-form-aligned{:method => "POST", :role => "form", :enctype => "multipart/form-data"}
+        %form#story_form.pure-form.pure-form-aligned{:method => "POST", :role => "form", :enctype => "multipart/form-data"}
           %fieldset
             %legend Story wizard - Details about the story
           .pure-control-group
-            %label#title Title:
+            %label{:for => 'title'} Title:
             %input#title{:type => "text", :name => "story[title]", :value => @story.title, :required => ""}
           .pure-control-group  
-            %label#author Author:
+            %label{:for => 'author'} Author:
             %input#author{:type => "text", :name => "story[author]", :value => @story.author, :required => ""}
           .pure-control-group
-            %label#description Description:
+            %label{:for => 'description'} Description:
             %textarea#description{:name => "story[description]", :rows => "6", :cols => "23"}
               = @story.description
           .pure-control-group
-            %label#genre Genre:
+            %label{:for => 'genre'} Genre:
             %input#genre{:type => "text", :placeholder => "science fiction, horror", :value => ""}
           .pure-control-group
-            %label#age_group Age group:
+            %label{:for => 'age_group'} Age group:
             %select#age_group
               %option{:value => "e", :name => "story[age_group]", :selected => @story.age_group == 'e'} Everyone
               %option{:value => "k", :name => "story[age_group]", :selected => @story.age_group == 'k'} Kids
@@ -77,7 +83,7 @@
               %option{:value => "t", :name => "story[age_group]", :selected => @story.age_group == 't'} Teens
               %option{:value => "m", :name => "story[age_group]", :selected => @story.age_group == 'm'} Mature
           .pure-control-group
-            %label#keywords Keywords:
+            %label{:for => 'keywords'} Keywords:
             %input#keywords{:type => "text", :placeholder => "Mystery, forest, murder, lake", :value => ""}
           .pure-control-group
             %label{:for => "language"} Language:
@@ -85,7 +91,7 @@
               - I18nData.languages.each do | language |
                 %option{:value => language[0], :selected => @story.language == language[0]} #{language[1]}
           .pure-control-group
-            %label#cover_image Upload image:
+            %label{:for => 'cover_image'} Upload image:
             %input#cover_image{:type => "file", :name => "cover_image"}
           - unless @story.images.nil? or @story.images.empty?
             .pure-control-group
@@ -93,13 +99,13 @@
           %legend
             Where is the story taking place?
           .pure-control-group
-            %label#place Place:
+            %label{:for => 'place'} Place:
             %input#place{:type => "text", :name => "story[place]", :placeholder => "Doktorska Gradina", :value => @story.place}
           .pure-control-group
-            %label#city City:
+            %label{:for => 'city'} City:
             %input#city{:type => "text", :name => "story[city]", :placeholder => "Sofia", :value => @story.city}
           .pure-control-group
-            %label#country Country:
+            %label{:for => 'country'} Country:
             %input#country{:type => "text", :name => "story[country]", :placeholder => "Bulgaria", :value => @story.country}
           %legend
             Other
@@ -137,14 +143,3 @@
             %button.pure-button#save{:type => "submit"} Save
             %a.pure-button.pure-button{:href => "/wizard/story/overview?sid=#{@story.id}"} Map overview
             %a.pure-button.pure-button{:href => "/wizard/story/qr-codes?sid=#{@story.id}"} See tags QR-code text
-
-      %script{:src => "/js/moment.min.js"}
-      %script{:src => "/js/pikaday.js"}
-      :javascript
-        var picker = new Pikaday(
-          {
-            field: document.getElementById('datepicker'),
-            format: 'DD.MM.YYYY',
-            firstDay: 1,
-            showWeekNumber: true
-          });

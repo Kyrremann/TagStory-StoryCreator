@@ -1,12 +1,28 @@
 class TagStoryApp < Sinatra::Application
+  before '/wizard/*' do
+    redirect '/' unless session[:id]
+    if params[:sid]
+      @story = Story.find(params[:sid])
+    end
+
+    if params[:tid]
+      @tag = Tag.find(params[:tid])
+      unless @story
+        @story = Story.find(@tag.story_id)
+      end
+    end
+
+    @travel_option = TravelOption.find(params[:toid]) if params[:toid]
+
+    redirect '/my-stories' unless @story and @story.has_owner(session[:id])
+  end
+
   get '/wizard/story' do
-    @story = Story.find(params[:sid])
     haml :'wizard/story'
   end
 
   post '/wizard/story' do
-    @story = Story.find(params[:sid])
-    if params.has_key?("cover_image")
+    if params[:cover_image]
       url = upload_image(@story.id, params[:cover_image])
       if @story.images.empty?
         Image.create(:belongs_to => @story.id,
@@ -27,9 +43,6 @@ class TagStoryApp < Sinatra::Application
   end
 
   get '/wizard/action' do
-    @story = Story.find(params[:sid]) if params.has_key?('sid')
-    @tag = Tag.find(params[:tid]) if params.has_key?('tid')
-
     case params[:action]
     when "add_tag"
       @tag = Tag.create(:story_id => @story.id,
@@ -38,8 +51,11 @@ class TagStoryApp < Sinatra::Application
                         :tag_type => "qr")
       @tag.save
       redirect "wizard/tag?sid=#{@story.id}&tid=#{@tag.id}"
+    when "delete_tag"
+      @tag.destroy
+      redirect "wizard/story?sid=#{@story.id}"
     when "add_travel_option"
-      @travel_option = Travel_option.create(:tag_id => @tag.id,
+      @travel_option = TravelOption.create(:tag_id => @tag.id,
                                              :title => "New travel option",
                                              :next_tag => 0)
       @travel_option.save
