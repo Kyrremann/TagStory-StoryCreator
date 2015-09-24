@@ -39,3 +39,17 @@ Aws.config.update({
                     region: AWS_REGION,
                     credentials: Aws::Credentials.new(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
                   })
+
+# Transloadit
+unless TRANSLOADIT_KEY = ENV['TRANSLOADIT_KEY']
+  raise "You must specify the TRANSLOADIT_KEY env variable"
+end
+
+unless TRANSLOADIT_SECRET = ENV['TRANSLOADIT_SECRET']
+  raise "You must specify the TRANSLOADIT_SECRET env variable"
+end
+
+$TRANSLOADIT = Transloadit.new(
+                               :key    => TRANSLOADIT_KEY,
+                               :secret => TRANSLOADIT_SECRET
+                               )

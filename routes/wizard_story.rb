@@ -7,7 +7,17 @@ class TagStoryApp < Sinatra::Application
   post '/wizard/story' do
     @story = Story.find(params[:sid])
     if params.has_key?("cover_image")
-      p upload_image(@story.id, params[:cover_image])
+      url = upload_image(@story.id, params[:cover_image])
+      if @story.images.empty?
+        Image.create(:belongs_to => @story.id,
+                     :url => url,
+                     :owner => session[:id])
+      else
+        image = @story.images.first
+        image.url = url
+        image.save
+      end
+      @story.reload
     end
     if @story.update(params[:story])
       redirect "wizard/story?sid=#{@story.id}"

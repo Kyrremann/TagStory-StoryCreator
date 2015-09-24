@@ -24,6 +24,7 @@ class TagStoryApp < Sinatra::Application
 
         @user = User.create_user(auth[:info], auth[:uid])
         if @user.save
+          session[:user] = @user
           session[:id] = @user.id
           redirect '/my-stories'
         end

@@ -87,9 +87,9 @@
           .pure-control-group
             %label#cover_image Upload image:
             %input#cover_image{:type => "file", :name => "cover_image"}
-            - unless @story.images.nil? or @story.images.empty?
-              .pure-control-group
-                %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/images/#{@story.images}", :width => '500px'}
+          - unless @story.images.nil? or @story.images.empty?
+            .pure-control-group
+              %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/stories/#{@story.id}/images/#{@story.images.first.url}", :width => '500px'}
           %legend
             Where is the story taking place?
           .pure-control-group
