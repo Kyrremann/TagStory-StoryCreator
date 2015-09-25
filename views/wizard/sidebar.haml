@@ -1,0 +1,31 @@
+#list.pure-u-1
+  %a.pure-button#add_tag{:href => "/wizard/action?action=add_tag&sid=#{@story.id}", :style => "width: 100%;"} Add tag
+  - select_tag = (@tag and not @travel_option)
+  - @story.tags.each do | tag |
+    -# Use email-item-unread for colors, can be used to color the different type of tags, one color for qr, another for gps
+    - selected_class = 'email-item'
+    - if select_tag and @tag.id == tag.id
+      - selected_class = 'email-item-selected'
+
+    %div{:class => "email-item pure-g #{selected_class}"}
+      .pure-u
+        -# the image can be used to show that the tag uses games, so that we have one image for camera, another for quiz
+        -#%img.email-avatar{:alt => "Tilo Mitra's avatar", :height => "64", :src => "img/common/tilo-avatar.png", :width => "64"}
+      .pure-u-3-4
+        -#%h5.email-name
+        %h4.email-subject
+          = tag.title
+        %p.email-desc
+          = tag.description
+        %a.secondary-button.pure-button{:href => "/wizard/tag?sid=#{@story.id}&tid=#{tag.id}"} Edit
+    - tag.travel_options.each do | option |
+      - selected_class = 'email-item'
+      - if not select_tag and @travel_option.id == option.id
+        - selected_class = 'email-item-selected'
+        
+      %div{:class => "email-item pure-g #{selected_class}"}
+        .pure-u
+        .pure-u-3-4
+          %h5.email-name
+            = option.title
+            %a.secondary-button.pure-button{:href => "/wizard/travel-option?sid=#{@story.id}&tid=#{tag.id}&toid=#{option.id}"} Edit

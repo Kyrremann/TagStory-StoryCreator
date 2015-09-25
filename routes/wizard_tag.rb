@@ -26,10 +26,6 @@ class TagStoryApp < Sinatra::Application
     end
   end
 
-  get '/wizard/travel-option' do
-    haml :'wizard/travel_option'
-  end
-
   get '/wizard/tag/image-delete' do
     case params[:image]
     when 'top'

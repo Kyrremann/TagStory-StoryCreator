@@ -12,7 +12,15 @@ class TagStoryApp < Sinatra::Application
       end
     end
 
-    @travel_option = TravelOption.find(params[:toid]) if params[:toid]
+    if params[:toid]
+      @travel_option = TravelOption.find(params[:toid])
+      unless @tag
+        @tag = Tag.find(@travel_option.tag_id)
+        unless @story
+          @story = Story.find(@tag.story_id)
+        end
+      end
+    end
 
     redirect '/my-stories' unless @story and @story.has_owner(session[:id])
   end

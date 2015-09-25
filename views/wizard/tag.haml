@@ -9,25 +9,7 @@
     = haml :'templates/nav'
     
     #layout.content.pure-g
-      #list.pure-u-1
-        %a.pure-button#add_tag{:href => "/wizard/action?action=add_tag&sid=#{@story.id}", :style => "width: 100%;"} Add tag
-        - @story.tags.each do | tag |
-          -# Use email-item-unread for colors, can be used to color the different type of tags, one color for qr, another for gps
-          - selected_class = 'email-item'
-          - if @tag and @tag.id == tag.id
-            - selected_class = 'email-item-selected'
-
-          %div{:class => "email-item pure-g #{selected_class}"}
-            .pure-u
-              -# the image can be used to show that the tag uses games, so that we have one image for camera, another for quiz
-              -#%img.email-avatar{:alt => "Tilo Mitra's avatar", :height => "64", :src => "img/common/tilo-avatar.png", :width => "64"}
-            .pure-u-3-4
-              -#%h5.email-name
-              %h4.email-subject
-                = tag.title
-              %p.email-desc
-                = tag.description
-              %a.secondary-button.pure-button{:href => "/wizard/tag?sid=#{@story.id}&tid=#{tag.id}"} Edit
+      = haml :'wizard/sidebar'
 
       #main.pure-u-1
         - if @tag.errors
@@ -53,7 +35,7 @@
               .pure-control-group
                 %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/stories/#{@tag.story_id}/images/#{@tag.image_top}", :width => '500px'}
                 %br
-                %a.pure-button#add_tag{:href => "/wizard/tag/image-delete?tid=#{@tag.id}&image=top"} Delete
+                %a.pure-button{:href => "/wizard/tag/image-delete?tid=#{@tag.id}&image=top"} Delete
 
           .pure-control-group
             %label{:for => "image_middle"} Tag image (middle):
@@ -62,7 +44,7 @@
               .pure-control-group
                 %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/stories/#{@tag.story_id}/images/#{@tag.image_middle}", :width => '500px'}
                 %br
-                %a.pure-button#add_tag{:href => "/wizard/tag/image-delete?tid=#{@tag.id}&image=middle"} Delete
+                %a.pure-button{:href => "/wizard/tag/image-delete?tid=#{@tag.id}&image=middle"} Delete
 
           .pure-control-group
             %label{:for => "image_bottom"} Tag image (bottom):
@@ -71,7 +53,7 @@
               .pure-control-group
                 %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/stories/#{@tag.story_id}/images/#{@tag.image_bottom}", :width => '500px'}
                 %br
-                %a.pure-button#add_tag{:href => "/wizard/tag/image-delete?tid=#{@tag.id}&image=bottom"} Delete
+                %a.pure-button{:href => "/wizard/tag/image-delete?tid=#{@tag.id}&image=bottom"} Delete
 
           %legend
             Optionally
@@ -121,14 +103,6 @@
               %option{:value => "none", :selected => params['game_mode'] == 'none'} None
               %option{:value => "camera", :selected => params['game_mode'] == 'camera'} Camera
               %option{:value => "quiz", :selected => params['game_mode'] == 'quiz'} Quiz
-
-          .pure-control-group
-            %ul.pure-paginator
-              %li
-                %p Travel options
-                - @tag.travel_options.each_with_index do | option, index |
-                  %li
-                    %a.pure-button{:href => "/wizard/travel-option?sid=#{@tag.story_id}&tid=#{@tag.id}&toid=#{option.id}"} #{index + 1}
 
           .pure-control-group
             %a.pure-button{:href => "/wizard/story?sid=#{@tag.story_id}"} Story
