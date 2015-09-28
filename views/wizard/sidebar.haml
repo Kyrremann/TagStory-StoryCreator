@@ -1,6 +1,9 @@
 #list.pure-u-1
-  %a.pure-button#add_tag{:href => "/wizard/action?action=add_tag&sid=#{@story.id}", :style => "width: 100%;"} Add tag
+  %div{:style => "display: table; width: 100%;"}
+    %a.pure-button#story{:href => "/wizard/story?sid=#{@story.id}", :style => "display: table-cell"} Story
+    %a.pure-button#add_tag{:href => "/wizard/action?action=add_tag&sid=#{@story.id}", :style => "display: table-cell"} Add tag
   - select_tag = (@tag and not @travel_option)
+  - select_travel_option = (@travel_option)
   - @story.tags.each do | tag |
     -# Use email-item-unread for colors, can be used to color the different type of tags, one color for qr, another for gps
     - selected_class = 'email-item'
@@ -20,7 +23,7 @@
         %a.secondary-button.pure-button{:href => "/wizard/tag?sid=#{@story.id}&tid=#{tag.id}"} Edit
     - tag.travel_options.each do | option |
       - selected_class = 'email-item'
-      - if not select_tag and @travel_option.id == option.id
+      - if select_travel_option and @travel_option.id == option.id
         - selected_class = 'email-item-selected'
         
       %div{:class => "email-item pure-g #{selected_class}"}
