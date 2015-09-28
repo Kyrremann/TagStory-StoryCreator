@@ -68,7 +68,12 @@ class TagStoryApp < Sinatra::Application
                                              :next_tag => 0)
       @travel_option.save
       redirect "wizard/travel-option?sid=#{@story.id}&tid=#{@tag.id}&toid=#{@travel_option.id}"
+    when "delete_travel_option"
+      @travel_option.destroy
+      redirect "wizard/tag?sid=#{@story.id}&tid=#{@tag.id}"
     end
+
+    redirect :"wizard/story?sid=#{@story.id}"
   end
 
   get '/wizard/story/qr-codes' do
