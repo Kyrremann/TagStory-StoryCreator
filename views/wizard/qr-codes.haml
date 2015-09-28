@@ -1,0 +1,31 @@
+!!!
+%html
+  %head
+    = haml :'templates/header_imports'
+    %link{:href => "/css/layouts/blog.css", :rel => "stylesheet"}
+    %link{:href => "/css/layouts/email.css", :rel => "stylesheet"}
+  %body
+    = haml :'templates/nav'
+
+    #layout.content.pure-g
+      = haml :'wizard/sidebar'
+
+      #main.pure-u-1
+        - if @error
+          %h3
+            = @error
+        %form#resize_form.pure-form{:method => "POST", :role => "form"}
+          .pure-control-group
+            %label{:for => 'length'} Resize:
+            %input#length{:type => "text", :name => "length", :value => @length}
+              
+            %button.pure-button#resize{:type => "submit"} Resize
+            
+        - @story.tags.each do | tag |
+          %p
+            QR Code text:
+            %strong
+              = tag.id
+            %br
+            %img{:src => "http://api.qrserver.com/v1/create-qr-code/?data=#{tag.id}&size=#{@length}x#{@length}", :alt => tag.id}
+          

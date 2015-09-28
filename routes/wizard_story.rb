@@ -70,4 +70,17 @@ class TagStoryApp < Sinatra::Application
       redirect "wizard/travel-option?sid=#{@story.id}&tid=#{@tag.id}&toid=#{@travel_option.id}"
     end
   end
+
+  get '/wizard/story/qr-codes' do
+    @length = params['length'] || 150
+    if @length.to_i > 1000
+      @error = 'Max size is 1000'
+      @length = 150
+    end
+    haml :'wizard/qr-codes'
+  end
+
+  post '/wizard/story/qr-codes' do
+    redirect "wizard/story/qr-codes?sid=#{@story.id}&length=#{params['length']}"
+  end
 end
