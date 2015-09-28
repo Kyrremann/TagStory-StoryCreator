@@ -91,18 +91,18 @@
 
           .pure-control-group
             %label{:for => "tag_type"} Tag technology:
-            %select{:name => "tag_type"}
-              %option{:value => "gps", :selected => params['tag_type'] == 'gps'} GPS
-              %option{:value => "qr", :selected => params['tag_type'] == 'qr'} QR
-              %option{:value => "nfc", :selected => params['tag_type'] == 'nfc'} NFC
-              %option{:value => "qr_and_nfc", :selected => params['tap_type'] == 'qr_and_nfc'} QR and NFC
+            %select#tag_type{:name => "tag[tag_type]"}
+              %option{:value => "gps", :selected => @tag.tag_type == 'gps'} GPS
+              %option{:value => "qr", :selected => @tag.tag_type == 'qr'} QR
+              %option{:value => "nfc", :selected => @tag.tag_type == 'nfc'} NFC
+              %option{:value => "qr_and_nfc", :selected => @tag.tag_type == 'qr_and_nfc'} QR and NFC
 
           .pure-control-group
             %label{:for => "game_mode"} Game mode:
-            %select{:name => "game_mode"}
-              %option{:value => "none", :selected => params['game_mode'] == 'none'} None
-              %option{:value => "camera", :selected => params['game_mode'] == 'camera'} Camera
-              %option{:value => "quiz", :selected => params['game_mode'] == 'quiz'} Quiz
+            %select{:name => "tag[game_mode]"}
+              %option{:value => "none", :selected => @tag.game_mode == 'none'} None
+              %option{:value => "camera", :selected => @tag.game_mode == 'camera'} Camera
+              %option{:value => "quiz", :selected => @tag.game_mode == 'quiz'} Quiz
 
           .pure-control-group
             %a.pure-button{:href => "/wizard/story?sid=#{@tag.story_id}"} Story
