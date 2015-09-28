@@ -83,4 +83,19 @@ class TagStoryApp < Sinatra::Application
   post '/wizard/story/qr-codes' do
     redirect "wizard/story/qr-codes?sid=#{@story.id}&length=#{params['length']}"
   end
+
+  get '/wizard/story/overview' do
+    @coords = []
+    @story.tags.each do | tag |
+      tag.travel_options.each do | travel_option |
+        if travel_option.method == 'map'
+          @coords << {
+            'lat' => travel_option.gps_latitude,
+            'long' => travel_option.gps_longitude
+          }
+        end
+      end
+    end
+    haml :'wizard/overview'
+  end
 end

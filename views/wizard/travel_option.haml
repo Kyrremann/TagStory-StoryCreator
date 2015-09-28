@@ -111,14 +111,12 @@
 
           .pure-control-group
             %label{:for => "answer"} Answer:
-            %input#answer{:type => "text", :name => "travel_option[answer]"}
-              = @travel_option.answer
+            %input#answer{:type => "text", :name => "travel_option[answer]", :value => @travel_option.answer}
             %img{:src => "/images/information-icon.png", 'data-ot' => "If you have chosen Question on this tag, this field needs to be filled out, as it acts as one of the answer."}
 
           .pure-control-group
             %label{:for => "title"} Title:
-            %input#title{:type => "text", :name => "travel_option[answer]"}
-              = @travel_option.title
+            %input#title{:type => "text", :name => "travel_option[answer]", :value => @travel_option.title}
             %img{:src => "/images/information-icon.png", 'data-ot' => "You can set the title of each tag-option screen. Will change the title in the action bar."}
 
           %legend These depends on your method of choice
@@ -166,25 +164,21 @@
           - if @travel_option.method == 'map'
             .pure-control-group
               %label{:for => "gps_latitude"} GPS latitude:
-              %input#gps_latitude{:type => "text", :name => "travel_option[gps_latitude]"}
-                = @travel_option.gps_latitude
+              %input#gps_latitude{:type => "text", :name => "travel_option[gps_latitude]", :value => @travel_option.gps_latitude}
               %img{:src => "/images/information-icon.png", 'data-ot' => ""}
 
             .pure-control-group
               %label{:for => "gps_longitude"} GPS longitude:
-              %input#gps_longitude{:type => "text", :name => "travel_option[gps_longitude]"}
-                = @travel_option.gps_longitude
+              %input#gps_longitude{:type => "text", :name => "travel_option[gps_longitude]", :value => @travel_option.gps_longitude}
               %img{:src => "/images/information-icon.png", 'data-ot' => ""}
 
             .pure-control-group
               %label{:for => "map_zoom_level"} Zoom level:
-              %input#map_zoom_level{:type => "text", :placeholder => "12", :name => "travel_option[map_zoom_level]"}
-                = @travel_option.map_zoom_level
+              %input#map_zoom_level{:type => "text", :placeholder => "12", :name => "travel_option[map_zoom_level]", :value => @travel_option.map_zoom_level}
 
             .pure-control-group
               %label{:for => "gps_radius"} GPS Radius:
-              %input#gps_radius{:type => "text", :placeholder => "20", :name => "travel_option[gps_radius]"}
-                = @travel_option.gps_radius
+              %input#gps_radius{:type => "text", :placeholder => "20", :name => "travel_option[gps_radius]", :value => @travel_option.gps_radius}
 
           %legend Points to the next tag, can't be filled out before the next tag is made
 

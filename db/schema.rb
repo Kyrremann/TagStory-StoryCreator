@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150924194520) do
+ActiveRecord::Schema.define(version: 20150928185500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,8 +93,8 @@ ActiveRecord::Schema.define(version: 20150924194520) do
     t.string   "method",         default: "text", null: false
     t.integer  "map_zoom_level", default: 18
     t.integer  "gps_radius",     default: 15
-    t.integer  "gps_latitude"
-    t.integer  "gps_longitude"
+    t.string   "gps_latitude"
+    t.string   "gps_longitude"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
   end
