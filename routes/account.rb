@@ -21,7 +21,7 @@ class TagStoryApp < Sinatra::Application
 
   post '/my-stories/publish' do
     # check if valid
-    @story.publish
+    publish_to_cloudant(@story, @story.publish}
     redirect 'my-stories'
   end
 

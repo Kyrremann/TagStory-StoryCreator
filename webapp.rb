@@ -23,4 +23,5 @@ end
 
 require_relative 'models/init'
 require_relative 'helpers/init'
+require_relative 'service/init'
 require_relative 'routes/init'
