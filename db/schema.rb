@@ -107,9 +107,9 @@ ActiveRecord::Schema.define(version: 20150928185500) do
     t.string   "last_name",  null: false
     t.string   "email",      null: false
     t.string   "image"
+    t.string   "uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string   "uid"
   end
 
 end

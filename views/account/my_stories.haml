@@ -30,7 +30,9 @@
                 %a.post-category.post-category-pure{:href => "/wizard/story?sid=#{story.id}"} Edit
 
           .posts
-            %h1.content-subhead Drafts
+            %h1.content-subhead
+              Drafts
+              %a.post-category.post-category-design{:href => "/my-stories/create"} New story
             - @stories.each do | story |
               - next if story.published
               %section.post

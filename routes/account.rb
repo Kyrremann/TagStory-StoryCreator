@@ -1,6 +1,8 @@
 class TagStoryApp < Sinatra::Application
   before '/my-stories*' do
     redirect '/' unless session[:id]
+    @user = User.find(session[:id])
+
     if params[:sid]
       @story = Story.find(params[:sid])
     end
@@ -8,9 +10,19 @@ class TagStoryApp < Sinatra::Application
   end
 
   get '/my-stories' do
-    user = User.find(session[:id])
-    @stories = user.stories
+    @stories = @user.stories
     haml :'account/my_stories'
+  end
+
+  get '/my-stories/create' do
+    @story = Story.create_dummy(@user)
+    @story.save!
+    @authorgroups = Authorgroup.new(:story_id =>  @story.id,
+                                     :user_id => @user.id,
+                                     :owner => true)
+    if @authorgroups.save
+      redirect "/wizard/story?sid=#{@story.id}"
+    end
   end
 
   get '/my-stories/publish' do
@@ -21,7 +33,7 @@ class TagStoryApp < Sinatra::Application
 
   post '/my-stories/publish' do
     # check if valid
-    publish_to_cloudant(@story, @story.publish}
+    publish_to_cloudant(@story, @story.publish)
     redirect 'my-stories'
   end
 

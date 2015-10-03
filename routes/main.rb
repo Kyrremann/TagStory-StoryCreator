@@ -27,6 +27,8 @@ class TagStoryApp < Sinatra::Application
           session[:user] = @user
           session[:id] = @user.id
           redirect '/my-stories'
+        else
+          logger.warn @user.errors.messages
         end
       end
     rescue => e

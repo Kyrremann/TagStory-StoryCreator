@@ -116,6 +116,3 @@ DEPENDENCIES
   thin (~> 1.6)
   transloadit (~> 1)
   uuid (~> 2.3)
-
-BUNDLED WITH
-   1.10.6

@@ -19,6 +19,17 @@ class Story < ActiveRecord::Base
     return false
   end
 
+  def self.create_dummy(user)
+    Story.new(:title => 'Dummy story',
+              :author => user.username,
+              :description => 'This is a new story',
+              :age_group => '',
+              :language => 'EN',
+              :country => 'Norway',
+              :city => 'Oslo',
+              :place => 'Tag Story HQ')
+  end
+
   def validate_for_publishing
     if self.images.empty?
       self.errors.add(:images, "Missing story image")
