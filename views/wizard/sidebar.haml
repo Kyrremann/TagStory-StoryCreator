@@ -19,7 +19,7 @@
         %h4.email-subject
           = tag.title
         %p.email-desc
-          = tag.description
+          = tag.description[0, 40]
         %a.secondary-button.pure-button{:href => "/wizard/tag?sid=#{@story.id}&tid=#{tag.id}"} Edit
     - tag.travel_options.each do | option |
       - selected_class = 'email-item'

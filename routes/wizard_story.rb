@@ -66,11 +66,21 @@ class TagStoryApp < Sinatra::Application
       @travel_option = TravelOption.create(:tag_id => @tag.id,
                                              :title => "New travel option",
                                              :next_tag => 0)
-      @travel_option.save
-      redirect "wizard/travel-option?sid=#{@story.id}&tid=#{@tag.id}&toid=#{@travel_option.id}"
+      if @travel_option.save
+        redirect "wizard/travel-option?sid=#{@story.id}&tid=#{@tag.id}&toid=#{@travel_option.id}"
+      else
+        redirect "wizard/tag?sid=#{@story.id}&tid=#{@tag.id}"
+      end
     when "delete_travel_option"
       @travel_option.destroy
       redirect "wizard/tag?sid=#{@story.id}&tid=#{@tag.id}"
+    when "dup_travel_option"
+      dup = @travel_option.dup
+      if dup.save
+        redirect "wizard/travel-option?sid=#{@story.id}&tid=#{@tag.id}&toid=#{@travel_option.id}"
+      else
+        redirect "wizard/tag?sid=#{@story.id}&tid=#{@tag.id}"
+      end
     end
 
     redirect :"wizard/story?sid=#{@story.id}"

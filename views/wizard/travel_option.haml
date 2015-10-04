@@ -116,7 +116,7 @@
 
           .pure-control-group
             %label{:for => "title"} Title:
-            %input#title{:type => "text", :name => "travel_option[answer]", :value => @travel_option.title}
+            %input#title{:type => "text", :name => "travel_option[title]", :value => @travel_option.title}
             %img{:src => "/images/information-icon.png", 'data-ot' => "You can set the title of each tag-option screen. Will change the title in the action bar."}
 
           %legend These depends on your method of choice
@@ -195,6 +195,7 @@
             %button.pure-button{:type => "submit", :name => "save"} Save
             %a.pure-button{:href => "/wizard/action?action=add_travel_option&tid=#{@tag.id}&sid=#{@story.id}"} Add option
             %a.pure-button{:href => "/wizard/action?action=delete_travel_option&toid=#{@travel_option.id}&tid=#{@tag.id}"} Delete option
+            %a.pure-button{:href => "/wizard/action?action=dup_travel_option&toid=#{@travel_option.id}&tid=#{@tag.id}"} Duplicate
 
         - if @travel_option.method == 'map'
           .pure-form.pure-form-aligned
