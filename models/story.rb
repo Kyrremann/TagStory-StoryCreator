@@ -1,6 +1,7 @@
 class Story < ActiveRecord::Base
   has_many :tags, :dependent => :destroy
-  has_many :authorgroups
+  has_many :publications, :dependent => :destroy
+  has_many :authorgroups, :dependent => :destroy
   has_many :user, through: :authorgroups
   has_many :images, foreign_key: 'belongs_to', :dependent => :destroy
 
@@ -56,7 +57,7 @@ class Story < ActiveRecord::Base
   end
 
   def publish
-    p to_market.to_json
+    to_market.to_json
   end
 
   def to_market
@@ -65,6 +66,7 @@ class Story < ActiveRecord::Base
       tags << tag.to_market
     end
     {
+      "_id" => self.id,
       "author" => self.author,
       "title" => self.title,
       "description" => self.description,

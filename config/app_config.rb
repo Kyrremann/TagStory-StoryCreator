@@ -1,5 +1,10 @@
 use Rack::Session::Cookie, :secret => 'super_secret_key_that_should_be_an_env_variable' # TODO
 
+# CloudAnt
+unless CLOUDANT_URL = ENV['CLOUDANT_URL']
+  raise "You must specify the CLOUDANT_URL env variable"
+end
+
 # Google API
 unless G_API_CLIENT = ENV['G_API_CLIENT']
   raise "You must specify the G_API_CLIENT env variable"

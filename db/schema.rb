@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150928185500) do
+ActiveRecord::Schema.define(version: 20151004183307) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,24 +45,34 @@ ActiveRecord::Schema.define(version: 20150928185500) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "publications", force: :cascade do |t|
+    t.integer  "story_id"
+    t.string   "json",       null: false
+    t.integer  "version",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "publications", ["story_id"], name: "index_publications_on_story_id", using: :btree
+
   create_table "stories", force: :cascade do |t|
-    t.string   "title",                             null: false
-    t.string   "author",                            null: false
-    t.string   "description",                       null: false
-    t.string   "status",          default: "draft", null: false
-    t.string   "age_group",                         null: false
-    t.string   "language",                          null: false
-    t.string   "country",                           null: false
-    t.string   "city",                              null: false
-    t.string   "place",                             null: false
+    t.string   "title",                                null: false
+    t.string   "author",                               null: false
+    t.string   "description",                          null: false
+    t.string   "status",             default: "draft", null: false
+    t.string   "age_group",                            null: false
+    t.string   "language",                             null: false
+    t.string   "country",                              null: false
+    t.string   "city",                                 null: false
+    t.string   "place",                                null: false
     t.string   "estimated_time"
     t.string   "url"
-    t.string   "version",         default: "0",     null: false
-    t.datetime "first_published"
-    t.datetime "last_published"
-    t.boolean  "published",       default: false,   null: false
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.string   "version",            default: "0",     null: false
+    t.boolean  "published",          default: false,   null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.integer  "first_published_id"
+    t.integer  "last_published_id"
   end
 
   create_table "tags", force: :cascade do |t|
