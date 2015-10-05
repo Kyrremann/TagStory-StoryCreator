@@ -66,7 +66,7 @@ class Story < ActiveRecord::Base
       tags << tag.to_market
     end
     {
-      "_id" => self.id,
+      "_id" => self.id.to_s,
       "author" => self.author,
       "title" => self.title,
       "description" => self.description,
