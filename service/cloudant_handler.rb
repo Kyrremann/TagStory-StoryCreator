@@ -10,7 +10,8 @@ module CloudantHandler
         logger.info "Uploaded story ##{@story.id} to Cloudant. Rev was #{@respons["rev"]}"
         @publication = Publication.create(:story_id => @story.id,
                                           :version => @story.version,
-                                          :json => data)
+                                          :json => data,
+                                          :rev => @respons["rev"])
         if @publication.save
           unless @story.published
             @story.first_published_id = @publication.id
