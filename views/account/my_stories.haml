@@ -14,27 +14,27 @@
               - next unless story.published
               %section.post
                 %header.post-header
-                  %img.post-avatar{:alt => "Tilo Mitra's avatar", :height => "48", :src => "img/common/tilo-avatar.png", :width => "48"}
+                  %img.post-avatar{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/stories/#{story.id}/images/#{story.images.first.url}", :height => "48px", :width => '48px'}
                     %h2.post-title
                       = story.title
                     %p.post-meta
                       By
                       %a.post-author{:href => "#"}
                         = story.author
+                    /
                       under
                       %a.post-category.post-category-design{:href => "#"} CSS
                       %a.post-category.post-category-pure{:href => "#"} Pure
                 .post-description
                   %p
                     = story.description
-                %a.post-category.post-category-pure{:href => "/wizard/story?sid=#{story.id}"} Edit
+                %a.post-category.post-category-pure{:href => "/my-stories/unpublish?sid=#{story.id}"} Unpublish
 
           .posts
             %h1.content-subhead
               Drafts
               %a.post-category.post-category-design{:href => "/my-stories/create"} New story
             - @stories.each do | story |
-              - next if story.published
               %section.post
                 %header.post-header
                   %img.post-avatar
@@ -53,5 +53,8 @@
                   %p
                     = story.description
                 %a.post-category.post-category-pure{:href => "/wizard/story?sid=#{story.id}"} Edit
-                %a.post-category.post-category-design{:href => "/my-stories/publish?sid=#{story.id}"} Publish
+                - if story.published
+                  %a.post-category.post-category-design{:href => "/my-stories/publish?sid=#{story.id}"} Republish
+                - else
+                  %a.post-category.post-category-design{:href => "/my-stories/publish?sid=#{story.id}"} Publish
           .footer

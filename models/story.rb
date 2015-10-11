@@ -57,7 +57,7 @@ class Story < ActiveRecord::Base
   end
 
   def publish
-    to_market.to_json
+    to_market
   end
 
   def to_market

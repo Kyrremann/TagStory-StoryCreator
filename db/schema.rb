@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151006091908) do
+ActiveRecord::Schema.define(version: 20151011161720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,11 +47,12 @@ ActiveRecord::Schema.define(version: 20151006091908) do
 
   create_table "publications", force: :cascade do |t|
     t.integer  "story_id"
-    t.string   "json",       null: false
-    t.integer  "version",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "json",                             null: false
+    t.integer  "version",                          null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.string   "rev"
+    t.boolean  "retrieved_by_409", default: false
   end
 
   add_index "publications", ["story_id"], name: "index_publications_on_story_id", using: :btree

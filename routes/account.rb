@@ -37,6 +37,11 @@ class TagStoryApp < Sinatra::Application
     redirect 'my-stories'
   end
 
+  get '/my-stories/unpublish' do
+    # haml :'account/publish'
+    'TODO'
+  end
+
   get '/settings/profile' do
     haml :'account/profile'
   end
