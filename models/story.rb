@@ -11,12 +11,19 @@ class Story < ActiveRecord::Base
   validates_inclusion_of :language, in: I18nData.languages, message: "%{value} is not a valid language"
   validates_associated :tags
 
-  def has_owner(id)
+  def has_editor(id)
     self.authorgroups.each do | group |
-      return true if group.user_id == id
+      return true if group.user_id == id and group.permission == 'edit'
     end
 
     logger.warn "User #{id} tried to access story #{self.id}"
+    return false
+  end
+
+  def is_owned_by(id)
+    self.authorgroups.each do | group |
+      return true if group.user_id == id and group.owner
+    end
     return false
   end
 

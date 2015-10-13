@@ -22,7 +22,7 @@ class TagStoryApp < Sinatra::Application
       end
     end
 
-    redirect '/my-stories' unless @story and @story.has_owner(session[:id])
+    redirect '/my-stories' unless @story and @story.has_editor(session[:id])
   end
 
   get '/wizard/story' do

@@ -57,4 +57,6 @@
                   %a.post-category.post-category-design{:href => "/my-stories/publish?sid=#{story.id}"} Republish
                 - else
                   %a.post-category.post-category-design{:href => "/my-stories/publish?sid=#{story.id}"} Publish
+                - if story.is_owned_by(session[:id])
+                  %a.post-category.post-category-design{:href => "/my-stories/authors?sid=#{story.id}"} Manage authors
           .footer
