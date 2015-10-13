@@ -48,10 +48,4 @@ class TagStoryApp < Sinatra::Application
     end
     redirect '/'
   end
-
-  # other
-  get '/stories' do
-    @stories = Story.order('title DESC')
-    haml :stories
-  end
 end
