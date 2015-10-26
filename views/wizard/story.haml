@@ -1,0 +1,131 @@
+!!!
+%html
+  %head
+    = haml :'templates/header_imports'
+    %link{:href => "/css/layouts/blog.css", :rel => "stylesheet"}
+    %link{:href => "/css/layouts/email.css", :rel => "stylesheet"}
+    %script{:src => "https://maps.googleapis.com/maps/api/js?key=AIzaSyBj0MzAv62ik_KGQi9WCVkSCx3qDGykiZ0&libraries=places"}
+    :javascript
+      function initialize() {
+        var input = /** @type {HTMLInputElement} */(
+          document.getElementById('place'));
+        var autocomplete = new google.maps.places.Autocomplete(
+          input,
+          { types: ['geocode'] });
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+          var place = autocomplete.getPlace();
+          input.value = place.name;
+          var adress = place.address_components;
+          for (var i = 0; i < adress.length; i++) {
+            if (adress[i].types[0] === "locality") {
+              document.getElementById('city').value = adress[i].long_name;
+            } else if (adress[i].types[0] === "country") {
+              document.getElementById('country').value = adress[i].long_name;
+            }
+          }
+        });
+        input.onkeypress = function() {
+          var evt = (evt) ? evt : ((event) ? event : null);
+          var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+          if ((evt.keyCode == 13) && (node.type == "text")) {
+            return false;
+          }
+        }
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+  %body
+    = haml :'templates/nav'
+
+    #layout.content.pure-g
+      = haml :'wizard/sidebar'
+
+      #main.pure-u-1
+        - if @story.errors
+          - @story.errors.full_messages.each do | message |
+            = message
+
+        %form#story_form.pure-form.pure-form-aligned{:method => "POST", :role => "form", :enctype => "multipart/form-data"}
+          %fieldset
+            %legend Story wizard - Details about the story
+          .pure-control-group
+            %label{:for => 'title'} Title:
+            %input#title{:type => "text", :name => "story[title]", :value => @story.title, :required => ""}
+          .pure-control-group  
+            %label{:for => 'author'} Author:
+            %input#author{:type => "text", :name => "story[author]", :value => @story.author, :required => ""}
+          .pure-control-group
+            %label{:for => 'description'} Description:
+            %textarea#description{:name => "story[description]", :rows => "6", :cols => "23"}
+              = @story.description
+          .pure-control-group
+            %label{:for => 'genre'} Genre:
+            %input#genre{:type => "text", :placeholder => "science fiction, horror", :value => ""}
+          .pure-control-group
+            %label{:for => 'age_group'} Age group:
+            %select#age_group
+              %option{:value => "e", :name => "story[age_group]", :selected => @story.age_group == 'e'} Everyone
+              %option{:value => "k", :name => "story[age_group]", :selected => @story.age_group == 'k'} Kids
+              %option{:value => "tw", :name => "story[age_group]", :selected => @story.age_group == 'tw'} Tweens
+              %option{:value => "t", :name => "story[age_group]", :selected => @story.age_group == 't'} Teens
+              %option{:value => "m", :name => "story[age_group]", :selected => @story.age_group == 'm'} Mature
+          .pure-control-group
+            %label{:for => 'keywords'} Keywords:
+            %input#keywords{:type => "text", :placeholder => "Mystery, forest, murder, lake", :value => ""}
+          .pure-control-group
+            %label{:for => "language"} Language:
+            %select{:name => "story[language]"}
+              - I18nData.languages.each do | language |
+                %option{:value => language[0], :selected => @story.language == language[0]} #{language[1]}
+          .pure-control-group
+            %label{:for => 'cover_image'} Upload image:
+            %input#cover_image{:type => "file", :name => "cover_image"}
+          - unless @story.images.nil? or @story.images.empty?
+            .pure-control-group
+              %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/stories/#{@story.id}/images/#{@story.images.first.url}", :width => '500px'}
+          %legend
+            Where is the story taking place?
+          .pure-control-group
+            %label{:for => 'place'} Place:
+            %input#place{:type => "text", :name => "story[place]", :placeholder => "Doktorska Gradina", :value => @story.place}
+          .pure-control-group
+            %label{:for => 'city'} City:
+            %input#city{:type => "text", :name => "story[city]", :placeholder => "Sofia", :value => @story.city}
+          .pure-control-group
+            %label{:for => 'country'} Country:
+            %input#country{:type => "text", :name => "story[country]", :placeholder => "Bulgaria", :value => @story.country}
+          %legend
+            Other
+          .pure-control-group
+            %label{:for => "estimated_time"} Estimated time:
+            %input{:type => "text", :name => "story[estimated_time]", :value => @story.estimated_time}
+            %img{:src => "/images/information-icon.png", 'data-ot' => "The estimated time used to finish the whole story. In hours (2h, 1-2h, 1,5h)."}
+          .pure-control-group
+            %label{:for => "url"} Website:
+            %input{:type => "text", :name => "story[url]", :value => @story.url}
+          %legend
+            Default values, used in the story creation
+          .pure-control-group
+            %label{:for => "zoom_level"} Zoom level:
+            -#%input{:type => "text", :name => "story[zoom_level]", :placeholder => "12", :value => ""}
+          .pure-control-group
+            %label{:for => "gps_radius"} GPS Radius:
+            -#%input{:type => "text", :name => "story[gps_radius]", :placeholder => "20", :value => ""}
+          %legend
+            To be automated
+          .pure-control-group
+            %label{:for => "tag_types"} Tag technology used:
+            -#%select{:name => "tag_types"}
+              %option{:value => "gps", :selected => @story.tag_types == 'gps'} GPS
+              %option{:value => "qr", :selected => @story.tag_types == 'qr'} QR
+              %option{:value => "nfc", :selected => @story.tag_types == 'nfc'} NFC
+              %option{:value => "qr_and_nfc", :selected => @story.tap_types == 'qr_and_nfc'} QR and NFC
+          .pure-control-group
+            %label{:for => "game_modes"} Game modes used:
+            -#%select{:name => "game_modes"}
+              %option{:value => "none", :selected => @story.game_modes == 'none'} None
+              %option{:value => "camera", :selected => @story.game_modes == 'camera'} Camera
+              %option{:value => "quiz", :selected => @story.game_modes == 'quiz'} Quiz
+          .pure-control-group
+            %button.pure-button#save{:type => "submit"} Save
+            %a.pure-button.pure-button{:href => "/wizard/story/overview?sid=#{@story.id}"} Map overview
+            %a.pure-button.pure-button{:href => "/wizard/story/qr-codes?sid=#{@story.id}"} See tags QR-code text

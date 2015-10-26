@@ -1,0 +1,38 @@
+!!!
+%html
+  %head
+    = haml :'templates/header_imports'
+    %link{:href => "/css/layouts/blog.css", :rel => "stylesheet"}
+  %body
+    = haml :'templates/nav'
+    #layout.pure-g
+      .content.pure-u-1.pure-u-md-3-4
+        %h1
+          = @story.title
+
+        %p
+          Here you can edit who can read or edit the story. You can also change owner.
+
+        - if @error
+          %p
+            = @error
+
+        %form#add_author.pure-form{:method => "POST", :role => "form"}
+          %label{:for => "email"} E-mail
+          %input#email{:name => "email", :type => "email"}
+          %button.pure-button#save{:type => "submit"} Add
+
+        %br
+        %br
+        %table.pure-table
+          %thead
+            %tr
+              %th User
+              %th Permission
+              %th Owner
+              %tbody
+          - @story.authorgroups.each do | group |
+            %tr
+              %th #{(group.user_id == session[:id]) ? 'You' : group.get_users_name}
+              %th #{group.permission}
+              %th #{group.owner}

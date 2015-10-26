@@ -1,0 +1,41 @@
+!!!
+%html
+  %head
+    = haml :'templates/header_imports'
+    %link{:href => "/css/layouts/blog.css", :rel => "stylesheet"}
+    %link{:href => "/css/layouts/email.css", :rel => "stylesheet"}
+    %link{:href => "/css/pikaday.css", :rel => "stylesheet"}
+    %script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBj0MzAv62ik_KGQi9WCVkSCx3qDGykiZ0")
+    :javascript
+      function initialize() {
+        var coords = #{@coords.to_json}
+        var map_options = {
+          center: new google.maps.LatLng('0', '0'),
+          zoom: 1,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+
+        var map_canvas = document.getElementById('map_canvas');
+        var map = new google.maps.Map(map_canvas, map_options)
+        
+        var myLatLng;
+        for(i = 0; i < coords.length; i++) {
+          coord = coords[i];
+          myLatLng = new google.maps.LatLng(coord['lat'], coord['long']);
+          var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map
+          });
+        }
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+  %body
+    = haml :'templates/nav'
+    
+    #layout.content.pure-g
+      = haml :'wizard/sidebar'
+
+      #main.pure-u-1
+        %h2
+          An overview of your markers
+        %div{:id => "map_canvas", :style => "width: 500px;"}

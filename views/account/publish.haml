@@ -1,0 +1,25 @@
+!!!
+%html
+  %head
+    = haml :'templates/header_imports'
+    %link{:href => "/css/layouts/blog.css", :rel => "stylesheet"}
+  %body
+    = haml :'templates/nav'
+    #layout.pure-g
+      .content.pure-u-1.pure-u-md-3-4
+        %h1
+          Publish your story
+        - if @story.version.to_i == 0 # First time publishing
+          %p
+            Ready to publish your story for the first time?
+        - else
+          %p
+            Publishing a new version of a story will override the old one. For now it is not possible to go back to a previous story have uploading. You last published a story #{@story.last_published_id}.
+
+          %p
+            Statistics about your stories will be implemented later.
+
+          
+        %form#publish.pure-form.pure-form-aligned{:method => "POST", :role => "form"}
+          .pure-control-group
+            %button.pure-button#save{:type => "submit"} Publish

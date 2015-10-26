@@ -1,0 +1,208 @@
+!!!
+%html
+  %head
+    = haml :'templates/header_imports'
+    %link{:href => "/css/layouts/blog.css", :rel => "stylesheet"}
+    %link{:href => "/css/layouts/email.css", :rel => "stylesheet"}
+    %link{:href => "/css/pikaday.css", :rel => "stylesheet"}
+    %script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBj0MzAv62ik_KGQi9WCVkSCx3qDGykiZ0&libraries=places")
+    :javascript
+      function initialize() {
+        var lat = #{@travel_option.gps_latitude || '59.9167055'}
+        var long = #{@travel_option.gps_longitude || '10.7294875'}
+        var zoomLevel = #{@travel_option.map_zoom_level || '12'}
+        var myLatLng = new google.maps.LatLng(lat, long);
+        var map_options = {
+          center: myLatLng,
+          zoom: zoomLevel,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+
+        var map_canvas = document.getElementById('map_canvas');
+        if (map_canvas == null) return;
+        var map = new google.maps.Map(map_canvas, map_options)
+
+        var input = /** @type {HTMLInputElement} */(document.getElementById('pac-input'));
+
+        var autocomplete = new google.maps.places.Autocomplete(input)
+        autocomplete.bindTo('bounds', map);
+
+        var infowindow = new google.maps.InfoWindow({
+          // content: "Option: "
+        });
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          draggable: true
+        });
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            infowindow.close();
+            marker.setVisible(false);
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+              return;
+            }
+
+            if (place.geometry.viewport) {
+              map.fitBounds(place.geometry.viewport);
+            } else {
+              map.setCenter(place.geometry.location);
+              map.setZoom(zoomLevel);
+            }
+
+            marker.position = place.geometry.location;
+            document.getElementById('gps_latitude').value = marker.position.lat();
+            document.getElementById('gps_longitude').value = marker.position.lng();
+            marker.setVisible(true);
+        });
+
+        google.maps.event.addListener(map, 'click', function(event) {
+          var location = event.latLng;
+          placeMarker(location, marker, map);
+          document.getElementById('gps_latitude').value = location.lat();
+          document.getElementById('gps_longitude').value = location.lng();
+        });
+        google.maps.event.addListener(marker, 'drag', function() {
+          document.getElementById('gps_latitude').value = marker.position.lat();
+          document.getElementById('gps_longitude').value = marker.position.lng();
+        });
+      }
+      function placeMarker(location, marker, map) {
+        if (marker == undefined){
+          marker = new google.maps.Marker({
+            position: location,
+            map: map,
+            animation: google.maps.Animation.DROP
+          });
+        } else {
+          marker.setPosition(location);
+        }
+        map.setCenter(location);
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+  %body
+    = haml :'templates/nav'
+    
+    #layout.content.pure-g
+      = haml :'wizard/sidebar'
+
+      #main.pure-u-1
+        - if @travel_option.errors
+          - @travel_option.errors.full_messages.each do | message |
+            = message
+            %br
+
+        %form.pure-form.pure-form-aligned{:method => "POST", :role => "form", :enctype => "multipart/form-data"}
+          %fieldset
+            %legend Travel Option wizard
+
+          .pure-control-group
+            %label{:for => "method"} Method:
+            %select#method{:name => "travel_option[method]"}
+              %option{:value => "text", :selected => @travel_option.method == 'text'} Text
+              %option{:value => "image", :selected => @travel_option.method == 'image'} Image
+              %option{:value => "sound", :selected => @travel_option.method == 'sound'} Sound
+              %option{:value => "map", :selected => @travel_option.method == 'map'} Map
+            %img{:src => "/images/information-icon.png", 'data-ot' => "The method dictates what type of interaction/information you can give to the reader.<br /><strong>Text</strong>: Used to give the reader a textual hint about the next destination.<br /><strong>Image</strong>: Show an image of the next location.<br /><strong>Sound</strong>: Play a sound that hints about the next location.<br /><strong>Map</strong>: Shows the map using GPS where the next location is."}
+
+          %legend These are based on what you have previously chosen
+
+          .pure-control-group
+            %label{:for => "answer"} Answer:
+            %input#answer{:type => "text", :name => "travel_option[answer]", :value => @travel_option.answer}
+            %img{:src => "/images/information-icon.png", 'data-ot' => "If you have chosen Question on this tag, this field needs to be filled out, as it acts as one of the answer."}
+
+          .pure-control-group
+            %label{:for => "title"} Title:
+            %input#title{:type => "text", :name => "travel_option[title]", :value => @travel_option.title}
+            %img{:src => "/images/information-icon.png", 'data-ot' => "You can set the title of each tag-option screen. Will change the title in the action bar."}
+
+          %legend These depends on your method of choice
+
+          .pure-control-group
+            %label{:for => "help_text"} Text:
+            %textarea#help_text{:rows => "6", :cols => "23", :name => "travel_option[help_text]"}
+              = @travel_option.help_text
+            %img{:src => "/images/information-icon.png", 'data-ot' => "If you chose method: text, this field needs to be filled out. On other methods this can act as a supplementing field. For example, informing that you picked the correct answer on the tag question."}
+
+          - if @travel_option.method == 'image'
+            .pure-control-group
+              %label{:for => "image_top"} Tag image (top):
+              %input#image_top{:type => "file", :name => "content[top]"}
+              - unless @travel_option.image_top.nil?
+                .pure-control-group
+                  %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/stories/#{@tag.story_id}/images/#{@travel_option.image_top}", :width => '500px'}
+                  %br
+                  %a.pure-button{:href => "/wizard/travel-option/image-delete?toid=#{@travel_option.id}&image=top"} Delete
+
+            .pure-control-group
+              %label{:for => "image_middle"} Tag image (middle):
+              %input#image_middle{:type => "file", :name => "content[middle]"}
+              - unless @travel_option.image_middle.nil?
+                .pure-control-group
+                  %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/stories/#{@tag.story_id}/images/#{@travel_option.image_middle}", :width => '500px'}
+                  %br
+                  %a.pure-button{:href => "/wizard/travel-option/image-delete?tid=#{@travel_option.id}&image=middle"} Delete
+
+            .pure-control-group
+              %label{:for => "image_bottom"} Tag image (bottom):
+              %input#image_bottom{:type => "file", :name => "content[bottom]"}
+              - unless @travel_option.image_bottom.nil?
+                .pure-control-group
+                  %img{:src => "https://s3-eu-west-1.amazonaws.com/tagstory/stories/#{@tag.story_id}/images/#{@travel_option.image_bottom}", :width => '500px'}
+                  %br
+                  %a.pure-button{:href => "/wizard/travel-option/image-delete?tid=#{@travel_option.id}&image=bottom"} Delete
+
+          -# if @travel_option.method == 'sound'
+            # TODO
+            .pure-control-group
+              %label{:for => "sound_source"} Sound:
+              %img{:src => "/images/information-icon.png", 'data-ot' => ""}
+
+          - if @travel_option.method == 'map'
+            .pure-control-group
+              %label{:for => "gps_latitude"} GPS latitude:
+              %input#gps_latitude{:type => "text", :name => "travel_option[gps_latitude]", :value => @travel_option.gps_latitude}
+              %img{:src => "/images/information-icon.png", 'data-ot' => ""}
+
+            .pure-control-group
+              %label{:for => "gps_longitude"} GPS longitude:
+              %input#gps_longitude{:type => "text", :name => "travel_option[gps_longitude]", :value => @travel_option.gps_longitude}
+              %img{:src => "/images/information-icon.png", 'data-ot' => ""}
+
+            .pure-control-group
+              %label{:for => "map_zoom_level"} Zoom level:
+              %input#map_zoom_level{:type => "text", :placeholder => "12", :name => "travel_option[map_zoom_level]", :value => @travel_option.map_zoom_level}
+
+            .pure-control-group
+              %label{:for => "gps_radius"} GPS Radius:
+              %input#gps_radius{:type => "text", :placeholder => "20", :name => "travel_option[gps_radius]", :value => @travel_option.gps_radius}
+
+          %legend Points to the next tag, can't be filled out before the next tag is made
+
+          .pure-control-group
+            %label{:for => "next_tag"} Next tag:
+            %select#next_tag{:name => "travel_option[next_tag]"}
+              - @story.tags.each do | tag |
+                %option{:value => tag.id, :selected => @travel_option.next_tag == tag.id}
+                  = tag.title
+            %img{:src => "/images/information-icon.png", 'data-ot' => ""}
+
+          .pure-control-group
+            %a.pure-button{:href => "/wizard/story?sid=#{@tag.story_id}"} Story
+            %button.pure-button{:type => "submit", :name => "save"} Save
+            %a.pure-button{:href => "/wizard/action?action=add_travel_option&tid=#{@tag.id}&sid=#{@story.id}"} Add option
+            %a.pure-button{:href => "/wizard/action?action=delete_travel_option&toid=#{@travel_option.id}&tid=#{@tag.id}"} Delete option
+            %a.pure-button{:href => "/wizard/action?action=dup_travel_option&toid=#{@travel_option.id}&tid=#{@tag.id}"} Duplicate
+
+        - if @travel_option.method == 'map'
+          .pure-form.pure-form-aligned
+            .pure-control-group
+              %label{:for => "pac_input"} Search:
+              %input{:id => "pac-input", :name => "pac_input", :class => "", :type => "text", :placeholder => "Search Box"}
+              %div{:id => "map_canvas"}
+          %br
+          %br
+          %br
