@@ -52,12 +52,12 @@ class TagStoryApp < Sinatra::Application
 
   post '/my-stories/authors' do
     user = User.find_by_email(params['email'])
-    if user
+    if user and not user.can_edit_story(@story.id)
       authorgroups = Authorgroup.new(:story_id =>  @story.id,
                                      :user_id => user.id,
                                      :owner => false)
       if authorgroups.save
-        redirect 'my-stories/authors'
+        redirect "my-stories/authors?sid=#{@story.id}"
       end
     else
       @error = "Can\'t add a user with the e-mail '#{params['email']}'"
