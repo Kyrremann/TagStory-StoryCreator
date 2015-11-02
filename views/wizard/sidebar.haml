@@ -30,5 +30,8 @@
         .pure-u
         .pure-u-3-4
           %h5.email-name
-            = option.title
+            - if option.answer
+              = option.answer[0, 40]
+            - else
+              = option.title[0, 40]
             %a.secondary-button.pure-button{:href => "/wizard/travel-option?sid=#{@story.id}&tid=#{tag.id}&toid=#{option.id}"} Edit
