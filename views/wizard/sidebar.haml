@@ -30,7 +30,7 @@
         .pure-u
         .pure-u-3-4
           %h5.email-name
-            - if option.answer
+            - if option.answer && !option.answer.empty?
               = option.answer[0, 40]
             - else
               = option.title[0, 40]
