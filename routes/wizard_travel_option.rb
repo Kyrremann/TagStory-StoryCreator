@@ -22,7 +22,7 @@ class TagStoryApp < Sinatra::Application
     if @travel_option.update(params[:travel_option])
       redirect "wizard/travel-option?sid=#{@tag.story_id}&tid=#{@tag.id}&toid=#{@travel_option.id}"
     else
-      haml :'wizard/travel-option'
+      haml :'wizard/travel_option'
     end
   end
 
